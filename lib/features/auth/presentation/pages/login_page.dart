@@ -3,14 +3,14 @@ import 'package:blood_source/common/header_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AuthPage extends StatefulWidget {
-  const AuthPage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  createState() => _AuthPage();
+  createState() => _LoginPage();
 }
 
-class _AuthPage extends State<AuthPage> {
+class _LoginPage extends State<LoginPage> {
   bool _isObscure = true;
 
   @override
