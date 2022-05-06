@@ -9,6 +9,7 @@ class AppTextButton extends StatelessWidget {
     this.alignment = Alignment.center,
     this.color = Colors.black,
     this.fontSize,
+    this.fontWeight = FontWeight.w500,
   }) : super(key: key);
 
   final void Function()? onTap;
@@ -16,6 +17,7 @@ class AppTextButton extends StatelessWidget {
   final Alignment alignment;
   final Color? color;
   final double? fontSize;
+  final FontWeight fontWeight;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class AppTextButton extends StatelessWidget {
         style: TextStyle(
           fontSize: fontSize ?? 16.sp,
           color: color,
-          fontWeight: FontWeight.w500,
+          fontWeight: fontWeight,
         ),
       ),
     );
