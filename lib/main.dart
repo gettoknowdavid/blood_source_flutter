@@ -3,6 +3,7 @@ import 'package:blood_source/common/app_themes.dart';
 import 'package:blood_source/features/theming/presentation/pages/splash_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         splashIconSize: 1000,
         backgroundColor: Colors.white,
         duration: 5000,
+        pageTransitionType: PageTransitionType.fade,
         splashTransition: SplashTransition.fadeTransition,
         nextScreen: const MyHomePage(title: 'BloodSource'),
       ),
