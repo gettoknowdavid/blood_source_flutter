@@ -2,11 +2,13 @@ import 'package:blood_source/common/app_themes.dart';
 import 'package:blood_source/features/theming/presentation/pages/splash_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await ScreenUtil.ensureScreenSize();
 
   runApp(const MyApp());
 }
@@ -17,16 +19,24 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Flutter Demo',
-      theme: AppTheme.appTheme,
-      initialRoute: '/splash',
-      defaultTransition: Transition.cupertino,
-      transitionDuration: const Duration(seconds: 3000),
-      getPages: [
-        GetPage(name: '/splash', page: () => const SplashPage()),
-        GetPage(name: '/', page: () => const MyHomePage(title: 'BloodSource')),
-      ],
+    return ScreenUtilInit(
+      designSize: const Size(393, 830),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      child: GetMaterialApp(
+        title: 'Flutter Demo',
+        theme: AppTheme.appTheme,
+        initialRoute: '/splash',
+        defaultTransition: Transition.cupertino,
+        transitionDuration: const Duration(seconds: 3000),
+        getPages: [
+          GetPage(name: '/splash', page: () => const SplashPage()),
+          GetPage(
+            name: '/',
+            page: () => const MyHomePage(title: 'BloodSource'),
+          ),
+        ],
+      ),
     );
   }
 }
