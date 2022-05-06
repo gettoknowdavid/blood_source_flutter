@@ -32,7 +32,7 @@ class AppButton extends StatelessWidget {
         ),
       ),
       child: Text(
-        'Sign In',
+        text,
         style: TextStyle(
           color: Colors.white,
           fontSize: 18.5.sp,
