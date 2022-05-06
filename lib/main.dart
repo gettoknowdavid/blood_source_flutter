@@ -1,4 +1,6 @@
 import 'package:blood_source/common/app_themes.dart';
+import 'package:blood_source/features/auth/presentation/pages/sign_in_page.dart';
+import 'package:blood_source/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:blood_source/features/theming/presentation/pages/splash_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,10 +34,9 @@ class MyApp extends StatelessWidget {
         transitionDuration: const Duration(seconds: 3000),
         getPages: [
           GetPage(name: '/splash', page: () => const SplashPage()),
-          GetPage(
-            name: '/',
-            page: () => const MyHomePage(title: 'BloodSource'),
-          ),
+          GetPage(name: '/singIn', page: () => const SignInPage()),
+          GetPage(name: '/singUp', page: () => const SignUpPage()),
+          GetPage(name: '/', page: () => const MyHomePage(title: 'BS')),
         ],
       ),
     );
