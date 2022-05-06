@@ -79,9 +79,19 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
       body: Center(
-        child: Text(
-          'BloodSource',
-          style: Theme.of(context).textTheme.displayMedium,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'BloodSource',
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
+            30.verticalSpace,
+            TextButton(
+              onPressed: () => FirebaseAuth.instance.signOut(),
+              child: const Text('Sign Out'),
+            ),
+          ],
         ),
       ),
     );
