@@ -22,6 +22,10 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.appTheme,
       home: AnimatedSplashScreen(
         splash: const SplashPage(),
+        splashIconSize: 1000,
+        backgroundColor: Colors.white,
+        duration: 5000,
+        splashTransition: SplashTransition.fadeTransition,
         nextScreen: const MyHomePage(title: 'BloodSource'),
       ),
     );
