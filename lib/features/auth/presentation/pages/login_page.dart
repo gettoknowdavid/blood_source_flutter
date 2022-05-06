@@ -15,27 +15,25 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPage extends State<LoginPage> {
-  bool _isObscure = true;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  Future signIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final _emailController = TextEditingController();
-    final _passwordController = TextEditingController();
-
-    Future signIn() async {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-    }
-
-    @override
-    void dispose() {
-      _emailController.dispose();
-      _passwordController.dispose();
-      super.dispose();
-    }
-
     return Scaffold(
       body: SafeArea(
         child: Container(
