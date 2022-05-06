@@ -28,14 +28,14 @@ class _AppTextFieldState extends State<AppTextField> {
     return TextField(
       keyboardType: widget.keyboardType,
       controller: widget.controller,
-      obscureText: widget.isPassword,
+      obscureText: _isObscure,
       style: TextStyle(fontSize: 18.sp),
       decoration: InputDecoration(
         hintText: widget.hintText,
         fillColor: Colors.white,
         filled: true,
         suffixIcon: !widget.isPassword
-            ? Container()
+            ? const SizedBox()
             : IconButton(
                 icon:
                     Icon(_isObscure ? Icons.visibility : Icons.visibility_off),
