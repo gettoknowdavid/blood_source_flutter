@@ -1,6 +1,7 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/common/header_painter.dart';
 import 'package:blood_source/shared/widgets/app_button.dart';
+import 'package:blood_source/shared/widgets/app_text_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -126,21 +127,12 @@ class _LoginPage extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        alignment: Alignment.centerRight,
-                        splashFactory: NoSplash.splashFactory,
-                      ),
-                      child: Text(
-                        'Password Recovery',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+                    AppTextButton(
+                      text: 'Password Recovery',
+                      onTap: () {},
+                      fontSize: 16.sp,
+                      color: Colors.black54,
+                      alignment: Alignment.centerRight,
                     ),
                     40.verticalSpace,
                     AppButton(onTap: () {}, text: 'Sign In'),
