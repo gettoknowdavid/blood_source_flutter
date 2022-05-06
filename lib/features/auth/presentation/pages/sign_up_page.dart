@@ -86,7 +86,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           isPassword: true,
                         ),
                         40.verticalSpace,
-                        AppButton(onTap: () {}, text: 'Sing Up'),
+                        AppButton(onTap: () {}, text: 'Sign Up'),
                       ],
                     ),
                   ),
