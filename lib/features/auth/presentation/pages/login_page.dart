@@ -1,5 +1,6 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/common/header_painter.dart';
+import 'package:blood_source/shared/widgets/app_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -142,26 +143,7 @@ class _LoginPage extends State<LoginPage> {
                       ),
                     ),
                     40.verticalSpace,
-                    ElevatedButton(
-                      onPressed: () => signIn(),
-                      style: ElevatedButton.styleFrom(
-                        primary: AppColors.swatch.shade700,
-                        padding: EdgeInsets.all(23.r),
-                        shadowColor: AppColors.swatch.shade400,
-                        elevation: 20,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                      ),
-                      child: Text(
-                        'Sign In',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.5.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
+                    AppButton(onTap: () {}, text: 'Sign In'),
                     30.verticalSpace,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
