@@ -1,5 +1,6 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/common/header_painter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -15,7 +16,22 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final _emailController = TextEditingController();
+    final _passwordController = TextEditingController();
+
+    Future signIn() async {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+    }
+
+    @override
+    void dispose() {
+      _emailController.dispose();
+      _passwordController.dispose();
+      super.dispose();
+    }
 
     return Scaffold(
       body: SafeArea(
@@ -53,6 +69,7 @@ class _LoginPage extends State<LoginPage> {
                     ),
                     40.verticalSpace,
                     TextField(
+                      controller: _emailController,
                       style: TextStyle(fontSize: 18.sp),
                       decoration: InputDecoration(
                         hintText: 'Enter email',
@@ -76,6 +93,7 @@ class _LoginPage extends State<LoginPage> {
                     ),
                     18.verticalSpace,
                     TextField(
+                      controller: _passwordController,
                       obscureText: _isObscure,
                       style: TextStyle(fontSize: 18.sp),
                       decoration: InputDecoration(
@@ -125,7 +143,7 @@ class _LoginPage extends State<LoginPage> {
                     ),
                     40.verticalSpace,
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => signIn(),
                       style: ElevatedButton.styleFrom(
                         primary: AppColors.swatch.shade700,
                         padding: EdgeInsets.all(23.r),

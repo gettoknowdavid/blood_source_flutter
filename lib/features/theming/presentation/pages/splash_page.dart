@@ -1,6 +1,8 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:blood_source/common/image_resources.dart';
 import 'package:blood_source/features/auth/presentation/pages/login_page.dart';
+import 'package:blood_source/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -29,7 +31,16 @@ class SplashPage extends StatelessWidget {
       duration: 5000,
       pageTransitionType: PageTransitionType.fade,
       splashTransition: SplashTransition.fadeTransition,
-      nextScreen: const LoginPage(),
+      nextScreen: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return const MyHomePage(title: 'BloodSource');
+          } else {
+            return const LoginPage();
+          }
+        },
+      ),
     );
   }
 }
