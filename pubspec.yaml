@@ -41,6 +41,7 @@ dependencies:
   animated_splash_screen: ^1.2.0
   page_transition: ^2.0.5
   get: ^4.6.1
+  flutter_screenutil: ^5.5.2
 
 dev_dependencies:
   flutter_test:
