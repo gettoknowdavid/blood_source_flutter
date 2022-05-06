@@ -1,4 +1,6 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:blood_source/common/app_themes.dart';
+import 'package:blood_source/features/theming/presentation/pages/splash_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +20,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: AppTheme.appTheme,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: AnimatedSplashScreen(
+        splash: const SplashPage(),
+        nextScreen: const MyHomePage(title: 'BloodSource'),
+      ),
     );
   }
 }
