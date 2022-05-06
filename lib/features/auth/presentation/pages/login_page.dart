@@ -37,7 +37,7 @@ class _LoginPage extends State<LoginPage> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          color: AppColors.primary.withOpacity(0.02),
+          color: AppColors.primary.withOpacity(0.03),
           child: CustomPaint(
             painter: HeaderPainter(),
             child: Center(
