@@ -149,20 +149,12 @@ class _LoginPage extends State<LoginPage> {
                           ),
                         ),
                         6.horizontalSpace,
-                        TextButton(
-                          onPressed: () {},
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            splashFactory: NoSplash.splashFactory,
-                          ),
-                          child: Text(
-                            'Register now',
-                            style: TextStyle(
-                              fontSize: 17.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.swatch.shade500,
-                            ),
-                          ),
+                        AppTextButton(
+                          text: 'Register now',
+                          onTap: () {},
+                          fontSize: 17.sp,
+                          color: AppColors.swatch.shade500,
+                          fontWeight: FontWeight.w600,
                         ),
                       ],
                     ),
