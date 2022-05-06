@@ -7,14 +7,14 @@ class AppTextButton extends StatelessWidget {
     required this.onTap,
     required this.text,
     this.alignment = Alignment.center,
-    this.textColor = Colors.black,
+    this.color = Colors.black,
     this.fontSize,
   }) : super(key: key);
 
   final void Function()? onTap;
   final String text;
   final Alignment alignment;
-  final Color? textColor;
+  final Color? color;
   final double? fontSize;
 
   @override
@@ -30,7 +30,7 @@ class AppTextButton extends StatelessWidget {
         text,
         style: TextStyle(
           fontSize: fontSize ?? 16.sp,
-          color: textColor,
+          color: color,
           fontWeight: FontWeight.w500,
         ),
       ),
