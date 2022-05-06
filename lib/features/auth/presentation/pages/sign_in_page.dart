@@ -1,11 +1,13 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/common/header_painter.dart';
+import 'package:blood_source/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:blood_source/shared/widgets/app_button.dart';
 import 'package:blood_source/shared/widgets/app_text_button.dart';
 import 'package:blood_source/shared/widgets/app_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -104,7 +106,7 @@ class _SignInPage extends State<SignInPage> {
                         6.horizontalSpace,
                         AppTextButton(
                           text: 'Register now',
-                          onTap: () {},
+                          onTap: () => Get.to(() => const SignUpPage()),
                           fontSize: 17.sp,
                           color: AppColors.swatch.shade500,
                           fontWeight: FontWeight.w600,
