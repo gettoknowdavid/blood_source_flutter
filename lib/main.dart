@@ -3,6 +3,7 @@ import 'package:blood_source/common/app_themes.dart';
 import 'package:blood_source/features/theming/presentation/pages/splash_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:page_transition/page_transition.dart';
 
 void main() async {
@@ -18,18 +19,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: AppTheme.appTheme,
-      home: AnimatedSplashScreen(
-        splash: const SplashPage(),
-        splashIconSize: 1000,
-        backgroundColor: Colors.white,
-        duration: 5000,
-        pageTransitionType: PageTransitionType.fade,
-        splashTransition: SplashTransition.fadeTransition,
-        nextScreen: const MyHomePage(title: 'BloodSource'),
-      ),
+      initialRoute: '/splash',
+      defaultTransition: Transition.cupertino,
+      transitionDuration: const Duration(seconds: 3000),
+      getPages: [
+        GetPage(name: '/splash', page: () => const SplashPage()),
+        GetPage(name: '/', page: () => const MyHomePage(title: 'BloodSource')),
+      ],
     );
   }
 }
