@@ -21,8 +21,8 @@ class HeaderPainter extends CustomPainter {
       ..style = PaintingStyle.fill
       ..strokeWidth = 8.0;
 
-    canvas.drawCircle(
-        Offset(size.width * 0.23, size.height * 0.01), size.width * 0.7, paint);
+    canvas.drawCircle(Offset(size.width * 0.26, size.height * 0.087),
+        size.width * 0.7, paint);
     // canvas.drawCircle(Offset(size.width * 0.98, size.height * -0.001),
     //     size.width * 0.45, paint2);
     canvas.drawCircle(Offset(size.width * 0.9, size.height * -0.01),
