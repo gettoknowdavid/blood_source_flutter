@@ -5,9 +5,9 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class SignInViewModel extends StreamViewModel with ReactiveServiceMixin {
-  NavigationService? navigationService = locator<NavigationService>();
-  FirebaseAuthenticationService? authService =
+class SignInViewModel extends BaseViewModel with ReactiveServiceMixin {
+  NavigationService navigationService = locator<NavigationService>();
+  FirebaseAuthenticationService authService =
       locator<FirebaseAuthenticationService>();
 
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
@@ -18,16 +18,13 @@ class SignInViewModel extends StreamViewModel with ReactiveServiceMixin {
 
   Future<void> init() async {}
 
-  @override
-  Stream get stream => throw UnimplementedError();
-
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  @override
-  void initialise() {
-    notifyListeners();
-  }
+  // @override
+  // void initialise() {
+  //   notifyListeners();
+  // }
 
   void toggleObscurePassword() {
     _isObscurePassword = !_isObscurePassword;
@@ -35,17 +32,17 @@ class SignInViewModel extends StreamViewModel with ReactiveServiceMixin {
   }
 
   void goToSignUp() {
-    navigationService!.navigateTo(Routes.signUpView);
+    navigationService.navigateTo(Routes.signUpView);
   }
 
   Future signIn() async {
-    await authService!.loginWithEmail(
+    await authService.loginWithEmail(
       email: emailController.text.trim(),
       password: passwordController.text.trim(),
     );
 
-    if (authService!.hasUser) {
-      navigationService!.navigateTo(Routes.homeView);
+    if (authService.hasUser) {
+      navigationService.navigateTo(Routes.homeView);
     }
   }
 

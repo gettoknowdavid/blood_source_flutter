@@ -5,11 +5,11 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class SignUpViewModel extends StreamViewModel with ReactiveServiceMixin {
+class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
   Future<void> init() async {}
 
-  NavigationService? navigationService = locator<NavigationService>();
-  FirebaseAuthenticationService? authService =
+  NavigationService navigationService = locator<NavigationService>();
+  FirebaseAuthenticationService authService =
       locator<FirebaseAuthenticationService>();
 
   final GlobalKey<FormState> _signUpFormKey = GlobalKey<FormState>();
@@ -28,12 +28,12 @@ class SignUpViewModel extends StreamViewModel with ReactiveServiceMixin {
   }
 
   Future signUp() async {
-    await authService!.createAccountWithEmail(
+    await authService.createAccountWithEmail(
       email: emailController.text.trim(),
       password: passwordController.text.trim(),
     );
 
-    authService!.authStateChanges.listen((User? user) {
+    authService.authStateChanges.listen((User? user) {
       if (user != null) {
         user.updateDisplayName(nameController.text.trim());
       }
@@ -46,18 +46,10 @@ class SignUpViewModel extends StreamViewModel with ReactiveServiceMixin {
   }
 
   @override
-  void initialise() {
-    notifyListeners();
-  }
-
-  @override
   void dispose() {
     nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
   }
-
-  @override
-  Stream get stream => throw UnimplementedError();
 }

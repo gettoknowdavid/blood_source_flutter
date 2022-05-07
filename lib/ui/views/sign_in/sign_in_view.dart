@@ -91,9 +91,7 @@ class SignInView extends StatelessWidget {
                             6.horizontalSpace,
                             AppTextButton(
                               text: 'Register now',
-                              onTap: () => model.navigationService!.navigateTo(
-                                Routes.verifyEmailView,
-                              ),
+                              onTap: () => model.goToSignUp(),
                               fontSize: 17.sp,
                               color: AppColors.swatch.shade500,
                               fontWeight: FontWeight.w600,
