@@ -1,8 +1,8 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/common/header_painter.dart';
-import 'package:blood_source/shared/widgets/app_back_button.dart';
-import 'package:blood_source/shared/widgets/app_button.dart';
-import 'package:blood_source/shared/widgets/app_textfield.dart';
+import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
+import 'package:blood_source/ui/shared/widgets/app_button.dart';
+import 'package:blood_source/ui/shared/widgets/app_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
