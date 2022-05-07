@@ -34,6 +34,10 @@ class SignInViewModel extends StreamViewModel with ReactiveServiceMixin {
     notifyListeners();
   }
 
+  void goToSignUp() {
+    navigationService!.navigateTo(Routes.signUpView);
+  }
+
   Future signIn() async {
     await authService!.loginWithEmail(
       email: emailController.text.trim(),

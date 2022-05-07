@@ -19,11 +19,7 @@ class SignInView extends StatelessWidget {
       onModelReady: (SignInViewModel model) async {
         await model.init();
       },
-      builder: (
-        BuildContext context,
-        SignInViewModel model,
-        Widget? child,
-      ) {
+      builder: (context, model, Widget? child) {
         return Scaffold(
           body: SafeArea(
             child: Container(
@@ -94,8 +90,7 @@ class SignInView extends StatelessWidget {
                             6.horizontalSpace,
                             AppTextButton(
                               text: 'Register now',
-                              onTap: () {},
-                              // onTap: () => Get.to(() => const SignUpPage()),
+                              onTap: () => model.goToSignUp(),
                               fontSize: 17.sp,
                               color: AppColors.swatch.shade500,
                               fontWeight: FontWeight.w600,
