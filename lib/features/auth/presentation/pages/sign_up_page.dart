@@ -3,6 +3,7 @@ import 'package:blood_source/common/header_painter.dart';
 import 'package:blood_source/shared/widgets/app_back_button.dart';
 import 'package:blood_source/shared/widgets/app_button.dart';
 import 'package:blood_source/shared/widgets/app_textfield.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -18,7 +19,18 @@ class _SignUpPageState extends State<SignUpPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  Future signUp() async {}
+  Future signUp() async {
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
+
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        user.updateDisplayName(_nameController.text);
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -84,7 +96,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           isPassword: true,
                         ),
                         40.verticalSpace,
-                        AppButton(onTap: () {}, text: 'Sign Up'),
+                        AppButton(onTap: () => signUp(), text: 'Sign Up'),
                       ],
                     ),
                   ),
