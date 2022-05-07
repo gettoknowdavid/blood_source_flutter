@@ -33,6 +33,7 @@ class CheckEmailView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        const Spacer(),
                         Text(
                           'Check your mail',
                           textAlign: TextAlign.center,
@@ -59,18 +60,27 @@ class CheckEmailView extends StatelessWidget {
                         40.verticalSpace,
                         AppButton(onTap: () {}, text: 'Open email app'),
                         const Spacer(),
-                        Text(
-                          'Did not receive the mail? Check your spam filter',
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        10.verticalSpace,
-                        AppTextButton(
-                          text: 'Try another email address',
-                          onTap: () {},
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'No mail yet? Check your spam filter, or',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 17.sp,
+                                fontWeight: FontWeight.w600,
+                                height: 0.sp,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            AppTextButton(
+                              text: 'try another email address',
+                              onTap: () {},
+                              fontSize: 17.sp,
+                              color: AppColors.swatch.shade500,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ],
                         ),
                         30.verticalSpace,
                       ],
