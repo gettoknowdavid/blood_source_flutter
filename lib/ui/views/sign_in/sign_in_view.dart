@@ -1,4 +1,3 @@
-import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/common/header_painter.dart';
 import 'package:blood_source/ui/shared/widgets/app_button.dart';
@@ -62,14 +61,14 @@ class SignInView extends StatelessWidget {
                             controller: model.emailController,
                             keyboardType: TextInputType.emailAddress,
                             hintText: 'Enter email',
-                            validator: (text) => model.emailValidator(text),
+                            onChanged: (value) => model.onChanged(value),
                           ),
                           18.verticalSpace,
                           AppTextField(
                             controller: model.passwordController,
                             hintText: 'Password',
                             isPassword: true,
-                            validator: (text) => model.passwordValidator(text),
+                            onChanged: (value) => model.onChanged(value),
                           ),
                           AppTextButton(
                             text: 'Password Recovery',
@@ -79,8 +78,27 @@ class SignInView extends StatelessWidget {
                             alignment: Alignment.centerRight,
                           ),
                           40.verticalSpace,
+                          model.signInError == null
+                              ? const SizedBox()
+                              : Column(
+                                  children: [
+                                    Text(
+                                      model.signInError!,
+                                      style: TextStyle(
+                                        fontSize: 19.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Theme.of(context).errorColor,
+                                      ),
+                                    ),
+                                    20.verticalSpace,
+                                  ],
+                                ),
                           AppButton(
-                              onTap: () => model.signIn(), text: 'Sign In'),
+                            onTap: model.isFormValidated()
+                                ? () async => await model.signIn()
+                                : null,
+                            text: 'Sign In',
+                          ),
                           30.verticalSpace,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
