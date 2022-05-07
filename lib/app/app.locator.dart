@@ -14,7 +14,9 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../ui/views/home/home_view_model.dart';
 import '../ui/views/sign_in/sign_in_view_model.dart';
+import '../ui/views/sign_up/sign_up_view_model.dart';
 import '../ui/views/splash/splash_view_model.dart';
+import '../ui/views/verify_email/verify_email_view_model.dart';
 
 final locator = StackedLocator.instance;
 
@@ -28,5 +30,7 @@ void setupLocator({String? environment, EnvironmentFilter? environmentFilter}) {
   locator.registerLazySingleton(() => FirebaseAuthenticationService());
   locator.registerLazySingleton(() => SplashViewModel());
   locator.registerLazySingleton(() => SignInViewModel());
+  locator.registerLazySingleton(() => SignUpViewModel());
   locator.registerLazySingleton(() => HomeViewModel());
+  locator.registerLazySingleton(() => VerifyEmailViewModel());
 }
