@@ -1,10 +1,7 @@
 import 'package:stacked/stacked.dart';
 
-class VerifyEmailViewModel extends StreamViewModel with ReactiveServiceMixin {
+class VerifyEmailViewModel extends BaseViewModel with ReactiveServiceMixin {
   Future<void> init() async {}
-
-  @override
-  Stream get stream => throw UnimplementedError();
 
   bool isVerified = false;
 
