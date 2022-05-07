@@ -77,7 +77,7 @@ class SignInView extends StatelessWidget {
                             color: Colors.black54,
                             alignment: Alignment.centerRight,
                           ),
-                          40.verticalSpace,
+                          10.verticalSpace,
                           model.signInError == null
                               ? const SizedBox()
                               : Column(
@@ -85,12 +85,13 @@ class SignInView extends StatelessWidget {
                                     Text(
                                       model.signInError!,
                                       style: TextStyle(
-                                        fontSize: 19.sp,
+                                        fontSize: 14.5.sp,
+                                        fontStyle: FontStyle.italic,
                                         fontWeight: FontWeight.w600,
                                         color: Theme.of(context).errorColor,
                                       ),
                                     ),
-                                    20.verticalSpace,
+                                    30.verticalSpace,
                                   ],
                                 ),
                           AppButton(
