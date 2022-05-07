@@ -2,6 +2,7 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:blood_source/common/image_resources.dart';
 import 'package:blood_source/ui/views/home/home_view.dart';
 import 'package:blood_source/ui/views/sign_in/sign_in_view.dart';
+import 'package:blood_source/ui/views/verify_email/verify_email_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -46,7 +47,7 @@ class SplashView extends StatelessWidget {
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return const HomeView();
+                return const VerifyEmailView();
               } else {
                 return const SignInView();
               }
