@@ -3,12 +3,12 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 
 class HomeViewModel extends BaseViewModel {
-  FirebaseAuthenticationService? authService =
+  FirebaseAuthenticationService authService =
       locator<FirebaseAuthenticationService>();
 
   Future<void> init() async {}
 
   Future signOut() async {
-    await authService!.logout();
+    await authService.logout();
   }
 }
