@@ -51,7 +51,7 @@ class SignInViewModel extends BaseViewModel with ReactiveServiceMixin {
       );
 
       if (result.user != null) {
-        navigationService.navigateTo(Routes.homeView);
+        navigationService.replaceWith(Routes.homeView);
         notifyListeners();
       }
 
@@ -70,10 +70,6 @@ class SignInViewModel extends BaseViewModel with ReactiveServiceMixin {
         }
         notifyListeners();
       }
-    }
-
-    if (authService.hasUser) {
-      navigationService.navigateTo(Routes.homeView);
     }
   }
 
