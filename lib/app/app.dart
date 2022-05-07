@@ -1,3 +1,5 @@
+import 'package:blood_source/ui/views/forgot_password/forgot_password_view.dart';
+import 'package:blood_source/ui/views/forgot_password/forgot_password_view_model.dart';
 import 'package:blood_source/ui/views/home/home_view.dart';
 import 'package:blood_source/ui/views/home/home_view_model.dart';
 import 'package:blood_source/ui/views/sign_in/sign_in_view.dart';
@@ -16,6 +18,7 @@ import 'package:stacked_services/stacked_services.dart';
   routes: [
     MaterialRoute(page: SplashView, initial: true),
     MaterialRoute(page: SignInView),
+    MaterialRoute(page: ForgotPasswordView),
     MaterialRoute(page: SignUpView),
     MaterialRoute(page: HomeView),
     MaterialRoute(page: VerifyEmailView),
@@ -25,6 +28,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: FirebaseAuthenticationService),
     LazySingleton(classType: SplashViewModel),
     LazySingleton(classType: SignInViewModel),
+    LazySingleton(classType: ForgotPasswordViewModel),
     LazySingleton(classType: SignUpViewModel),
     LazySingleton(classType: HomeViewModel),
     LazySingleton(classType: VerifyEmailViewModel),
