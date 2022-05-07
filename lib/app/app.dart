@@ -1,3 +1,5 @@
+import 'package:blood_source/ui/views/check_email/check_email_view.dart';
+import 'package:blood_source/ui/views/check_email/check_email_view_model.dart';
 import 'package:blood_source/ui/views/forgot_password/forgot_password_view.dart';
 import 'package:blood_source/ui/views/forgot_password/forgot_password_view_model.dart';
 import 'package:blood_source/ui/views/home/home_view.dart';
@@ -19,6 +21,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: SplashView, initial: true),
     MaterialRoute(page: SignInView),
     MaterialRoute(page: ForgotPasswordView),
+    MaterialRoute(page: CheckEmailView),
     MaterialRoute(page: SignUpView),
     MaterialRoute(page: HomeView),
     MaterialRoute(page: VerifyEmailView),
@@ -29,6 +32,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: SplashViewModel),
     LazySingleton(classType: SignInViewModel),
     LazySingleton(classType: ForgotPasswordViewModel),
+    LazySingleton(classType: CheckEmailViewModel),
     LazySingleton(classType: SignUpViewModel),
     LazySingleton(classType: HomeViewModel),
     LazySingleton(classType: VerifyEmailViewModel),

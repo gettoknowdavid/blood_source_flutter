@@ -12,6 +12,7 @@ import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../ui/views/check_email/check_email_view_model.dart';
 import '../ui/views/forgot_password/forgot_password_view_model.dart';
 import '../ui/views/home/home_view_model.dart';
 import '../ui/views/sign_in/sign_in_view_model.dart';
@@ -32,6 +33,7 @@ void setupLocator({String? environment, EnvironmentFilter? environmentFilter}) {
   locator.registerLazySingleton(() => SplashViewModel());
   locator.registerLazySingleton(() => SignInViewModel());
   locator.registerLazySingleton(() => ForgotPasswordViewModel());
+  locator.registerLazySingleton(() => CheckEmailViewModel());
   locator.registerLazySingleton(() => SignUpViewModel());
   locator.registerLazySingleton(() => HomeViewModel());
   locator.registerLazySingleton(() => VerifyEmailViewModel());

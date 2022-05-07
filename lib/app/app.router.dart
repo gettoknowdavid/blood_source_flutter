@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 
+import '../ui/views/check_email/check_email_view.dart';
 import '../ui/views/forgot_password/forgot_password_view.dart';
 import '../ui/views/home/home_view.dart';
 import '../ui/views/sign_in/sign_in_view.dart';
@@ -21,6 +22,7 @@ class Routes {
   static const String splashView = '/';
   static const String signInView = '/sign-in-view';
   static const String forgotPasswordView = '/forgot-password-view';
+  static const String checkEmailView = '/check-email-view';
   static const String signUpView = '/sign-up-view';
   static const String homeView = '/home-view';
   static const String verifyEmailView = '/verify-email-view';
@@ -28,6 +30,7 @@ class Routes {
     splashView,
     signInView,
     forgotPasswordView,
+    checkEmailView,
     signUpView,
     homeView,
     verifyEmailView,
@@ -41,6 +44,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.splashView, page: SplashView),
     RouteDef(Routes.signInView, page: SignInView),
     RouteDef(Routes.forgotPasswordView, page: ForgotPasswordView),
+    RouteDef(Routes.checkEmailView, page: CheckEmailView),
     RouteDef(Routes.signUpView, page: SignUpView),
     RouteDef(Routes.homeView, page: HomeView),
     RouteDef(Routes.verifyEmailView, page: VerifyEmailView),
@@ -63,6 +67,12 @@ class StackedRouter extends RouterBase {
     ForgotPasswordView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const ForgotPasswordView(),
+        settings: data,
+      );
+    },
+    CheckEmailView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const CheckEmailView(),
         settings: data,
       );
     },
