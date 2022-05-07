@@ -36,6 +36,12 @@ class SignInViewModel extends BaseViewModel with ReactiveServiceMixin {
 
   void goToSignUp() {
     navigationService.navigateTo(Routes.signUpView);
+    notifyListeners();
+  }
+
+  void goToForgotPassword() {
+    navigationService.navigateTo(Routes.forgotPasswordView);
+    notifyListeners();
   }
 
   void onChanged(String? value) {

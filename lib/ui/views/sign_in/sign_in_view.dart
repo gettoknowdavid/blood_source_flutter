@@ -76,7 +76,7 @@ class SignInView extends StatelessWidget {
                           ),
                           AppTextButton(
                             text: 'Password Recovery',
-                            onTap: () {},
+                            onTap: () => model.goToForgotPassword(),
                             fontSize: 16.sp,
                             color: Colors.black54,
                             alignment: Alignment.centerRight,
