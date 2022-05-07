@@ -28,7 +28,7 @@ class _AppTextFieldState extends State<AppTextField> {
     return TextField(
       keyboardType: widget.keyboardType,
       controller: widget.controller,
-      obscureText: _isObscure,
+      obscureText: widget.isPassword ? !_isObscure : _isObscure,
       style: TextStyle(fontSize: 18.sp),
       decoration: InputDecoration(
         hintText: widget.hintText,
