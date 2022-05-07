@@ -11,6 +11,7 @@ class AppTextField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.validator,
     this.onChanged,
+    this.textInputAction,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -19,6 +20,7 @@ class AppTextField extends StatefulWidget {
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
+  final TextInputAction? textInputAction;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -30,6 +32,7 @@ class _AppTextFieldState extends State<AppTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textInputAction: widget.textInputAction,
       onChanged: widget.onChanged,
       validator: widget.validator,
       keyboardType: widget.keyboardType,
