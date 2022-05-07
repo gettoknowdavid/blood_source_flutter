@@ -10,36 +10,39 @@ class SignInViewModel extends BaseViewModel with ReactiveServiceMixin {
   FirebaseAuthenticationService authService =
       locator<FirebaseAuthenticationService>();
 
-  final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
-  GlobalKey<FormState> get loginFormKey => _loginFormKey;
-
-  bool _isObscurePassword = false;
-  bool get isObscurePassword => _isObscurePassword;
+  final GlobalKey<FormState> _signInFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> get signInFormKey => _signInFormKey;
 
   Future<void> init() async {}
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  // @override
-  // void initialise() {
-  //   notifyListeners();
-  // }
-
-  void toggleObscurePassword() {
-    _isObscurePassword = !_isObscurePassword;
-    notifyListeners();
-  }
-
   void goToSignUp() {
     navigationService.navigateTo(Routes.signUpView);
   }
 
+  emailValidator(text) {
+    if (text == null || text.isEmpty) {
+      return 'Email is required';
+    }
+    return null;
+  }
+
+  passwordValidator(text) {
+    if (text == null || text.isEmpty) {
+      return 'Password is required';
+    }
+    return null;
+  }
+
   Future signIn() async {
-    await authService.loginWithEmail(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
+    if (_signInFormKey.currentState!.validate()) {
+      await authService.loginWithEmail(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+    }
 
     if (authService.hasUser) {
       navigationService.navigateTo(Routes.homeView);

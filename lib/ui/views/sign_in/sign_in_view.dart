@@ -27,78 +27,84 @@ class SignInView extends StatelessWidget {
               color: AppColors.primary.withOpacity(0.03),
               child: CustomPaint(
                 painter: HeaderPainter(),
-                child: Center(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: 24.r),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          'Hello Again!',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 32.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                        ),
-                        4.verticalSpace,
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 40.r),
-                          child: Text(
-                            "Welcome back, you've been missed!",
+                child: Form(
+                  key: model.signInFormKey,
+                  child: Center(
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.symmetric(horizontal: 24.r),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            'Hello Again!',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 18.sp,
-                              color: Colors.white70,
+                              fontSize: 32.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
                             ),
                           ),
-                        ),
-                        40.verticalSpace,
-                        AppTextField(
-                          controller: model.emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          hintText: 'Enter email',
-                        ),
-                        18.verticalSpace,
-                        AppTextField(
-                          controller: model.passwordController,
-                          hintText: 'Password',
-                          isPassword: true,
-                        ),
-                        AppTextButton(
-                          text: 'Password Recovery',
-                          onTap: () {},
-                          fontSize: 16.sp,
-                          color: Colors.black54,
-                          alignment: Alignment.centerRight,
-                        ),
-                        40.verticalSpace,
-                        AppButton(onTap: () => model.signIn(), text: 'Sign In'),
-                        30.verticalSpace,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Not a member?',
+                          4.verticalSpace,
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 40.r),
+                            child: Text(
+                              "Welcome back, you've been missed!",
+                              textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 17.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black54,
+                                fontSize: 18.sp,
+                                color: Colors.white70,
                               ),
                             ),
-                            6.horizontalSpace,
-                            AppTextButton(
-                              text: 'Register now',
-                              onTap: () => model.goToSignUp(),
-                              fontSize: 17.sp,
-                              color: AppColors.swatch.shade500,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ],
-                        ),
-                      ],
+                          ),
+                          40.verticalSpace,
+                          AppTextField(
+                            controller: model.emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            hintText: 'Enter email',
+                            validator: (text) => model.emailValidator(text),
+                          ),
+                          18.verticalSpace,
+                          AppTextField(
+                            controller: model.passwordController,
+                            hintText: 'Password',
+                            isPassword: true,
+                            validator: (text) => model.passwordValidator(text),
+                          ),
+                          AppTextButton(
+                            text: 'Password Recovery',
+                            onTap: () {},
+                            fontSize: 16.sp,
+                            color: Colors.black54,
+                            alignment: Alignment.centerRight,
+                          ),
+                          40.verticalSpace,
+                          AppButton(
+                              onTap: () => model.signIn(), text: 'Sign In'),
+                          30.verticalSpace,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Not a member?',
+                                style: TextStyle(
+                                  fontSize: 17.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                              6.horizontalSpace,
+                              AppTextButton(
+                                text: 'Register now',
+                                onTap: () => model.goToSignUp(),
+                                fontSize: 17.sp,
+                                color: AppColors.swatch.shade500,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
