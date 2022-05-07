@@ -16,14 +16,14 @@ class SignInView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<SignInViewModel>.reactive(
       viewModelBuilder: () => SignInViewModel(),
-      onModelReady: (SignInViewModel model) async {
-        await model.init();
-      },
+      onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
         return Scaffold(
           body: SafeArea(
-            child: Container(
-              color: AppColors.primary.withOpacity(0.03),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.03),
+              ),
               child: CustomPaint(
                 painter: HeaderPainter(),
                 child: Form(
