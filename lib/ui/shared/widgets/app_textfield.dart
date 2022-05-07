@@ -36,6 +36,14 @@ class _AppTextFieldState extends State<AppTextField> {
       decoration: InputDecoration(
         hintText: widget.hintText,
         errorStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.swatch.shade900),
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.swatch.shade900),
+          borderRadius: BorderRadius.circular(12.r),
+        ),
         fillColor: Colors.white,
         filled: true,
         suffixIcon: !widget.isPassword
@@ -52,7 +60,7 @@ class _AppTextFieldState extends State<AppTextField> {
           borderRadius: BorderRadius.circular(12.r),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.primary),
+          borderSide: const BorderSide(color: AppColors.secondary),
           borderRadius: BorderRadius.circular(12.r),
         ),
       ),
