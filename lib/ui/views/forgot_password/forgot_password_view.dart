@@ -70,7 +70,9 @@ class ForgotPasswordView extends StatelessWidget {
                           ),
                           18.verticalSpace,
                           AppButton(
-                            onTap: model.isFormValidated() ? () {} : null,
+                            onTap: model.isFormValidated()
+                                ? () => model.submit()
+                                : null,
                             text: 'Submit',
                           ),
                           30.verticalSpace,
