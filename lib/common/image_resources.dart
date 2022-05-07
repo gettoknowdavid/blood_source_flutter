@@ -3,4 +3,5 @@ class ImageResources {
   static const String leftArrow = "assets/images/left-arrow.png";
   static const String verifyEmail = "assets/images/verify-email.png";
   static const String forgotPassword = "assets/images/forgot-email.png";
+  static const String checkEmail = "assets/images/check-email.png";
 }
