@@ -25,6 +25,10 @@ class ForgotPasswordViewModel extends BaseViewModel with ReactiveServiceMixin {
     }
   }
 
+  void onChanged(String? value) {
+    notifyListeners();
+  }
+
   Future submit() async {
     if (_forgotPasswordForm.currentState!.validate()) {
       final FirebaseAuthenticationResult result =
@@ -33,6 +37,7 @@ class ForgotPasswordViewModel extends BaseViewModel with ReactiveServiceMixin {
       );
       print(result);
     }
+    notifyListeners();
   }
 
   void initialise() {

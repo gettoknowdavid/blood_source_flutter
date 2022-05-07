@@ -33,8 +33,8 @@ class ForgotPasswordView extends StatelessWidget {
                       key: model.forgotPasswordForm,
                       child: Center(
                         child: SingleChildScrollView(
-                          keyboardDismissBehavior:
-                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          // keyboardDismissBehavior:
+                          //     ScrollViewKeyboardDismissBehavior.onDrag,
                           padding: EdgeInsets.symmetric(horizontal: 24.r),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -68,7 +68,7 @@ class ForgotPasswordView extends StatelessWidget {
                                 controller: model.emailController,
                                 keyboardType: TextInputType.emailAddress,
                                 hintText: 'Enter email',
-                                // onChanged: (value) => model.onChanged(value),
+                                onChanged: (value) => model.onChanged(value),
                                 textInputAction: TextInputAction.done,
                               ),
                               18.verticalSpace,
