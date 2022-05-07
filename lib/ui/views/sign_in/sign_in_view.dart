@@ -64,6 +64,7 @@ class SignInView extends StatelessWidget {
                             keyboardType: TextInputType.emailAddress,
                             hintText: 'Enter email',
                             onChanged: (value) => model.onChanged(value),
+                            textInputAction: TextInputAction.next,
                           ),
                           18.verticalSpace,
                           AppTextField(
@@ -71,6 +72,7 @@ class SignInView extends StatelessWidget {
                             hintText: 'Password',
                             isPassword: true,
                             onChanged: (value) => model.onChanged(value),
+                            textInputAction: TextInputAction.done,
                           ),
                           AppTextButton(
                             text: 'Password Recovery',
