@@ -30,6 +30,8 @@ class SignInView extends StatelessWidget {
                   key: model.signInFormKey,
                   child: Center(
                     child: SingleChildScrollView(
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
                       padding: EdgeInsets.symmetric(horizontal: 24.r),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
