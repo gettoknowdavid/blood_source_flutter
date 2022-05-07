@@ -16,7 +16,7 @@ class AppBackButton extends StatelessWidget {
       child: GestureDetector(
         onTap: () => navService.back(),
         child: const ImageIcon(
-          AssetImage(ImageResources.letArrow),
+          AssetImage(ImageResources.leftArrow),
           color: Colors.white,
         ),
       ),

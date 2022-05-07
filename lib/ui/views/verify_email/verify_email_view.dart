@@ -1,5 +1,7 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/common/header_painter.dart';
+import 'package:blood_source/common/image_resources.dart';
+import 'package:blood_source/ui/shared/widgets/app_text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,11 +18,7 @@ class VerifyEmailView extends StatelessWidget {
       onModelReady: (VerifyEmailViewModel model) async {
         await model.init();
       },
-      builder: (
-        BuildContext context,
-        VerifyEmailViewModel model,
-        Widget? child,
-      ) {
+      builder: (context, model, Widget? child) {
         return Scaffold(
           body: SafeArea(
             child: Container(
@@ -35,7 +33,7 @@ class VerifyEmailView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          'Hello Again!',
+                          'Email Verification',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 32.sp,
@@ -47,7 +45,7 @@ class VerifyEmailView extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 40.r),
                           child: Text(
-                            "Welcome back, you've been missed!",
+                            "A verification email has been sent to your email, please verify your account.",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 18.sp,
@@ -55,6 +53,29 @@ class VerifyEmailView extends StatelessWidget {
                             ),
                           ),
                         ),
+                        40.verticalSpace,
+                        Image.asset(ImageResources.verifyEmail),
+                        30.verticalSpace,
+                        Text(
+                          model.isVerified ? 'Verified' : 'Not Verified',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 19.sp,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.italic,
+                            color: model.isVerified
+                                ? Colors.green
+                                : Colors.black54,
+                          ),
+                        ),
+                        6.verticalSpace,
+                        AppTextButton(
+                          onTap: () {},
+                          text: 'Resend Email',
+                          fontSize: 19.sp,
+                          color: AppColors.swatch.shade900,
+                          fontWeight: FontWeight.w600,
+                        )
                       ],
                     ),
                   ),

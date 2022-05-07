@@ -1,3 +1,4 @@
+import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/common/header_painter.dart';
 import 'package:blood_source/ui/shared/widgets/app_button.dart';
@@ -90,7 +91,9 @@ class SignInView extends StatelessWidget {
                             6.horizontalSpace,
                             AppTextButton(
                               text: 'Register now',
-                              onTap: () => model.goToSignUp(),
+                              onTap: () => model.navigationService!.navigateTo(
+                                Routes.verifyEmailView,
+                              ),
                               fontSize: 17.sp,
                               color: AppColors.swatch.shade500,
                               fontWeight: FontWeight.w600,
