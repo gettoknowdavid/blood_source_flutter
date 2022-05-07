@@ -40,7 +40,6 @@ dependencies:
   firebase_auth: ^3.3.17
   animated_splash_screen: ^1.2.0
   page_transition: ^2.0.5
-  get: ^4.6.1
   flutter_screenutil: ^5.5.2
   stacked: ^2.3.6
   stacked_services: ^0.8.22
