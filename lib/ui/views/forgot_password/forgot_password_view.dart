@@ -27,6 +27,7 @@ class ForgotPasswordView extends StatelessWidget {
               child: CustomPaint(
                 painter: HeaderPainter(),
                 child: Form(
+                  key: model.forgotPasswordForm,
                   child: Center(
                     child: SingleChildScrollView(
                       keyboardDismissBehavior:
@@ -68,7 +69,10 @@ class ForgotPasswordView extends StatelessWidget {
                             textInputAction: TextInputAction.done,
                           ),
                           18.verticalSpace,
-                          AppButton(onTap: () {}, text: 'Submit'),
+                          AppButton(
+                            onTap: model.isFormValidated() ? () {} : null,
+                            text: 'Submit',
+                          ),
                           30.verticalSpace,
                         ],
                       ),

@@ -11,8 +11,8 @@ class ForgotPasswordViewModel extends BaseViewModel with ReactiveServiceMixin {
   FirebaseAuthenticationService authService =
       locator<FirebaseAuthenticationService>();
 
-  final GlobalKey<FormState> _signInFormKey = GlobalKey<FormState>();
-  GlobalKey<FormState> get signInFormKey => _signInFormKey;
+  final GlobalKey<FormState> _forgotPasswordForm = GlobalKey<FormState>();
+  GlobalKey<FormState> get forgotPasswordForm => _forgotPasswordForm;
 
   final TextEditingController emailController = TextEditingController();
 
