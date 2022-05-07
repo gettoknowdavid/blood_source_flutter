@@ -58,11 +58,11 @@ class SignInViewModel extends BaseViewModel with ReactiveServiceMixin {
       if (result.hasError) {
         switch (result.exceptionCode) {
           case 'user-not-found':
-            signInError = 'No user found for this email.';
+            signInError = 'Oops! We have no record of this user';
             notifyListeners();
             break;
           case 'wrong-password':
-            signInError = 'Wrong email or password.';
+            signInError = "Something's wrong with your email or password";
             notifyListeners();
             break;
           default:
