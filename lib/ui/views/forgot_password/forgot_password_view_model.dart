@@ -25,6 +25,16 @@ class ForgotPasswordViewModel extends BaseViewModel with ReactiveServiceMixin {
     }
   }
 
+  Future submit() async {
+    if (_forgotPasswordForm.currentState!.validate()) {
+      final FirebaseAuthenticationResult result =
+          await authService.sendResetPasswordLink(
+        emailController.text.trim(),
+      );
+      print(result);
+    }
+  }
+
   void initialise() {
     notifyListeners();
   }
