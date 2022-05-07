@@ -1,4 +1,5 @@
 import 'package:blood_source/app/app.locator.dart';
+import 'package:blood_source/app/app.router.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
@@ -36,7 +37,8 @@ class ForgotPasswordViewModel extends BaseViewModel with ReactiveServiceMixin {
       );
 
       if (result) {
-        // navigationService.replaceWith(routeName)
+        navigationService.replaceWith(Routes.checkEmailView);
+        notifyListeners();
       }
     }
     notifyListeners();
