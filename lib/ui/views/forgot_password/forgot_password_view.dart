@@ -53,15 +53,15 @@ class ForgotPasswordView extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 40.r),
                                 child: Text(
-                                  "Don't worry! It happens.\n Please enter the email address associated with your account.",
+                                  "Don't worry! It happens.\n We just need the address linked with your account.",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    fontSize: 16.sp,
+                                    fontSize: 18.sp,
                                     color: Colors.white70,
                                   ),
                                 ),
                               ),
-                              40.verticalSpace,
+                              30.verticalSpace,
                               Image.asset(ImageResources.forgotPassword),
                               40.verticalSpace,
                               AppTextField(
