@@ -88,6 +88,7 @@ class SignInView extends StatelessWidget {
                                   children: [
                                     Text(
                                       model.signInError!,
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontSize: 14.5.sp,
                                         fontStyle: FontStyle.italic,
