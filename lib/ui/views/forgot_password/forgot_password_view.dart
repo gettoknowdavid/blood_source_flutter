@@ -72,6 +72,23 @@ class ForgotPasswordView extends StatelessWidget {
                                 textInputAction: TextInputAction.done,
                               ),
                               18.verticalSpace,
+                              model.signInError == null
+                                  ? const SizedBox()
+                                  : Column(
+                                      children: [
+                                        Text(
+                                          model.signInError!,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 14.5.sp,
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.w600,
+                                            color: Theme.of(context).errorColor,
+                                          ),
+                                        ),
+                                        20.verticalSpace,
+                                      ],
+                                    ),
                               AppButton(
                                 onTap: model.isFormValidated()
                                     ? () => model.submit()
