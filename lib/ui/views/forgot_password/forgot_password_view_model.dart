@@ -41,7 +41,9 @@ class ForgotPasswordViewModel extends BaseViewModel with ReactiveServiceMixin {
           email: emailController.text.trim(),
         );
       } on FirebaseAuthException catch (e) {
-        signInError = e.message;
+        if (e.code == 'user-not-found') {
+          signInError = 'Oops! We have no record of this user';
+        }
         notifyListeners();
       }
     }
