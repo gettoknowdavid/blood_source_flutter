@@ -58,7 +58,10 @@ class CheckEmailView extends StatelessWidget {
                         30.verticalSpace,
                         Image.asset(ImageResources.checkEmail),
                         40.verticalSpace,
-                        AppButton(onTap: () {}, text: 'Open email app'),
+                        AppButton(
+                          onTap: () => model.openMailApp(),
+                          text: 'Open email app',
+                        ),
                         const Spacer(),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
