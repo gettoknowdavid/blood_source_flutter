@@ -1,3 +1,4 @@
+import 'package:blood_source/services/mail_app_service.dart';
 import 'package:blood_source/ui/views/check_email/check_email_view.dart';
 import 'package:blood_source/ui/views/check_email/check_email_view_model.dart';
 import 'package:blood_source/ui/views/forgot_password/forgot_password_view.dart';
@@ -28,6 +29,8 @@ import 'package:stacked_services/stacked_services.dart';
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
+    LazySingleton(classType: DialogService),
+    LazySingleton(classType: MailAppService),
     LazySingleton(classType: FirebaseAuthenticationService),
     LazySingleton(classType: SplashViewModel),
     LazySingleton(classType: SignInViewModel),
