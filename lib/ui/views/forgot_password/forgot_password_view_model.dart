@@ -1,5 +1,6 @@
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
@@ -26,18 +27,21 @@ class ForgotPasswordViewModel extends BaseViewModel with ReactiveServiceMixin {
     }
   }
 
+  String? signInError;
+
   void onChanged(String? value) {
+    signInError = null;
     notifyListeners();
   }
 
   Future submit() async {
     if (_forgotPasswordForm.currentState!.validate()) {
-      final result = await authService.sendResetPasswordLink(
-        emailController.text.trim(),
-      );
-
-      if (result) {
-        navigationService.replaceWith(Routes.checkEmailView);
+      try {
+        await FirebaseAuth.instance.sendPasswordResetEmail(
+          email: emailController.text.trim(),
+        );
+      } on FirebaseAuthException catch (e) {
+        signInError = e.message;
         notifyListeners();
       }
     }
