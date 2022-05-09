@@ -22,6 +22,8 @@ class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
   bool _isPasswordObscure = false;
   bool get isPasswordObscure => _isPasswordObscure;
 
+  String? signUpError;
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -40,6 +42,11 @@ class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
     } else {
       return true;
     }
+  }
+
+  void onChanged(String? value) {
+    signUpError = null;
+    notifyListeners();
   }
 
   Future signUp() async {
