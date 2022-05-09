@@ -30,7 +30,7 @@ class PasswordRulesWidget extends ViewModelWidget<SignUpViewModel> {
                   size: 14.sp,
                   color: ruleColor,
                 ),
-                10.verticalSpace,
+                4.horizontalSpace,
                 Text(
                   e["name"].toString(),
                   style: TextStyle(fontSize: 14.sp, color: ruleColor),
