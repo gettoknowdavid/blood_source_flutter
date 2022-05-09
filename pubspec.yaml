@@ -46,6 +46,7 @@ dependencies:
   stacked_firebase_auth: ^0.2.10+2
   open_mail_app: ^0.4.5
   url_launcher: ^6.1.0
+  sizer: ^2.0.15
 
 dev_dependencies:
   flutter_test:

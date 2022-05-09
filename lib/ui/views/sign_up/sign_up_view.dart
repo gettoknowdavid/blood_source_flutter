@@ -1,8 +1,7 @@
-import 'package:blood_source/common/app_colors.dart';
-import 'package:blood_source/common/header_painter.dart';
-import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
+import 'package:blood_source/ui/layouts/auth_layout.dart';
 import 'package:blood_source/ui/shared/widgets/app_button.dart';
 import 'package:blood_source/ui/shared/widgets/app_textfield.dart';
+import 'package:blood_source/ui/shared/widgets/auth_layout_header.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,71 +19,39 @@ class SignUpView extends StatelessWidget {
         await model.init();
       },
       builder: (context, model, Widget? child) {
-        return Scaffold(
-          body: SafeArea(
-            child: Stack(
+        return AuthLayout(
+          showBackButton: true,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Container(
-                  color: AppColors.primary.withOpacity(0.03),
-                  child: CustomPaint(
-                    painter: HeaderPainter(),
-                    child: Center(
-                      child: SingleChildScrollView(
-                        padding: EdgeInsets.symmetric(horizontal: 24.r),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              'Sign Up',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 32.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                            ),
-                            4.verticalSpace,
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 40.r),
-                              child: Text(
-                                "Welcome to BloodSource",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 18.sp,
-                                  color: Colors.white70,
-                                ),
-                              ),
-                            ),
-                            40.verticalSpace,
-                            AppTextField(
-                              controller: model.nameController,
-                              hintText: 'Name',
-                            ),
-                            18.verticalSpace,
-                            AppTextField(
-                              controller: model.emailController,
-                              hintText: 'Email',
-                              keyboardType: TextInputType.emailAddress,
-                            ),
-                            18.verticalSpace,
-                            AppTextField(
-                              controller: model.passwordController,
-                              hintText: 'Password',
-                              isPassword: true,
-                            ),
-                            40.verticalSpace,
-                            AppButton(
-                              onTap: () => model.signUp(),
-                              text: 'Sign Up',
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                const AuthLayoutHeader(
+                  title: 'Sign Up',
+                  subtitle: "We welcome you to Blood Source",
                 ),
-                const AppBackButton(),
+                40.verticalSpace,
+                AppTextField(
+                  controller: model.nameController,
+                  hintText: 'Name',
+                ),
+                20.verticalSpace,
+                AppTextField(
+                  controller: model.emailController,
+                  hintText: 'Email',
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                20.verticalSpace,
+                AppTextField(
+                  controller: model.passwordController,
+                  hintText: 'Password',
+                  isPassword: true,
+                ),
+                40.verticalSpace,
+                AppButton(
+                  onTap: () => model.signUp(),
+                  text: 'Sign Up',
+                ),
               ],
             ),
           ),

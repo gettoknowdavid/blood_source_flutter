@@ -1,9 +1,8 @@
-import 'package:blood_source/common/app_colors.dart';
-import 'package:blood_source/common/header_painter.dart';
 import 'package:blood_source/common/image_resources.dart';
-import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
+import 'package:blood_source/ui/layouts/auth_layout.dart';
 import 'package:blood_source/ui/shared/widgets/app_button.dart';
 import 'package:blood_source/ui/shared/widgets/app_textfield.dart';
+import 'package:blood_source/ui/shared/widgets/auth_layout_header.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,92 +18,56 @@ class ForgotPasswordView extends StatelessWidget {
       viewModelBuilder: () => ForgotPasswordViewModel(),
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
-        return Scaffold(
-          body: SafeArea(
-            child: Stack(
-              children: [
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.03),
+        return AuthLayout(
+          showBackButton: true,
+          child: Form(
+            key: model.forgotPasswordForm,
+            child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const AuthLayoutHeader(
+                    title: 'Forgot Password?',
+                    subtitle:
+                        "Don't worry! It happens. \nWe just need the address linked with your account.",
                   ),
-                  child: CustomPaint(
-                    painter: HeaderPainter(),
-                    child: Form(
-                      key: model.forgotPasswordForm,
-                      child: Center(
-                        child: SingleChildScrollView(
-                          // keyboardDismissBehavior:
-                          //     ScrollViewKeyboardDismissBehavior.onDrag,
-                          padding: EdgeInsets.symmetric(horizontal: 24.r),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Text(
-                                'Forgot Password?',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 32.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                ),
+                  20.verticalSpace,
+                  Image.asset(ImageResources.forgotPassword),
+                  20.verticalSpace,
+                  AppTextField(
+                    controller: model.emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    hintText: 'Enter email',
+                    onChanged: (value) => model.onChanged(value),
+                    textInputAction: TextInputAction.done,
+                  ),
+                  20.verticalSpace,
+                  model.signInError == null
+                      ? const SizedBox()
+                      : Column(
+                          children: [
+                            Text(
+                              model.signInError!,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 9.sp,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(context).errorColor,
                               ),
-                              4.verticalSpace,
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 40.r),
-                                child: Text(
-                                  "Don't worry! It happens.\n We just need the address linked with your account.",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 18.sp,
-                                    color: Colors.white70,
-                                  ),
-                                ),
-                              ),
-                              30.verticalSpace,
-                              Image.asset(ImageResources.forgotPassword),
-                              40.verticalSpace,
-                              AppTextField(
-                                controller: model.emailController,
-                                keyboardType: TextInputType.emailAddress,
-                                hintText: 'Enter email',
-                                onChanged: (value) => model.onChanged(value),
-                                textInputAction: TextInputAction.done,
-                              ),
-                              18.verticalSpace,
-                              model.signInError == null
-                                  ? const SizedBox()
-                                  : Column(
-                                      children: [
-                                        Text(
-                                          model.signInError!,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 14.5.sp,
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.w600,
-                                            color: Theme.of(context).errorColor,
-                                          ),
-                                        ),
-                                        20.verticalSpace,
-                                      ],
-                                    ),
-                              AppButton(
-                                onTap: model.isFormValidated()
-                                    ? () => model.submit()
-                                    : null,
-                                text: 'Submit',
-                              ),
-                              30.verticalSpace,
-                            ],
-                          ),
+                            ),
+                            20.verticalSpace,
+                          ],
                         ),
-                      ),
-                    ),
+                  AppButton(
+                    onTap:
+                        model.isFormValidated() ? () => model.submit() : null,
+                    text: 'Submit',
                   ),
-                ),
-                const AppBackButton(),
-              ],
+                ],
+              ),
             ),
           ),
         );

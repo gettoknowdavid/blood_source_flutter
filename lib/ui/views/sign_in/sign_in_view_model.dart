@@ -68,7 +68,7 @@ class SignInViewModel extends BaseViewModel with ReactiveServiceMixin {
             notifyListeners();
             break;
           case 'wrong-password':
-            signInError = "Something's wrong with your email or password";
+            signInError = "Urm, wrong email or password";
             notifyListeners();
             break;
           default:

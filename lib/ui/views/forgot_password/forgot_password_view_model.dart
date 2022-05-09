@@ -40,6 +40,7 @@ class ForgotPasswordViewModel extends BaseViewModel with ReactiveServiceMixin {
         await FirebaseAuth.instance.sendPasswordResetEmail(
           email: emailController.text.trim(),
         );
+        navigationService.navigateTo(Routes.checkEmailView);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           signInError = 'Oops! We have no record of this user';

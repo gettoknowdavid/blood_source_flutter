@@ -1,6 +1,8 @@
+import 'package:blood_source/common/app_colors.dart';
+import 'package:blood_source/ui/shared/widgets/app_button.dart';
+import 'package:blood_source/ui/shared/widgets/app_text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import './home_view_model.dart';
 
@@ -21,14 +23,9 @@ class HomeView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'BloodSource',
-                  style: Theme.of(context).textTheme.displayMedium,
-                ),
-                30.verticalSpace,
-                TextButton(
-                  onPressed: () => model.signOut(),
-                  child: const Text('Sign Out'),
+                AppButton(
+                  onTap: () => model.signOut(),
+                  text: 'Sign Out',
                 ),
               ],
             ),
