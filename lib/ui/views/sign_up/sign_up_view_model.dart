@@ -6,6 +6,10 @@ import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
+  void initialise() {
+    notifyListeners();
+  }
+
   Future<void> init() async {}
 
   NavigationService navigationService = locator<NavigationService>();
