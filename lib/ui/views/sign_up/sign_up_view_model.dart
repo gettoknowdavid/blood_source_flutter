@@ -31,6 +31,17 @@ class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
     notifyListeners();
   }
 
+  bool isFormValidated() {
+    if (nameController.text.isEmpty ||
+        emailController.text.isEmpty ||
+        passwordController.text.isEmpty ||
+        !RegExp(r'\S+@\S+\.\S+').hasMatch(emailController.text)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   Future signUp() async {
     await authService.createAccountWithEmail(
       email: emailController.text.trim(),
