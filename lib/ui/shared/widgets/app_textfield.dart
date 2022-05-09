@@ -38,10 +38,10 @@ class _AppTextFieldState extends State<AppTextField> {
       keyboardType: widget.keyboardType,
       controller: widget.controller,
       obscureText: widget.isPassword ? !_isObscure : _isObscure,
-      style: TextStyle(fontSize: 18.sp),
+      style: TextStyle(fontSize: 14.sp),
       decoration: InputDecoration(
         hintText: widget.hintText,
-        errorStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+        errorStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
         errorBorder: OutlineInputBorder(
           borderSide: BorderSide(color: AppColors.swatch.shade900),
           borderRadius: BorderRadius.circular(12.r),
@@ -55,12 +55,13 @@ class _AppTextFieldState extends State<AppTextField> {
         suffixIcon: !widget.isPassword
             ? const SizedBox()
             : IconButton(
-                icon:
-                    Icon(_isObscure ? Icons.visibility : Icons.visibility_off),
-                padding: EdgeInsets.all(26.r),
+                icon: Icon(
+                  _isObscure ? Icons.visibility_off : Icons.visibility,
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
                 onPressed: () => setState(() => _isObscure = !_isObscure),
               ),
-        contentPadding: EdgeInsets.symmetric(vertical: 24.r, horizontal: 26.r),
+        contentPadding: EdgeInsets.all(20.r),
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.circular(12.r),
