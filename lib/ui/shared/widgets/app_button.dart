@@ -24,7 +24,7 @@ class AppButton extends StatelessWidget {
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
         primary: buttonColor ?? AppColors.swatch.shade700,
-        padding: EdgeInsets.all(23.r),
+        padding: EdgeInsets.all(20.r),
         shadowColor: shadowColor ?? AppColors.swatch.shade400,
         elevation: 20,
         shape: RoundedRectangleBorder(
@@ -35,7 +35,7 @@ class AppButton extends StatelessWidget {
         text,
         style: TextStyle(
           color: Colors.white,
-          fontSize: 18.5.sp,
+          fontSize: 14.sp,
           fontWeight: FontWeight.w600,
         ),
       ),
