@@ -31,9 +31,10 @@ class AppTextButton extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          fontSize: fontSize ?? 16.sp,
+          fontSize: fontSize ?? 14.sp,
           color: color,
           fontWeight: fontWeight,
+          height: 1.sp,
         ),
       ),
     );
