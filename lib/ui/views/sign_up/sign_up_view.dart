@@ -49,7 +49,9 @@ class SignUpView extends StatelessWidget {
                 ),
                 40.verticalSpace,
                 AppButton(
-                  onTap: () => model.signUp(),
+                  onTap: model.isFormValidated()
+                      ? () async => await model.signUp()
+                      : null,
                   text: 'Sign Up',
                 ),
               ],
