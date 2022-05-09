@@ -34,18 +34,24 @@ class SignUpView extends StatelessWidget {
                 AppTextField(
                   controller: model.nameController,
                   hintText: 'Name',
+                  onChanged: (value) => model.onChanged(value),
+                  textInputAction: TextInputAction.next,
                 ),
                 20.verticalSpace,
                 AppTextField(
                   controller: model.emailController,
                   hintText: 'Email',
                   keyboardType: TextInputType.emailAddress,
+                  onChanged: (value) => model.onChanged(value),
+                  textInputAction: TextInputAction.next,
                 ),
                 20.verticalSpace,
                 AppTextField(
                   controller: model.passwordController,
                   hintText: 'Password',
                   isPassword: true,
+                  onChanged: (value) => model.onChanged(value),
+                  textInputAction: TextInputAction.done,
                 ),
                 40.verticalSpace,
                 AppButton(
