@@ -1,4 +1,7 @@
 import 'package:blood_source/app/app.locator.dart';
+import 'package:blood_source/app/app.router.dart';
+import 'package:blood_source/common/app_colors.dart';
+import 'package:blood_source/utils/password_rules.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -6,6 +9,10 @@ import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
+  SignUpViewModel() {
+    listenToReactiveValues([_rules, _rulesVisibility, _ruleColor]);
+  }
+
   void initialise() {
     notifyListeners();
   }
@@ -28,15 +35,33 @@ class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  final ReactiveValue<List<Map>> _rules =
+      ReactiveValue<List<Map>>(passwordRules);
+  final ReactiveValue<bool> _rulesVisibility = ReactiveValue<bool>(false);
+  final ReactiveValue<Color> _ruleColor =
+      ReactiveValue<Color>(AppColors.swatch.shade900);
+
+  List<Map> get rules => _rules.value;
+  bool get rulesVisibility => _rulesVisibility.value;
+  Color get ruleColor => _ruleColor.value;
+
   void toggleObscurity() {
     _isPasswordObscure = !_isPasswordObscure;
     notifyListeners();
+  }
+
+  bool isPasswordOk() {
+    return ((!(passwordController.text.contains(nameController.text) ||
+            passwordController.text.contains(emailController.text))) &&
+        RegExp("^(?=.*?[A-Z]).{8,}\$").hasMatch(passwordController.text) &&
+        !RegExp("^[a-zA-Z0-9 ]*\$").hasMatch(passwordController.text));
   }
 
   bool isFormValidated() {
     if (nameController.text.isEmpty ||
         emailController.text.isEmpty ||
         passwordController.text.isEmpty ||
+        !isPasswordOk() ||
         !RegExp(r'\S+@\S+\.\S+').hasMatch(emailController.text)) {
       return false;
     } else {
@@ -49,22 +74,29 @@ class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
     notifyListeners();
   }
 
+  void onPasswordChanged(String? value) {
+    _rulesVisibility.value = passwordController.text.isNotEmpty ? true : false;
+    notifyListeners();
+  }
+
   Future signUp() async {
-    await authService.createAccountWithEmail(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
+    if (_signUpFormKey.currentState!.validate()) {
+      final FirebaseAuthenticationResult result =
+          await authService.createAccountWithEmail(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
 
-    authService.authStateChanges.listen((User? user) {
-      if (user != null) {
-        user.updateDisplayName(nameController.text.trim());
+      if (result.hasError) {
+        signUpError = result.errorMessage;
       }
-    });
 
-    // if (signUpFormKey.currentState!.validate()) {
-    //   // sign up logic
-    //   return true;
-    // }
+      authService.authStateChanges.listen((User? user) {
+        if (user != null) {
+          user.updateDisplayName(nameController.text.trim());
+        }
+      });
+    }
   }
 
   @override
