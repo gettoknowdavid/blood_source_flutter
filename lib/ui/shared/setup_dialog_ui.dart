@@ -18,6 +18,8 @@ void setupDialogUi() {
           request: sheetRequest,
           completer: completer,
         ),
+    DialogType.loading: (context, sheetRequest, completer) =>
+        const _LoadingDialog(),
   };
 
   _dialogService.registerCustomDialogBuilders(builders);
@@ -107,6 +109,41 @@ class _MailAppsDialog extends StatelessWidget {
               blurRadius: 20,
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LoadingDialog extends StatelessWidget {
+  const _LoadingDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
+      elevation: 26,
+      backgroundColor: Colors.transparent,
+      child: Center(
+        child: Container(
+          child: const Center(
+            child: CircularProgressIndicator(color: AppColors.primary),
+          ),
+          padding: const EdgeInsets.all(24).r,
+          height: 0.2.sw,
+          width: 0.2.sw,
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24.r),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withOpacity(0.1),
+                offset: Offset(0.r, 16.r),
+                blurRadius: 20,
+              ),
+            ],
+          ),
         ),
       ),
     );
