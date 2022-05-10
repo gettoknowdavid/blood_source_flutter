@@ -10,6 +10,7 @@ class SignInViewModel extends BaseViewModel with ReactiveServiceMixin {
     notifyListeners();
   }
 
+  DialogService dialogService = locator<DialogService>();
   NavigationService navigationService = locator<NavigationService>();
   FirebaseAuthenticationService authService =
       locator<FirebaseAuthenticationService>();
