@@ -27,13 +27,13 @@ class PasswordRulesWidget extends ViewModelWidget<SignUpViewModel> {
               children: [
                 Icon(
                   Icons.check_circle,
-                  size: 14.sp,
+                  size: 12.sp,
                   color: ruleColor,
                 ),
                 4.horizontalSpace,
                 Text(
                   e["name"].toString(),
-                  style: TextStyle(fontSize: 14.sp, color: ruleColor),
+                  style: TextStyle(fontSize: 12.sp, color: ruleColor),
                 )
               ],
             );
