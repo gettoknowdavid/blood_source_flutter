@@ -16,6 +16,7 @@ import '../services/mail_app_service.dart';
 import '../ui/views/check_email/check_email_view_model.dart';
 import '../ui/views/forgot_password/forgot_password_view_model.dart';
 import '../ui/views/home/home_view_model.dart';
+import '../ui/views/main_scaffold/main_scaffold_view_model.dart';
 import '../ui/views/sign_in/sign_in_view_model.dart';
 import '../ui/views/sign_up/sign_up_view_model.dart';
 import '../ui/views/splash/splash_view_model.dart';
@@ -34,6 +35,7 @@ void setupLocator({String? environment, EnvironmentFilter? environmentFilter}) {
   locator.registerLazySingleton(() => MailAppService());
   locator.registerLazySingleton(() => FirebaseAuthenticationService());
   locator.registerLazySingleton(() => SplashViewModel());
+  locator.registerLazySingleton(() => MainScaffoldViewModel());
   locator.registerLazySingleton(() => SignInViewModel());
   locator.registerLazySingleton(() => ForgotPasswordViewModel());
   locator.registerLazySingleton(() => CheckEmailViewModel());

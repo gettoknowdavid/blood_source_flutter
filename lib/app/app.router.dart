@@ -13,6 +13,7 @@ import 'package:stacked/stacked_annotations.dart';
 import '../ui/views/check_email/check_email_view.dart';
 import '../ui/views/forgot_password/forgot_password_view.dart';
 import '../ui/views/home/home_view.dart';
+import '../ui/views/main_scaffold/main_scaffold_view.dart';
 import '../ui/views/sign_in/sign_in_view.dart';
 import '../ui/views/sign_up/sign_up_view.dart';
 import '../ui/views/splash/splash_view.dart';
@@ -20,6 +21,7 @@ import '../ui/views/verify_email/verify_email_view.dart';
 
 class Routes {
   static const String splashView = '/';
+  static const String mainScaffoldView = '/main-scaffold-view';
   static const String signInView = '/sign-in-view';
   static const String forgotPasswordView = '/forgot-password-view';
   static const String checkEmailView = '/check-email-view';
@@ -28,6 +30,7 @@ class Routes {
   static const String verifyEmailView = '/verify-email-view';
   static const all = <String>{
     splashView,
+    mainScaffoldView,
     signInView,
     forgotPasswordView,
     checkEmailView,
@@ -42,6 +45,7 @@ class StackedRouter extends RouterBase {
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
     RouteDef(Routes.splashView, page: SplashView),
+    RouteDef(Routes.mainScaffoldView, page: MainScaffoldView),
     RouteDef(Routes.signInView, page: SignInView),
     RouteDef(Routes.forgotPasswordView, page: ForgotPasswordView),
     RouteDef(Routes.checkEmailView, page: CheckEmailView),
@@ -55,6 +59,12 @@ class StackedRouter extends RouterBase {
     SplashView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const SplashView(),
+        settings: data,
+      );
+    },
+    MainScaffoldView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const MainScaffoldView(),
         settings: data,
       );
     },
