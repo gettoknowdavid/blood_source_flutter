@@ -1,3 +1,4 @@
+import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/ui/layouts/auth_layout.dart';
 import 'package:blood_source/ui/shared/widgets/app_button.dart';

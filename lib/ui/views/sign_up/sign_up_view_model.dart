@@ -1,6 +1,7 @@
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_colors.dart';
+import 'package:blood_source/utils/dialog_type.dart';
 import 'package:blood_source/utils/password_rules.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
 
   Future<void> init() async {}
 
+  DialogService dialogService = locator<DialogService>();
   NavigationService navigationService = locator<NavigationService>();
   FirebaseAuthenticationService authService =
       locator<FirebaseAuthenticationService>();
@@ -81,6 +83,8 @@ class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
 
   Future signUp() async {
     if (_signUpFormKey.currentState!.validate()) {
+      dialogService.showCustomDialog(variant: DialogType.loading);
+
       final FirebaseAuthenticationResult result =
           await authService.createAccountWithEmail(
         email: emailController.text.trim(),
@@ -88,7 +92,14 @@ class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
       );
 
       if (result.hasError) {
+        navigationService.popRepeated(1);
         signUpError = result.errorMessage;
+      }
+
+      if (result.user != null) {
+        navigationService.popRepeated(1);
+        navigationService.replaceWith(Routes.verifyEmailView);
+        notifyListeners();
       }
 
       authService.authStateChanges.listen((User? user) {
