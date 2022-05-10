@@ -1,6 +1,5 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:blood_source/common/image_resources.dart';
-import 'package:blood_source/ui/views/home/home_view.dart';
 import 'package:blood_source/ui/views/sign_in/sign_in_view.dart';
 import 'package:blood_source/ui/views/verify_email/verify_email_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,14 +16,8 @@ class SplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<SplashViewModel>.reactive(
       viewModelBuilder: () => SplashViewModel(),
-      onModelReady: (SplashViewModel model) async {
-        await model.init();
-      },
-      builder: (
-        BuildContext context,
-        SplashViewModel model,
-        Widget? child,
-      ) {
+      onModelReady: (model) async => await model.init(),
+      builder: (context, model, Widget? child) {
         return AnimatedSplashScreen(
           splash: Scaffold(
             body: Container(
