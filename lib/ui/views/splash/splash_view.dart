@@ -1,4 +1,5 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/common/image_resources.dart';
 import 'package:blood_source/ui/views/sign_in/sign_in_view.dart';
 import 'package:blood_source/ui/views/verify_email/verify_email_view.dart';
@@ -18,34 +19,47 @@ class SplashView extends StatelessWidget {
       viewModelBuilder: () => SplashViewModel(),
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
-        return AnimatedSplashScreen(
-          splash: Scaffold(
-            body: Container(
-              color: Colors.white,
-              child: Center(
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.width * 0.95,
-                  width: MediaQuery.of(context).size.width * 0.95,
-                  child: Image.asset(ImageResources.logo),
+        return WidgetsApp(
+          color: AppColors.primary,
+          builder: (context, child) {
+            final tsFactor = MediaQuery.of(context).textScaleFactor;
+            final num constrainedTextScaleFactor = tsFactor.clamp(1.0, 1.5);
+
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                textScaleFactor: constrainedTextScaleFactor as double?,
+              ),
+              child: AnimatedSplashScreen(
+                splash: Scaffold(
+                  body: Container(
+                    color: Colors.white,
+                    child: Center(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.width * 0.95,
+                        width: MediaQuery.of(context).size.width * 0.95,
+                        child: Image.asset(ImageResources.logo),
+                      ),
+                    ),
+                  ),
+                ),
+                splashIconSize: 1000,
+                backgroundColor: Colors.white,
+                duration: 5000,
+                pageTransitionType: PageTransitionType.fade,
+                splashTransition: SplashTransition.fadeTransition,
+                nextScreen: StreamBuilder<User?>(
+                  stream: FirebaseAuth.instance.authStateChanges(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return const VerifyEmailView();
+                    } else {
+                      return const SignInView();
+                    }
+                  },
                 ),
               ),
-            ),
-          ),
-          splashIconSize: 1000,
-          backgroundColor: Colors.white,
-          duration: 5000,
-          pageTransitionType: PageTransitionType.fade,
-          splashTransition: SplashTransition.fadeTransition,
-          nextScreen: StreamBuilder<User?>(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return const VerifyEmailView();
-              } else {
-                return const SignInView();
-              }
-            },
-          ),
+            );
+          },
         );
       },
     );
