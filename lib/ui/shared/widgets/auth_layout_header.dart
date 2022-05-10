@@ -20,7 +20,7 @@ class AuthLayoutHeader extends StatelessWidget {
           title,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 28.sp,
+            fontSize: 22.sp,
             fontWeight: FontWeight.w600,
             color: Colors.white,
             height: 1.sp,
@@ -28,11 +28,11 @@ class AuthLayoutHeader extends StatelessWidget {
         ),
         6.verticalSpace,
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          padding: EdgeInsets.symmetric(horizontal: 18.w),
           child: Text(
             subtitle,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16.sp, color: Colors.white),
+            style: TextStyle(fontSize: 14.sp, color: Colors.white),
           ),
         ),
       ],
