@@ -98,7 +98,7 @@ class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
 
       if (result.user != null) {
         navigationService.popRepeated(1);
-        navigationService.replaceWith(Routes.verifyEmailView);
+        navigationService.clearStackAndShow(Routes.verifyEmailView);
         notifyListeners();
       }
 
