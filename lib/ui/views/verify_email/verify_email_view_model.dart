@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:blood_source/app/app.locator.dart';
+import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/utils/dialog_type.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,7 +49,10 @@ class VerifyEmailViewModel extends BaseViewModel with ReactiveServiceMixin {
 
     _isEmailVerified.value = FirebaseAuth.instance.currentUser!.emailVerified;
 
-    if (_isEmailVerified.value) timer?.cancel();
+    if (_isEmailVerified.value) {
+      timer?.cancel();
+      navService.clearStackAndShow(Routes.homeView);
+    }
 
     notifyListeners();
   }
