@@ -1,7 +1,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/common/image_resources.dart';
-import 'package:blood_source/ui/views/home/home_view.dart';
+import 'package:blood_source/ui/views/donor_form/donor_form_view.dart';
 import 'package:blood_source/ui/views/sign_in/sign_in_view.dart';
 import 'package:blood_source/ui/views/verify_email/verify_email_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -52,7 +52,7 @@ class SplashView extends StatelessWidget {
                   stream: model.stream,
                   builder: (context, snapshot) {
                     if (snapshot.hasData && model.isVerified()) {
-                      return const HomeView();
+                      return const DonorFormView();
                     } else if (snapshot.hasData && !model.isVerified()) {
                       return const VerifyEmailView();
                     } else {
