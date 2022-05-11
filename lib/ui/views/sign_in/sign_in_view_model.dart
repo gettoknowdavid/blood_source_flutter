@@ -1,5 +1,6 @@
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
+import 'package:blood_source/utils/dialog_type.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
@@ -52,12 +53,15 @@ class SignInViewModel extends BaseViewModel with ReactiveServiceMixin {
 
   Future signIn() async {
     if (_signInFormKey.currentState!.validate()) {
+      dialogService.showCustomDialog(variant: DialogType.loading);
+
       FirebaseAuthenticationResult result = await authService.loginWithEmail(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
 
       if (result.user != null) {
+        navigationService.popRepeated(1);
         navigationService.replaceWith(Routes.homeView);
         notifyListeners();
       }
