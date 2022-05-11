@@ -53,7 +53,7 @@ class SplashView extends StatelessWidget {
                   builder: (context, snapshot) {
                     if (snapshot.hasData && model.isVerified()) {
                       return const HomeView();
-                    } else if (snapshot.hasData) {
+                    } else if (snapshot.hasData && !model.isVerified()) {
                       return const VerifyEmailView();
                     } else {
                       return const SignInView();
