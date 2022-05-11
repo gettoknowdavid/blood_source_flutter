@@ -1,5 +1,6 @@
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
+import 'package:blood_source/utils/dialog_type.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -9,6 +10,7 @@ import 'package:stacked_services/stacked_services.dart';
 class ForgotPasswordViewModel extends BaseViewModel with ReactiveServiceMixin {
   Future<void> init() async {}
 
+  DialogService dialogService = locator<DialogService>();
   NavigationService navigationService = locator<NavigationService>();
   FirebaseAuthenticationService authService =
       locator<FirebaseAuthenticationService>();
@@ -36,10 +38,12 @@ class ForgotPasswordViewModel extends BaseViewModel with ReactiveServiceMixin {
 
   Future submit() async {
     if (_forgotPasswordForm.currentState!.validate()) {
+      dialogService.showCustomDialog(variant: DialogType.loading);
       try {
         await FirebaseAuth.instance.sendPasswordResetEmail(
           email: emailController.text.trim(),
         );
+        navigationService.popRepeated(1);
         navigationService.navigateTo(Routes.checkEmailView);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
