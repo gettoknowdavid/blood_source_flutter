@@ -122,7 +122,7 @@ class _LoadingDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
-      elevation: 26,
+      elevation: 0,
       backgroundColor: Colors.transparent,
       child: Center(
         child: Container(
