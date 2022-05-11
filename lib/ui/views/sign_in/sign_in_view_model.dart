@@ -61,12 +61,12 @@ class SignInViewModel extends BaseViewModel with ReactiveServiceMixin {
       );
 
       if (result.user != null) {
-        navigationService.popRepeated(1);
-        navigationService.replaceWith(Routes.homeView);
+        navigationService.clearStackAndShow(Routes.homeView);
         notifyListeners();
       }
 
       if (result.hasError) {
+        navigationService.popRepeated(1);
         switch (result.exceptionCode) {
           case 'user-not-found':
             signInError = 'Oops! We have no record of this user';
