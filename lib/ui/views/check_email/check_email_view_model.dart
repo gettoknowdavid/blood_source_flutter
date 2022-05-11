@@ -1,4 +1,5 @@
 import 'package:blood_source/app/app.locator.dart';
+import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/utils/dialog_type.dart';
 import 'package:open_mail_app/open_mail_app.dart';
@@ -7,6 +8,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 class CheckEmailViewModel extends BaseViewModel {
   final DialogService _dialogService = locator<DialogService>();
+  final NavigationService _navService = locator<NavigationService>();
 
   Future<void> init() async {}
 
@@ -31,6 +33,14 @@ class CheckEmailViewModel extends BaseViewModel {
         data: MailAppPickerDialog(mailApps: result.options),
       );
     }
+  }
+
+  Future goBackToSignIn() async {
+    _navService.clearStackAndShow(Routes.signInView);
+  }
+
+  Future goBackToForgotPassword() async {
+    _navService.replaceWith(Routes.forgotPasswordView);
   }
 
   void initialise() {
