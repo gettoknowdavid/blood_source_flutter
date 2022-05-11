@@ -1,6 +1,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/common/image_resources.dart';
+import 'package:blood_source/ui/views/home/home_view.dart';
 import 'package:blood_source/ui/views/sign_in/sign_in_view.dart';
 import 'package:blood_source/ui/views/verify_email/verify_email_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,9 +49,11 @@ class SplashView extends StatelessWidget {
                 pageTransitionType: PageTransitionType.fade,
                 splashTransition: SplashTransition.fadeTransition,
                 nextScreen: StreamBuilder<User?>(
-                  stream: FirebaseAuth.instance.authStateChanges(),
+                  stream: model.stream,
                   builder: (context, snapshot) {
-                    if (snapshot.hasData) {
+                    if (snapshot.hasData && model.isVerified()) {
+                      return const HomeView();
+                    } else if (snapshot.hasData) {
                       return const VerifyEmailView();
                     } else {
                       return const SignInView();
