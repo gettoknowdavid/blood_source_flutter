@@ -30,12 +30,20 @@ class CheckEmailView extends StatelessWidget {
                 subtitle:
                     'We have sent password recovery instructions to your mail.',
               ),
-              30.verticalSpace,
+              10.verticalSpace,
               Image.asset(ImageResources.checkEmail),
-              40.verticalSpace,
+              20.verticalSpace,
               AppButton(
                 onTap: () => model.openMailApp(),
                 text: 'Open email app',
+              ),
+              20.verticalSpace,
+              AppTextButton(
+                text: 'Go back to Sign In',
+                onTap: () => model.goBackToSignIn(),
+                fontSize: 14.sp,
+                color: AppColors.swatch.shade800,
+                fontWeight: FontWeight.w600,
               ),
               const Spacer(),
               Column(
@@ -53,7 +61,7 @@ class CheckEmailView extends StatelessWidget {
                   ),
                   AppTextButton(
                     text: 'try another email address',
-                    onTap: () {},
+                    onTap: () => model.goBackToForgotPassword(),
                     fontSize: 14.sp,
                     color: AppColors.swatch.shade500,
                     fontWeight: FontWeight.w600,
