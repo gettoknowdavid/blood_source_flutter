@@ -1,4 +1,5 @@
 import 'package:blood_source/app/app.locator.dart';
+import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_constants.dart';
 import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/custom_user.dart';
@@ -86,6 +87,10 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
     }
   }
 
+  void goHome() {
+    _navService.clearStackAndShow(Routes.homeView);
+  }
+
   Future onSubmit() async {
     final user = FirebaseAuth.instance.currentUser;
     final docUser =
@@ -96,6 +101,7 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
 
     switch (userEligible()) {
       case false:
+        //
         // Set user type to recipient
         _userType.value = UserType.recipient;
 
@@ -103,13 +109,18 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
         _navService.popRepeated(1);
 
         // Show disqualified dialog
-        _dialogService.showDialog(
-          title: 'UNQUALIFIED',
-          description: AppConstants.unqualifiedMessage,
-        );
+        _dialogService
+            .showDialog(
+              description: AppConstants.unqualifiedMessage,
+              cancelTitle: 'Cancel',
+              buttonTitle: 'Continue',
+              barrierDismissible: true,
+            )
+            .then((value) => value!.confirmed ? goHome() : null);
         notifyListeners();
         break;
       case true:
+        //
         // Close loading dialog
         _navService.popRepeated(1);
 
@@ -117,10 +128,12 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
         _userType.value = UserType.donor;
 
         // Show qualified dialog
-        _dialogService.showDialog(
-          title: 'QUALIFIED',
-          description: AppConstants.qualifiedMessage,
-        );
+        _dialogService
+            .showDialog(
+              description: AppConstants.qualifiedMessage,
+              buttonTitle: 'Next',
+            )
+            .then((value) => value!.confirmed ? goHome() : null);
         notifyListeners();
         break;
       default:
