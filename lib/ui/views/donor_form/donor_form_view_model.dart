@@ -23,6 +23,7 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
       _pregnantBool,
       _piercingBool,
       _userType,
+      _eligible,
     ]);
   }
 
@@ -37,6 +38,7 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
   final ReactiveValue<bool> _piercingBool = ReactiveValue<bool>(false);
   final ReactiveValue<UserType> _userType =
       ReactiveValue<UserType>(UserType.donor);
+  final ReactiveValue<bool> _eligible = ReactiveValue<bool>(false);
 
   BloodGroup get bloodType => _bloodGroup.value;
   TextEditingController ageController = TextEditingController();
@@ -49,6 +51,7 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
   bool get pregnantBool => _pregnantBool.value;
   bool get piercingBool => _piercingBool.value;
   UserType get userType => _userType.value;
+  bool get eligible => _eligible.value;
 
   bool isValidated() {
     if (ageController.text.isNotEmpty || weightController.text.isNotEmpty) {
@@ -102,11 +105,14 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
     switch (userEligible()) {
       case false:
         //
-        // Set user type to recipient
-        _userType.value = UserType.recipient;
-
         // Close loading dialog
         _navService.popRepeated(1);
+
+        // Set user eligibility to false;
+        _eligible.value = false;
+
+        // Set user type to recipient
+        _userType.value = UserType.recipient;
 
         // Show disqualified dialog
         _dialogService
@@ -123,6 +129,9 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
         //
         // Close loading dialog
         _navService.popRepeated(1);
+
+        // Set user eligibility to false;
+        _eligible.value = false;
 
         // Set user type to donor
         _userType.value = UserType.donor;
@@ -148,6 +157,8 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
       piercingOrTattoo: _piercingBool.value,
       pregnantOrBreastFeeding: _pregnantBool.value,
       userType: _userType.value,
+      isDonorEligible: true,
+      isDonorFormComplete: _eligible.value,
     );
 
     await docUser.set(customUser.toJson());
