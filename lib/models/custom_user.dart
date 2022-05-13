@@ -1,4 +1,5 @@
 import 'package:blood_source/models/user-type.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'custom_user.g.dart';
@@ -59,4 +60,35 @@ class CustomUser {
   factory CustomUser.fromJson(Map<String, dynamic> json) =>
       _$CustomUserFromJson(json);
   Map<String, dynamic> toJson() => _$CustomUserToJson(this);
+
+  CustomUser.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  )   : age = snapshot.data()?["age"],
+        weight = snapshot.data()?["weight"],
+        bloodGroup = snapshot.data()?["bloodGroup"],
+        diseases = (snapshot.data()?["diseases"] as List<dynamic>)
+            .map((e) => e as String)
+            .toList(),
+        piercingOrTattoo = snapshot.data()?["piercingOrTattoo"],
+        pregnantOrBreastFeeding = snapshot.data()?["pregnantOrBreastFeeding"],
+        userType = snapshot.data()?["userType"],
+        isDonorEligible = snapshot.data()?["isDonorEligible"],
+        isDonorFormComplete = snapshot.data()?["isDonorFormComplete"];
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      if (age != null) "age": age,
+      if (weight != null) "weight": weight,
+      if (bloodGroup != null) "bloodGroup": bloodGroup,
+      if (diseases != null) "diseases": diseases,
+      if (piercingOrTattoo != null) "piercingOrTattoo": piercingOrTattoo,
+      if (pregnantOrBreastFeeding != null)
+        "pregnantOrBreastFeeding": pregnantOrBreastFeeding,
+      if (userType != null) "isDonorEligible": userType,
+      if (isDonorEligible != null) "isDonorEligible": isDonorEligible,
+      if (isDonorFormComplete != null)
+        "isDonorFormComplete": isDonorFormComplete,
+    };
+  }
 }
