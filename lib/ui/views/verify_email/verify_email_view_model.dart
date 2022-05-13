@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_colors.dart';
+import 'package:blood_source/models/custom_user.dart';
 import 'package:blood_source/utils/dialog_type.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:stacked/stacked.dart';
@@ -49,9 +51,18 @@ class VerifyEmailViewModel extends BaseViewModel with ReactiveServiceMixin {
 
     _isEmailVerified.value = FirebaseAuth.instance.currentUser!.emailVerified;
 
+    final user = FirebaseAuth.instance.currentUser!.uid;
+    final ref =
+        FirebaseFirestore.instance.collection('users').doc(user).withConverter(
+              fromFirestore: CustomUser.fromFirestore,
+              toFirestore: (CustomUser _user, _) => _user.toFirestore(),
+            );
+    final docSnap = await ref.get();
+    final customUser = docSnap.data();
+
     if (_isEmailVerified.value) {
       timer?.cancel();
-      navService.clearStackAndShow(Routes.homeView);
+      navService.clearStackAndShow(Routes.donorFormView);
     }
 
     notifyListeners();
