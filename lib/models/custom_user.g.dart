@@ -15,6 +15,8 @@ CustomUser _$CustomUserFromJson(Map<String, dynamic> json) => CustomUser(
       piercingOrTattoo: json['piercingOrTattoo'] as bool,
       pregnantOrBreastFeeding: json['pregnantOrBreastFeeding'] as bool,
       userType: $enumDecode(_$UserTypeEnumMap, json['userType']),
+      isDonorEligible: json['isDonorEligible'] as bool,
+      isDonorFormComplete: json['isDonorFormComplete'] as bool,
     );
 
 Map<String, dynamic> _$CustomUserToJson(CustomUser instance) =>
@@ -26,6 +28,8 @@ Map<String, dynamic> _$CustomUserToJson(CustomUser instance) =>
       'piercingOrTattoo': instance.piercingOrTattoo,
       'pregnantOrBreastFeeding': instance.pregnantOrBreastFeeding,
       'userType': _$UserTypeEnumMap[instance.userType],
+      'isDonorEligible': instance.isDonorEligible,
+      'isDonorFormComplete': instance.isDonorFormComplete,
     };
 
 const _$UserTypeEnumMap = {
