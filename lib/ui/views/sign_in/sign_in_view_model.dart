@@ -61,7 +61,7 @@ class SignInViewModel extends BaseViewModel with ReactiveServiceMixin {
       );
 
       if (result.user != null) {
-        navigationService.clearStackAndShow(Routes.homeView);
+        navigationService.clearStackAndShow(Routes.donorFormView);
         notifyListeners();
       }
 
