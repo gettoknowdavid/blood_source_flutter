@@ -1,1 +1,1 @@
-enum UserType { none, donor, recipient }
+enum UserType { donor, recipient }
