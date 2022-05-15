@@ -40,8 +40,15 @@ dependencies:
   firebase_auth: ^3.3.17
   animated_splash_screen: ^1.2.0
   page_transition: ^2.0.5
-  get: ^4.6.1
   flutter_screenutil: ^5.5.2
+  stacked: ^2.3.6
+  stacked_services: ^0.8.22
+  stacked_firebase_auth: ^0.2.10+2
+  open_mail_app: ^0.4.5
+  url_launcher: ^6.1.0
+  sizer: ^2.0.15
+  checkbox_grouped: ^1.8.0
+  json_annotation: ^4.5.0
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +60,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+  build_runner: ^2.1.10
+  stacked_generator: ^0.6.2
+  logger: ^1.1.0
+  json_serializable: ^6.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -69,6 +80,9 @@ flutter:
   assets:
     - assets/images/logo-splash.png
     - assets/images/left-arrow.png
+    - assets/images/verify-email.png
+    - assets/images/forgot-email.png
+    - assets/images/check-email.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
