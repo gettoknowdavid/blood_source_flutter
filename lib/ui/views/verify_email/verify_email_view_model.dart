@@ -1,12 +1,8 @@
 import 'dart:async';
 
 import 'package:blood_source/app/app.locator.dart';
-import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_colors.dart';
-import 'package:blood_source/models/custom_user.dart';
-import 'package:blood_source/models/user-type.dart';
 import 'package:blood_source/utils/dialog_type.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:stacked/stacked.dart';
@@ -48,46 +44,9 @@ class VerifyEmailViewModel extends BaseViewModel with ReactiveServiceMixin {
   }
 
   Future checkVerification() async {
+    timer?.cancel();
     await FirebaseAuth.instance.currentUser!.reload();
-
-    _isEmailVerified.value = FirebaseAuth.instance.currentUser!.emailVerified;
-
-    if (_isEmailVerified.value) {
-      timer?.cancel();
-    }
-
     notifyListeners();
-  }
-
-  Future continueToNext() async {
-    _isEmailVerified.value = FirebaseAuth.instance.currentUser!.emailVerified;
-
-    dialogService.showCustomDialog(variant: DialogType.loading);
-
-    final user = FirebaseAuth.instance.currentUser!.uid;
-    final _ref = FirebaseFirestore.instance
-        .collection('users')
-        .doc(user)
-        .withConverter<CustomUser>(
-            fromFirestore: CustomUser.fromFirestore,
-            toFirestore: (_cs, _) => _cs.toFirestore());
-
-    final _docSnap = await _ref.get();
-    final _cUser = _docSnap.data();
-
-    if (_isEmailVerified.value) {
-      if (_cUser!.userType == UserType.donor && !_cUser.isDonorFormComplete) {
-        navService.clearStackAndShow(Routes.donorFormView);
-      }
-
-      if (_cUser.userType == UserType.donor && _cUser.isDonorFormComplete) {
-        navService.clearStackAndShow(Routes.homeView);
-      }
-
-      if (_cUser.userType == UserType.recipient) {
-        navService.clearStackAndShow(Routes.homeView);
-      }
-    }
   }
 
   Future openMailApp() async {
