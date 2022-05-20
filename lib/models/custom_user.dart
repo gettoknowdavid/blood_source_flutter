@@ -15,7 +15,7 @@ class CustomUser {
     this.pregnantOrBreastFeeding,
     required this.userType,
     this.isDonorEligible,
-    this.isDonorFormComplete = false,
+    required this.isDonorFormComplete,
   });
 
   /// The age of the donor which should not be
