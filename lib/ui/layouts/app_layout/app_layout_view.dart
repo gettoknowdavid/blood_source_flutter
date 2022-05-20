@@ -10,7 +10,6 @@ class AppLayoutView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AppLayoutViewModel>.reactive(
       viewModelBuilder: () => AppLayoutViewModel(),
-      onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
         return Scaffold(
           body: Center(
