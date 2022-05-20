@@ -1,3 +1,8 @@
+import 'package:animations/animations.dart';
+import 'package:blood_source/ui/views/dashboard/dashboard_view.dart';
+import 'package:blood_source/ui/views/donate/donate_view.dart';
+import 'package:blood_source/ui/views/notifications/notifications_view.dart';
+import 'package:blood_source/ui/views/profile/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -8,14 +13,38 @@ class AppLayoutView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget getView(int index) {
+      switch (index) {
+        case 0:
+          return const DashboardView();
+        case 1:
+          return const DonateView();
+        case 2:
+          return const NotificationsView();
+
+        case 3:
+          return const ProfileView();
+        default:
+          return const DashboardView();
+      }
+    }
+
     return ViewModelBuilder<AppLayoutViewModel>.reactive(
       viewModelBuilder: () => AppLayoutViewModel(),
       builder: (context, model, Widget? child) {
         return Scaffold(
-          body: Center(
-            child: Text(
-              'AppLayoutView',
-            ),
+          body: PageTransitionSwitcher(
+            duration: const Duration(milliseconds: 300),
+            reverse: model.reverse,
+            transitionBuilder: (child, animation, secondaryAnimation) {
+              return SharedAxisTransition(
+                child: child,
+                animation: animation,
+                secondaryAnimation: secondaryAnimation,
+                transitionType: SharedAxisTransitionType.horizontal,
+              );
+            },
+            child: getView(model.currentIndex),
           ),
         );
       },
