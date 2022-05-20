@@ -39,29 +39,33 @@ class VerifyEmailView extends StatelessWidget {
                   Image.asset(ImageResources.verifyEmail),
                   18.verticalSpace,
                   AppButton(
-                    onTap: () => model.openMailApp(),
-                    text: 'Open email app',
+                    onTap: model.isEmailVerified
+                        ? () => model.continueToNext()
+                        : () => model.openMailApp(),
+                    text: model.isEmailVerified ? 'Continue' : 'Open email app',
                   ),
                   20.verticalSpace,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AppTextButton(
-                        onTap: () => model.resendEmailVerification(),
-                        text: 'Resend Email',
-                        fontSize: 14.sp,
-                        color: AppColors.swatch.shade900,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      AppTextButton(
-                        onTap: () => model.cancelVErification(),
-                        text: 'Cancel',
-                        fontSize: 14.sp,
-                        color: AppColors.swatch.shade900,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ],
-                  ),
+                  model.isEmailVerified
+                      ? const SizedBox()
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            AppTextButton(
+                              onTap: () => model.resendEmailVerification(),
+                              text: 'Resend Email',
+                              fontSize: 14.sp,
+                              color: AppColors.swatch.shade900,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            AppTextButton(
+                              onTap: () => model.cancelVErification(),
+                              text: 'Cancel',
+                              fontSize: 14.sp,
+                              color: AppColors.swatch.shade900,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ],
+                        ),
                 ],
               ),
             ),
