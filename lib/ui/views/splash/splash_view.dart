@@ -48,18 +48,7 @@ class SplashView extends StatelessWidget {
                 duration: 5000,
                 pageTransitionType: PageTransitionType.fade,
                 splashTransition: SplashTransition.fadeTransition,
-                nextScreen: StreamBuilder<User?>(
-                  stream: model.stream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData && model.isVerified()) {
-                      return const DonorFormView();
-                    } else if (snapshot.hasData && !model.isVerified()) {
-                      return const VerifyEmailView();
-                    } else {
-                      return const SignInView();
-                    }
-                  },
-                ),
+                nextScreen: const SizedBox(),
               ),
             );
           },
