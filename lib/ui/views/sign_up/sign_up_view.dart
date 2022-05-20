@@ -63,6 +63,7 @@ class SignUpView extends StatelessWidget {
                     children: [
                       Expanded(
                         child: RadioListTile<UserType>(
+                          dense: true,
                           value: UserType.donor,
                           title: const Text('Donor'),
                           groupValue: model.userType,
@@ -71,6 +72,7 @@ class SignUpView extends StatelessWidget {
                       ),
                       Expanded(
                         child: RadioListTile<UserType>(
+                          dense: true,
                           value: UserType.recipient,
                           title: const Text('Recipient'),
                           groupValue: model.userType,
