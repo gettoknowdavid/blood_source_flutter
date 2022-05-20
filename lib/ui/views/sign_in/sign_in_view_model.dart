@@ -1,6 +1,9 @@
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
+import 'package:blood_source/models/custom_user.dart';
 import 'package:blood_source/utils/dialog_type.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
@@ -60,10 +63,32 @@ class SignInViewModel extends BaseViewModel with ReactiveServiceMixin {
         password: passwordController.text.trim(),
       );
 
-      if (result.user != null) {
-        navigationService.clearStackAndShow(Routes.donorFormView);
-        notifyListeners();
-      }
+      FirebaseAuth.instance.authStateChanges().listen((User? user) async {
+        if (user != null) {
+          final _ref = FirebaseFirestore.instance
+              .collection('users')
+              .doc(result.user!.uid)
+              .withConverter<CustomUser>(
+                  fromFirestore: CustomUser.fromFirestore,
+                  toFirestore: (_cs, _) => _cs.toFirestore());
+
+          final _docSnap = await _ref.get();
+          final _cUser = _docSnap.data();
+
+          switch (_cUser!.isDonorFormComplete) {
+            case true:
+              navigationService.clearStackAndShow(Routes.homeView);
+              notifyListeners();
+              break;
+            case false:
+              navigationService.clearStackAndShow(Routes.donorFormView);
+              notifyListeners();
+              break;
+            default:
+              notifyListeners();
+          }
+        }
+      });
 
       if (result.hasError) {
         navigationService.popRepeated(1);
