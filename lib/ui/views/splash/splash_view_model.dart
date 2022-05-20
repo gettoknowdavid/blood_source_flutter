@@ -57,16 +57,7 @@ class SplashViewModel extends StreamViewModel<User?> {
             notifyListeners();
           }
 
-          if (_cUser.userType == UserType.donor && _cUser.isDonorFormComplete) {
-            navService.clearStackAndShow(Routes.homeView);
-            notifyListeners();
-          }
-
-          if (_cUser.userType == UserType.recipient) {
-            navService.clearStackAndShow(Routes.homeView);
-            notifyListeners();
-          }
-
+          navService.clearStackAndShow(Routes.appLayoutView);
           notifyListeners();
         }
       }
