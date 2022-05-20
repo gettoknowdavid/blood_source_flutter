@@ -7,15 +7,16 @@ part of 'custom_user.dart';
 // **************************************************************************
 
 CustomUser _$CustomUserFromJson(Map<String, dynamic> json) => CustomUser(
-      age: json['age'] as int,
-      weight: json['weight'] as int,
-      bloodGroup: json['bloodGroup'] as String,
-      diseases:
-          (json['diseases'] as List<dynamic>).map((e) => e as String).toList(),
-      piercingOrTattoo: json['piercingOrTattoo'] as bool,
-      pregnantOrBreastFeeding: json['pregnantOrBreastFeeding'] as bool,
+      age: json['age'] as int?,
+      weight: json['weight'] as int?,
+      bloodGroup: json['bloodGroup'] as String?,
+      diseases: (json['diseases'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      piercingOrTattoo: json['piercingOrTattoo'] as bool?,
+      pregnantOrBreastFeeding: json['pregnantOrBreastFeeding'] as bool?,
       userType: $enumDecode(_$UserTypeEnumMap, json['userType']),
-      isDonorEligible: json['isDonorEligible'] as bool,
+      isDonorEligible: json['isDonorEligible'] as bool?,
       isDonorFormComplete: json['isDonorFormComplete'] as bool,
     );
 
