@@ -158,7 +158,7 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
       pregnantOrBreastFeeding: _pregnantBool.value,
       userType: _userType.value,
       isDonorEligible: true,
-      isDonorFormComplete: _eligible.value,
+      isDonorFormComplete: true,
     );
 
     await docUser.set(customUser.toJson());
