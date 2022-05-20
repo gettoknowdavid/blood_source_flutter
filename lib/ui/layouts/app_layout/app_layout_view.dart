@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/ui/views/dashboard/dashboard_view.dart';
 import 'package:blood_source/ui/views/donate/donate_view.dart';
 import 'package:blood_source/ui/views/notifications/notifications_view.dart';
@@ -21,7 +22,6 @@ class AppLayoutView extends StatelessWidget {
           return const DonateView();
         case 2:
           return const NotificationsView();
-
         case 3:
           return const ProfileView();
         default:
@@ -45,6 +45,30 @@ class AppLayoutView extends StatelessWidget {
               );
             },
             child: getView(model.currentIndex),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: AppColors.primary,
+            currentIndex: model.currentIndex,
+            onTap: model.setIndex,
+            items: const [
+              BottomNavigationBarItem(
+                label: 'Dashboard',
+                icon: Icon(Icons.dashboard),
+              ),
+              BottomNavigationBarItem(
+                label: 'Donate',
+                icon: Icon(Icons.gif_outlined),
+              ),
+              BottomNavigationBarItem(
+                label: 'Notifications',
+                icon: Icon(Icons.notifications),
+              ),
+              BottomNavigationBarItem(
+                label: 'Profile',
+                icon: Icon(Icons.person),
+              ),
+            ],
           ),
         );
       },
