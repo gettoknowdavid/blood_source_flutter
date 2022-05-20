@@ -39,9 +39,7 @@ class VerifyEmailView extends StatelessWidget {
                   Image.asset(ImageResources.verifyEmail),
                   18.verticalSpace,
                   AppButton(
-                    onTap: model.isEmailVerified
-                        ? () => model.continueToNext()
-                        : () => model.openMailApp(),
+                    onTap: () => model.openMailApp(),
                     text: model.isEmailVerified ? 'Continue' : 'Open email app',
                   ),
                   20.verticalSpace,
