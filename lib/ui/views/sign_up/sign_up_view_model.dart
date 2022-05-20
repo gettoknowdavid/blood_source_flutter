@@ -98,31 +98,18 @@ class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
         signUpError = result.errorMessage;
       }
 
-      final _donorCustomUser = CustomUser(
+      final _customUser = CustomUser(
         userType: _userType.value,
         isDonorFormComplete: false,
       );
-
-      final _recipientCustomUser = CustomUser(userType: _userType.value);
 
       if (result.user != null) {
         final collection = FirebaseFirestore.instance.collection;
         final doc = collection('users').doc(result.user!.uid);
 
-        switch (_userType.value) {
-          case UserType.donor:
-            await doc.set(_donorCustomUser.toFirestore());
-            navigationService.clearStackAndShow(Routes.verifyEmailView);
-            notifyListeners();
-            break;
-          case UserType.recipient:
-            await doc.set(_recipientCustomUser.toFirestore());
-            navigationService.clearStackAndShow(Routes.verifyEmailView);
-            notifyListeners();
-            break;
-          default:
-            null;
-        }
+        await doc.set(_customUser.toFirestore());
+        navigationService.clearStackAndShow(Routes.verifyEmailView);
+        notifyListeners();
       }
 
       authService.authStateChanges.listen((User? user) {
