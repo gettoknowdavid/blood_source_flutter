@@ -49,6 +49,7 @@ dependencies:
   sizer: ^2.0.15
   checkbox_grouped: ^1.8.0
   json_annotation: ^4.5.0
+  animations: ^2.0.2
 
 dev_dependencies:
   flutter_test:
