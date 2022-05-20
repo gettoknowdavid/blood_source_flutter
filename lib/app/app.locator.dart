@@ -13,6 +13,7 @@ import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../services/mail_app_service.dart';
+import '../ui/layouts/app_layout/app_layout_view_model.dart';
 import '../ui/views/check_email/check_email_view_model.dart';
 import '../ui/views/dashboard/dashboard_view_model.dart';
 import '../ui/views/donor_form/donor_form_view_model.dart';
@@ -46,4 +47,5 @@ void setupLocator({String? environment, EnvironmentFilter? environmentFilter}) {
   locator.registerLazySingleton(() => DonorFormViewModel());
   locator.registerLazySingleton(() => VerifyEmailViewModel());
   locator.registerLazySingleton(() => DashboardViewModel());
+  locator.registerLazySingleton(() => AppLayoutViewModel());
 }
