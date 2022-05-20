@@ -13,10 +13,13 @@ import 'package:stacked/stacked_annotations.dart';
 import '../ui/layouts/app_layout/app_layout_view.dart';
 import '../ui/views/check_email/check_email_view.dart';
 import '../ui/views/dashboard/dashboard_view.dart';
+import '../ui/views/donate/donate_view.dart';
 import '../ui/views/donor_form/donor_form_view.dart';
 import '../ui/views/forgot_password/forgot_password_view.dart';
 import '../ui/views/home/home_view.dart';
 import '../ui/views/main_scaffold/main_scaffold_view.dart';
+import '../ui/views/notifications/notifications_view.dart';
+import '../ui/views/profile/profile_view.dart';
 import '../ui/views/sign_in/sign_in_view.dart';
 import '../ui/views/sign_up/sign_up_view.dart';
 import '../ui/views/splash/splash_view.dart';
@@ -34,6 +37,9 @@ class Routes {
   static const String verifyEmailView = '/verify-email-view';
   static const String dashboardView = '/dashboard-view';
   static const String appLayoutView = '/app-layout-view';
+  static const String donateView = '/donate-view';
+  static const String notificationsView = '/notifications-view';
+  static const String profileView = '/profile-view';
   static const all = <String>{
     splashView,
     mainScaffoldView,
@@ -46,6 +52,9 @@ class Routes {
     verifyEmailView,
     dashboardView,
     appLayoutView,
+    donateView,
+    notificationsView,
+    profileView,
   };
 }
 
@@ -64,6 +73,9 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.verifyEmailView, page: VerifyEmailView),
     RouteDef(Routes.dashboardView, page: DashboardView),
     RouteDef(Routes.appLayoutView, page: AppLayoutView),
+    RouteDef(Routes.donateView, page: DonateView),
+    RouteDef(Routes.notificationsView, page: NotificationsView),
+    RouteDef(Routes.profileView, page: ProfileView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -131,6 +143,24 @@ class StackedRouter extends RouterBase {
     AppLayoutView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const AppLayoutView(),
+        settings: data,
+      );
+    },
+    DonateView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const DonateView(),
+        settings: data,
+      );
+    },
+    NotificationsView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const NotificationsView(),
+        settings: data,
+      );
+    },
+    ProfileView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const ProfileView(),
         settings: data,
       );
     },

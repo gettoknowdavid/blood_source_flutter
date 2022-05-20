@@ -16,10 +16,13 @@ import '../services/mail_app_service.dart';
 import '../ui/layouts/app_layout/app_layout_view_model.dart';
 import '../ui/views/check_email/check_email_view_model.dart';
 import '../ui/views/dashboard/dashboard_view_model.dart';
+import '../ui/views/donate/donate_view_model.dart';
 import '../ui/views/donor_form/donor_form_view_model.dart';
 import '../ui/views/forgot_password/forgot_password_view_model.dart';
 import '../ui/views/home/home_view_model.dart';
 import '../ui/views/main_scaffold/main_scaffold_view_model.dart';
+import '../ui/views/notifications/notifications_view_model.dart';
+import '../ui/views/profile/profile_view_model.dart';
 import '../ui/views/sign_in/sign_in_view_model.dart';
 import '../ui/views/sign_up/sign_up_view_model.dart';
 import '../ui/views/splash/splash_view_model.dart';
@@ -48,4 +51,7 @@ void setupLocator({String? environment, EnvironmentFilter? environmentFilter}) {
   locator.registerLazySingleton(() => VerifyEmailViewModel());
   locator.registerLazySingleton(() => DashboardViewModel());
   locator.registerLazySingleton(() => AppLayoutViewModel());
+  locator.registerLazySingleton(() => DonateViewModel());
+  locator.registerLazySingleton(() => NotificationsViewModel());
+  locator.registerLazySingleton(() => ProfileViewModel());
 }

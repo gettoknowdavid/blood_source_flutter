@@ -5,6 +5,8 @@ import 'package:blood_source/ui/views/check_email/check_email_view.dart';
 import 'package:blood_source/ui/views/check_email/check_email_view_model.dart';
 import 'package:blood_source/ui/views/dashboard/dashboard_view.dart';
 import 'package:blood_source/ui/views/dashboard/dashboard_view_model.dart';
+import 'package:blood_source/ui/views/donate/donate_view.dart';
+import 'package:blood_source/ui/views/donate/donate_view_model.dart';
 import 'package:blood_source/ui/views/donor_form/donor_form_view.dart';
 import 'package:blood_source/ui/views/donor_form/donor_form_view_model.dart';
 import 'package:blood_source/ui/views/forgot_password/forgot_password_view.dart';
@@ -13,6 +15,10 @@ import 'package:blood_source/ui/views/home/home_view.dart';
 import 'package:blood_source/ui/views/home/home_view_model.dart';
 import 'package:blood_source/ui/views/main_scaffold/main_scaffold_view.dart';
 import 'package:blood_source/ui/views/main_scaffold/main_scaffold_view_model.dart';
+import 'package:blood_source/ui/views/notifications/notifications_view.dart';
+import 'package:blood_source/ui/views/notifications/notifications_view_model.dart';
+import 'package:blood_source/ui/views/profile/profile_view.dart';
+import 'package:blood_source/ui/views/profile/profile_view_model.dart';
 import 'package:blood_source/ui/views/sign_in/sign_in_view.dart';
 import 'package:blood_source/ui/views/sign_in/sign_in_view_model.dart';
 import 'package:blood_source/ui/views/sign_up/sign_up_view.dart';
@@ -38,6 +44,9 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: VerifyEmailView),
     MaterialRoute(page: DashboardView),
     MaterialRoute(page: AppLayoutView),
+    MaterialRoute(page: DonateView),
+    MaterialRoute(page: NotificationsView),
+    MaterialRoute(page: ProfileView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
@@ -55,6 +64,9 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: VerifyEmailViewModel),
     LazySingleton(classType: DashboardViewModel),
     LazySingleton(classType: AppLayoutViewModel),
+    LazySingleton(classType: DonateViewModel),
+    LazySingleton(classType: NotificationsViewModel),
+    LazySingleton(classType: ProfileViewModel),
   ],
 )
 class App {}
