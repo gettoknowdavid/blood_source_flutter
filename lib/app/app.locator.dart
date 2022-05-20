@@ -14,6 +14,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../services/mail_app_service.dart';
 import '../ui/views/check_email/check_email_view_model.dart';
+import '../ui/views/dashboard/dashboard_view_model.dart';
 import '../ui/views/donor_form/donor_form_view_model.dart';
 import '../ui/views/forgot_password/forgot_password_view_model.dart';
 import '../ui/views/home/home_view_model.dart';
@@ -44,4 +45,5 @@ void setupLocator({String? environment, EnvironmentFilter? environmentFilter}) {
   locator.registerLazySingleton(() => HomeViewModel());
   locator.registerLazySingleton(() => DonorFormViewModel());
   locator.registerLazySingleton(() => VerifyEmailViewModel());
+  locator.registerLazySingleton(() => DashboardViewModel());
 }

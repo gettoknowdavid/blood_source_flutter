@@ -11,6 +11,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 
 import '../ui/views/check_email/check_email_view.dart';
+import '../ui/views/dashboard/dashboard_view.dart';
 import '../ui/views/donor_form/donor_form_view.dart';
 import '../ui/views/forgot_password/forgot_password_view.dart';
 import '../ui/views/home/home_view.dart';
@@ -30,6 +31,7 @@ class Routes {
   static const String homeView = '/home-view';
   static const String donorFormView = '/donor-form-view';
   static const String verifyEmailView = '/verify-email-view';
+  static const String dashboardView = '/dashboard-view';
   static const all = <String>{
     splashView,
     mainScaffoldView,
@@ -40,6 +42,7 @@ class Routes {
     homeView,
     donorFormView,
     verifyEmailView,
+    dashboardView,
   };
 }
 
@@ -56,6 +59,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.homeView, page: HomeView),
     RouteDef(Routes.donorFormView, page: DonorFormView),
     RouteDef(Routes.verifyEmailView, page: VerifyEmailView),
+    RouteDef(Routes.dashboardView, page: DashboardView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -111,6 +115,12 @@ class StackedRouter extends RouterBase {
     VerifyEmailView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const VerifyEmailView(),
+        settings: data,
+      );
+    },
+    DashboardView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const DashboardView(),
         settings: data,
       );
     },

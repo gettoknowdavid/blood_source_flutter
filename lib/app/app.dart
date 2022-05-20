@@ -1,6 +1,8 @@
 import 'package:blood_source/services/mail_app_service.dart';
 import 'package:blood_source/ui/views/check_email/check_email_view.dart';
 import 'package:blood_source/ui/views/check_email/check_email_view_model.dart';
+import 'package:blood_source/ui/views/dashboard/dashboard_view.dart';
+import 'package:blood_source/ui/views/dashboard/dashboard_view_model.dart';
 import 'package:blood_source/ui/views/donor_form/donor_form_view.dart';
 import 'package:blood_source/ui/views/donor_form/donor_form_view_model.dart';
 import 'package:blood_source/ui/views/forgot_password/forgot_password_view.dart';
@@ -32,6 +34,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: HomeView),
     MaterialRoute(page: DonorFormView),
     MaterialRoute(page: VerifyEmailView),
+    MaterialRoute(page: DashboardView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
@@ -47,6 +50,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: HomeViewModel),
     LazySingleton(classType: DonorFormViewModel),
     LazySingleton(classType: VerifyEmailViewModel),
+    LazySingleton(classType: DashboardViewModel),
   ],
 )
 class App {}
