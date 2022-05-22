@@ -48,7 +48,6 @@ class AppLayoutView extends StatelessWidget {
           ),
           bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
-            backgroundColor: AppColors.primary,
             currentIndex: model.currentIndex,
             onTap: model.setIndex,
             items: const [
@@ -58,7 +57,7 @@ class AppLayoutView extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 label: 'Donate',
-                icon: Icon(Icons.gif_outlined),
+                icon: Icon(Icons.health_and_safety),
               ),
               BottomNavigationBarItem(
                 label: 'Notifications',
