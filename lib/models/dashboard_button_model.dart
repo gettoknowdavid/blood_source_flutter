@@ -24,7 +24,7 @@ final List<DashboardButtonModel> buttonList = <DashboardButtonModel>[
     '22k',
     const Icon(Icons.search, color: AppColors.primary),
     const Color(0xFFFA6393),
-    Routes.donateView,
+    Routes.donorView,
   ),
   DashboardButtonModel(
     'Request Blood',
