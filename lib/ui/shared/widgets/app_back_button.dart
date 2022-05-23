@@ -5,7 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class AppBackButton extends StatelessWidget {
-  const AppBackButton({Key? key}) : super(key: key);
+  const AppBackButton({Key? key, this.color = Colors.white}) : super(key: key);
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +16,9 @@ class AppBackButton extends StatelessWidget {
       padding: EdgeInsets.all(20.r),
       child: GestureDetector(
         onTap: () => navService.back(),
-        child: const ImageIcon(
-          AssetImage(ImageResources.leftArrow),
-          color: Colors.white,
+        child: ImageIcon(
+          const AssetImage(ImageResources.leftArrow),
+          color: color,
         ),
       ),
     );
