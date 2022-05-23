@@ -1,9 +1,12 @@
 import 'package:blood_source/common/app_colors.dart';
+import 'package:blood_source/models/blood_source_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DonorListItem extends StatelessWidget {
-  const DonorListItem({Key? key}) : super(key: key);
+  const DonorListItem({Key? key, required this.donor}) : super(key: key);
+
+  final BloodSourceUser donor;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +35,7 @@ class DonorListItem extends StatelessWidget {
           CircleAvatar(
             radius: 25.w,
             backgroundColor: AppColors.swatch.shade400,
+            foregroundImage: NetworkImage(donor.avatar),
           ),
           10.horizontalSpace,
           Column(
@@ -39,7 +43,7 @@ class DonorListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Jaber Khalaf',
+                '${donor.firstName} ${donor.lastName}',
                 style: TextStyle(fontSize: 17.sp),
               ),
               Row(
@@ -51,7 +55,7 @@ class DonorListItem extends StatelessWidget {
                     size: 18.sp,
                   ),
                   Text(
-                    'Tulkarm',
+                    donor.city,
                     style: TextStyle(
                       fontSize: 12.sp,
                       color: Colors.black87,
