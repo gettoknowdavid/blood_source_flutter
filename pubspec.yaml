@@ -89,6 +89,8 @@ flutter:
     - assets/images/home.png
     - assets/images/profile.png
     - assets/images/settings.png
+    - assets/images/red-blood.png
+    - assets/images/location.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
