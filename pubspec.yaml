@@ -84,6 +84,11 @@ flutter:
     - assets/images/verify-email.png
     - assets/images/forgot-email.png
     - assets/images/check-email.png
+    - assets/images/bell.png
+    - assets/images/blood.png
+    - assets/images/home.png
+    - assets/images/profile.png
+    - assets/images/settings.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
