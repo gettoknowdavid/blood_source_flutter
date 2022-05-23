@@ -1,5 +1,4 @@
 import 'package:blood_source/common/app_colors.dart';
-import 'package:blood_source/common/app_icons.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
 import 'package:blood_source/ui/shared/widgets/donor/donor_list_item.dart';
 import 'package:flutter/material.dart';
@@ -98,14 +97,16 @@ class DonorView extends StatelessWidget {
                   ),
                 ),
                 20.verticalSpace,
-                const Text('25 Donors are available'),
+                Text(model.getDonorCountString()),
                 20.verticalSpace,
-                ListView(
+                ListView.builder(
+                  itemCount: model.donors.length,
                   shrinkWrap: true,
                   padding: EdgeInsets.symmetric(horizontal: 26.r),
-                  children: [
-                    DonorListItem(),
-                  ],
+                  itemBuilder: (context, i) {
+                    final donor = model.donors[i];
+                    return DonorListItem(donor: donor);
+                  },
                 ),
               ],
             ),
