@@ -1,6 +1,8 @@
+import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/models/dashboard_button_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class DashboardButtonItem extends StatelessWidget {
   const DashboardButtonItem({Key? key, required this.model}) : super(key: key);
@@ -9,8 +11,10 @@ class DashboardButtonItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final NavigationService _navService = locator<NavigationService>();
+
     return GestureDetector(
-      onTap: () {},
+      onTap: () => _navService.navigateTo(model.route),
       child: Container(
         alignment: Alignment.center,
         height: 0.5 * 1.sh,
