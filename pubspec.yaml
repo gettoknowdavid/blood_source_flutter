@@ -50,6 +50,7 @@ dependencies:
   checkbox_grouped: ^1.8.0
   json_annotation: ^4.5.0
   animations: ^2.0.2
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:
@@ -91,6 +92,11 @@ flutter:
     - assets/images/settings.png
     - assets/images/red-blood.png
     - assets/images/location.png
+    - assets/images/gender.png
+    - assets/images/age.png
+    - assets/images/phone.png
+    - assets/images/height.png
+    - assets/images/weight.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
