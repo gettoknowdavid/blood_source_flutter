@@ -96,7 +96,7 @@ class ProfileView extends StatelessWidget {
                     children: [
                       ProfileActionButton(
                         icon: const Icon(Icons.edit),
-                        onPressed: () {},
+                        onPressed: () => model.goToEditProfile(),
                       ),
                       ProfileActionButton(
                         icon: const Icon(Icons.power_settings_new),

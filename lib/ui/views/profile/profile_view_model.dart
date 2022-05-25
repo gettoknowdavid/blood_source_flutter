@@ -41,6 +41,8 @@ class ProfileViewModel extends FutureViewModel<BloodSourceUser>
     }
   }
 
+  void goToEditProfile() => _navService.navigateTo(Routes.editProfileView);
+
   @override
   Future<BloodSourceUser> futureToRun() async => await getProfile();
 }
