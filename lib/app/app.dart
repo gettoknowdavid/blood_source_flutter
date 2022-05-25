@@ -14,6 +14,8 @@ import 'package:blood_source/ui/views/donor/donor_view.dart';
 import 'package:blood_source/ui/views/donor/donor_view_model.dart';
 import 'package:blood_source/ui/views/donor_form/donor_form_view.dart';
 import 'package:blood_source/ui/views/donor_form/donor_form_view_model.dart';
+import 'package:blood_source/ui/views/edit_profile/edit_profile_view.dart';
+import 'package:blood_source/ui/views/edit_profile/edit_profile_view_model.dart';
 import 'package:blood_source/ui/views/forgot_password/forgot_password_view.dart';
 import 'package:blood_source/ui/views/forgot_password/forgot_password_view_model.dart';
 import 'package:blood_source/ui/views/home/home_view.dart';
@@ -53,6 +55,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: NotificationsView),
     MaterialRoute(page: ProfileView),
     MaterialRoute(page: DonorView),
+    MaterialRoute(page: EditProfileView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
@@ -77,6 +80,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: NotificationsViewModel),
     LazySingleton(classType: ProfileViewModel),
     LazySingleton(classType: DonorViewModel),
+    LazySingleton(classType: EditProfileViewModel),
   ],
 )
 class App {}
