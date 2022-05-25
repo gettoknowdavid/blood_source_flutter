@@ -22,7 +22,9 @@ BloodSourceUser _$BloodSourceUserFromJson(Map<String, dynamic> json) =>
           : Location.fromJson(json['location'] as Map<String, dynamic>),
       email: json['email'] as String?,
       avatar: json['avatar'] as String?,
-      bloodGroup: $enumDecodeNullable(_$BloodGroupEnumMap, json['bloodGroup']),
+      bloodGroup:
+          $enumDecodeNullable(_$BloodGroupEnumMap, json['bloodGroup']) ??
+              BloodGroup.none,
       diseases: (json['diseases'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -62,6 +64,7 @@ const _$GenderEnumMap = {
 };
 
 const _$BloodGroupEnumMap = {
+  BloodGroup.none: 'none',
   BloodGroup.aPositive: 'aPositive',
   BloodGroup.aNegative: 'aNegative',
   BloodGroup.bPositive: 'bPositive',

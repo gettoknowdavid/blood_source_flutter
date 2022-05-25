@@ -22,6 +22,7 @@ import '../ui/views/dashboard/dashboard_view_model.dart';
 import '../ui/views/donate/donate_view_model.dart';
 import '../ui/views/donor/donor_view_model.dart';
 import '../ui/views/donor_form/donor_form_view_model.dart';
+import '../ui/views/edit_profile/edit_profile_view_model.dart';
 import '../ui/views/forgot_password/forgot_password_view_model.dart';
 import '../ui/views/home/home_view_model.dart';
 import '../ui/views/main_scaffold/main_scaffold_view_model.dart';
@@ -62,4 +63,5 @@ void setupLocator({String? environment, EnvironmentFilter? environmentFilter}) {
   locator.registerLazySingleton(() => NotificationsViewModel());
   locator.registerLazySingleton(() => ProfileViewModel());
   locator.registerLazySingleton(() => DonorViewModel());
+  locator.registerLazySingleton(() => EditProfileViewModel());
 }
