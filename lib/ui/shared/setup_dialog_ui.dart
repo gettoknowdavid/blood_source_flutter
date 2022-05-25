@@ -20,6 +20,8 @@ void setupDialogUi() {
         ),
     DialogType.loading: (context, sheetRequest, completer) =>
         const _LoadingDialog(),
+    DialogType.imagePicker: (context, sheetRequest, completer) =>
+        _ImagePickerDialog(request: sheetRequest),
   };
 
   _dialogService.registerCustomDialogBuilders(builders);
@@ -141,6 +143,40 @@ class _LoadingDialog extends StatelessWidget {
                 color: AppColors.primary.withOpacity(0.1),
                 offset: Offset(0.r, 16.r),
                 blurRadius: 20,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ImagePickerDialog extends StatelessWidget {
+  const _ImagePickerDialog({Key? key, required this.request}) : super(key: key);
+  final DialogRequest request;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      child: Center(
+        child: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              const Divider(height: 1, color: Colors.blue),
+              ListTile(
+                onTap: () {},
+                title: const Text("Gallery"),
+                leading: const Icon(Icons.account_box, color: Colors.blue),
+              ),
+              const Divider(height: 1, color: Colors.blue),
+              ListTile(
+                onTap: () {},
+                title: const Text("Camera"),
+                leading: const Icon(Icons.camera, color: Colors.blue),
               ),
             ],
           ),
