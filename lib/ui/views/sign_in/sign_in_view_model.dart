@@ -1,23 +1,26 @@
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
-import 'package:blood_source/models/custom_user.dart';
+import 'package:blood_source/services/auth_service.dart';
 import 'package:blood_source/utils/dialog_type.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class SignInViewModel extends BaseViewModel with ReactiveServiceMixin {
+  SignInViewModel() {
+    listenToReactiveValues([_signInError]);
+  }
+
   void initialise() {
     notifyListeners();
   }
 
-  DialogService dialogService = locator<DialogService>();
-  NavigationService navigationService = locator<NavigationService>();
-  FirebaseAuthenticationService authService =
-      locator<FirebaseAuthenticationService>();
+  final ReactiveValue<String?> _signInError = ReactiveValue<String?>(null);
+  String? get signInError => _signInError.value;
+
+  final DialogService _dialogService = locator<DialogService>();
+  final NavigationService _navService = locator<NavigationService>();
+  final AuthService _authService = locator<AuthService>();
 
   final GlobalKey<FormState> _signInFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> get signInFormKey => _signInFormKey;
@@ -26,8 +29,6 @@ class SignInViewModel extends BaseViewModel with ReactiveServiceMixin {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  String? signInError;
 
   bool isFormValidated() {
     if (emailController.text.isEmpty ||
@@ -39,72 +40,41 @@ class SignInViewModel extends BaseViewModel with ReactiveServiceMixin {
     }
   }
 
-  void goToSignUp() {
-    navigationService.navigateTo(Routes.signUpView);
-    notifyListeners();
-  }
+  void goToSignUp() => _navService.clearStackAndShow(Routes.signUpView);
 
-  void goToForgotPassword() {
-    navigationService.navigateTo(Routes.forgotPasswordView);
-    notifyListeners();
-  }
+  void goToForgotPassword() =>
+      _navService.navigateTo(Routes.forgotPasswordView);
 
   void onChanged(String? value) {
-    signInError = null;
+    _signInError.value = null;
     notifyListeners();
   }
 
   Future signIn() async {
     if (_signInFormKey.currentState!.validate()) {
-      dialogService.showCustomDialog(variant: DialogType.loading);
+      _dialogService.showCustomDialog(variant: DialogType.loading);
 
-      FirebaseAuthenticationResult result = await authService.loginWithEmail(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
+      final _result = await _authService.signIn(
+        emailController.text.trim(),
+        passwordController.text.trim(),
       );
 
-      FirebaseAuth.instance.authStateChanges().listen((User? user) async {
-        if (user != null) {
-          final _ref = FirebaseFirestore.instance
-              .collection('users')
-              .doc(result.user!.uid)
-              .withConverter<CustomUser>(
-                  fromFirestore: CustomUser.fromFirestore,
-                  toFirestore: (_cs, _) => _cs.toFirestore());
-
-          final _docSnap = await _ref.get();
-          final _cUser = _docSnap.data();
-
-          switch (_cUser!.isDonorFormComplete) {
-            case true:
-              navigationService.clearStackAndShow(Routes.homeView);
-              notifyListeners();
-              break;
-            case false:
-              navigationService.clearStackAndShow(Routes.donorFormView);
-              notifyListeners();
-              break;
-            default:
-              notifyListeners();
-          }
-        }
-      });
-
-      if (result.hasError) {
-        navigationService.popRepeated(1);
-        switch (result.exceptionCode) {
-          case 'user-not-found':
-            signInError = 'Oops! We have no record of this user';
-            notifyListeners();
+      if (_result.user != null && _result.bSUser != null) {
+        switch (_result.bSUser!.isDonorFormComplete) {
+          case true:
+            _navService.clearStackAndShow(Routes.appLayoutView);
             break;
-          case 'wrong-password':
-            signInError = "Urm, wrong email or password";
-            notifyListeners();
+          case false:
+            _navService.clearStackAndShow(Routes.donorFormView);
             break;
           default:
-            '';
+            null;
         }
-        notifyListeners();
+      }
+
+      if (_result.hasError) {
+        _navService.popRepeated(1);
+        _signInError.value = _result.errorMessage;
       }
     }
   }
