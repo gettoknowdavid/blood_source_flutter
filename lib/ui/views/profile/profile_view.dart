@@ -4,6 +4,7 @@ import 'package:blood_source/models/gender.dart';
 import 'package:blood_source/ui/shared/widgets/profile/avatar.dart';
 import 'package:blood_source/ui/shared/widgets/profile/blood_group_widget.dart';
 import 'package:blood_source/ui/shared/widgets/profile/profile_details_item.dart';
+import 'package:blood_source/ui/shared/widgets/profile/profile_details_list.dart';
 import 'package:blood_source/ui/shared/widgets/profile_header_paint.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -121,46 +122,7 @@ class ProfileView extends StatelessWidget {
                           ],
                         ),
                         40.verticalSpace,
-                        ListView(
-                          shrinkWrap: true,
-                          primary: false,
-                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 32).r,
-                          children: [
-                            Title(
-                              color: Colors.black,
-                              child: Text(
-                                'Other Details',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            ProfileDetailsItem(
-                              icon: AppIcons.gender,
-                              title: 'Gender',
-                              value: Gender
-                                  .values[model.data!.gender!.index].value,
-                            ),
-                            ProfileDetailsItem(
-                              icon: AppIcons.age,
-                              title: 'Age',
-                              value: model.data!.age.toString(),
-                            ),
-                            ProfileDetailsItem(
-                              icon: AppIcons.height,
-                              title: 'Height',
-                              value: model.data!.height.toString(),
-                            ),
-                            ProfileDetailsItem(
-                              icon: AppIcons.weight,
-                              title: 'Weight',
-                              value: model.data!.weight.toString(),
-                              showSeparator: false,
-                            ),
-                          ],
-                        ),
+                        const ProfileDetailsList(),
                       ],
                     ),
                   ),
