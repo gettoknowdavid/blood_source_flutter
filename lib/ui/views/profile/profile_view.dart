@@ -1,3 +1,4 @@
+import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:blood_source/ui/shared/widgets/profile/avatar.dart';
 import 'package:blood_source/ui/shared/widgets/profile/blood_group_widget.dart';
 import 'package:blood_source/ui/shared/widgets/profile/profile_action_button.dart';
@@ -20,9 +21,7 @@ class ProfileView extends StatelessWidget {
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
         if (model.isBusy) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
+          return const LoadingIndicator();
         } else {
           return Scaffold(
             backgroundColor: Colors.white,
