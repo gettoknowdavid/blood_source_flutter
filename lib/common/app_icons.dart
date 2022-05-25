@@ -28,4 +28,20 @@ class AppIcons {
     AssetImage('assets/images/location.png'),
     color: AppColors.secondary,
   );
+  static ImageIcon gender = ImageIcon(
+    const AssetImage('assets/images/gender.png'),
+    size: 24.sp,
+  );
+  static ImageIcon age = ImageIcon(
+    const AssetImage('assets/images/age.png'),
+    size: 24.sp,
+  );
+  static ImageIcon height = ImageIcon(
+    const AssetImage('assets/images/height.png'),
+    size: 24.sp,
+  );
+  static ImageIcon weight = ImageIcon(
+    const AssetImage('assets/images/weight.png'),
+    size: 24.sp,
+  );
 }
