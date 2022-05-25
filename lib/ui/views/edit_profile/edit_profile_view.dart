@@ -1,5 +1,6 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
+import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:blood_source/ui/shared/widgets/profile/avatar.dart';
 import 'package:blood_source/ui/shared/widgets/profile_header_paint.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +18,13 @@ class EditProfileView extends StatelessWidget {
       viewModelBuilder: () => EditProfileViewModel(),
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
+        if (model.isBusy) {
+          return const LoadingIndicator();
+        }
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
+            elevation: 0,
             backgroundColor: AppColors.primary,
             leading: const AppBackButton(),
             actions: [
@@ -41,7 +46,23 @@ class EditProfileView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       100.verticalSpace,
-                      const Avatar(),
+                      GestureDetector(
+                        onTap: model.getImage,
+                        child: CircleAvatar(
+                          radius: 0.18 * 1.sw,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 0.17 * 1.sw,
+                            foregroundColor: AppColors.primary,
+                            foregroundImage: model.image != null
+                                ? FileImage(model.image!)
+                                : null,
+                            child: model.image == null
+                                ? const Icon(Icons.add_a_photo)
+                                : const SizedBox(),
+                          ),
+                        ),
+                      ),
                       10.verticalSpace,
                     ],
                   ),
