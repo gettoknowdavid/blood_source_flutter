@@ -1,8 +1,9 @@
 import 'package:blood_source/common/app_colors.dart';
-import 'package:blood_source/models/blood_group.dart';
+import 'package:blood_source/common/app_icons.dart';
 import 'package:blood_source/models/gender.dart';
 import 'package:blood_source/ui/shared/widgets/profile/avatar.dart';
 import 'package:blood_source/ui/shared/widgets/profile/blood_group_widget.dart';
+import 'package:blood_source/ui/shared/widgets/profile/profile_details_item.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -136,35 +137,23 @@ class ProfileView extends StatelessWidget {
                               ),
                             ),
                             ProfileDetailsItem(
-                              icon: ImageIcon(
-                                const AssetImage('assets/images/gender.png'),
-                                size: 24.sp,
-                              ),
+                              icon: AppIcons.gender,
                               title: 'Gender',
                               value: Gender
                                   .values[model.data!.gender!.index].value,
                             ),
                             ProfileDetailsItem(
-                              icon: ImageIcon(
-                                const AssetImage('assets/images/age.png'),
-                                size: 24.sp,
-                              ),
+                              icon: AppIcons.age,
                               title: 'Age',
                               value: model.data!.age.toString(),
                             ),
                             ProfileDetailsItem(
-                              icon: ImageIcon(
-                                const AssetImage('assets/images/height.png'),
-                                size: 24.sp,
-                              ),
+                              icon: AppIcons.height,
                               title: 'Height',
                               value: model.data!.height.toString(),
                             ),
                             ProfileDetailsItem(
-                              icon: ImageIcon(
-                                const AssetImage('assets/images/weight.png'),
-                                size: 24.sp,
-                              ),
+                              icon: AppIcons.weight,
                               title: 'Weight',
                               value: model.data!.weight.toString(),
                               showSeparator: false,
@@ -236,35 +225,4 @@ class ProfileHeaderPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-class ProfileDetailsItem extends StatelessWidget {
-  const ProfileDetailsItem({
-    Key? key,
-    required this.icon,
-    required this.title,
-    required this.value,
-    this.showSeparator = true,
-  }) : super(key: key);
-  final Widget icon;
-  final String title;
-  final String? value;
-  final bool showSeparator;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      horizontalTitleGap: 0,
-      leading: icon,
-      title: Text(title, style: TextStyle(fontSize: 16.sp)),
-      trailing: Text(value == null ? 'Not set yet' : value!,
-          style: TextStyle(fontSize: 14.sp)),
-      shape: Border(
-        bottom: BorderSide(
-          width: showSeparator ? 0.5.r : 0,
-          color: showSeparator ? Colors.black26 : Colors.transparent,
-        ),
-      ),
-    );
-  }
 }
