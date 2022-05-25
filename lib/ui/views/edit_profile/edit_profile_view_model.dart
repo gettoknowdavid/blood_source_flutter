@@ -27,11 +27,13 @@ class EditProfileViewModel extends FutureViewModel<BloodSourceUser>
 
     if (_pickedFile != null) {
       _image.value = File(_pickedFile.path);
-    } else {
-      print('No image selected.');
-    }
+    } 
 
     notifyListeners();
+  }
+
+  Future save() async {
+    
   }
 
   @override
