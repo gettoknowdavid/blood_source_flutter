@@ -1,10 +1,8 @@
-import 'package:blood_source/common/app_colors.dart';
-import 'package:blood_source/common/app_icons.dart';
-import 'package:blood_source/models/gender.dart';
 import 'package:blood_source/ui/shared/widgets/profile/avatar.dart';
 import 'package:blood_source/ui/shared/widgets/profile/blood_group_widget.dart';
-import 'package:blood_source/ui/shared/widgets/profile/profile_details_item.dart';
+import 'package:blood_source/ui/shared/widgets/profile/profile_action_button.dart';
 import 'package:blood_source/ui/shared/widgets/profile/profile_details_list.dart';
+import 'package:blood_source/ui/shared/widgets/profile/profile_stat_widget.dart';
 import 'package:blood_source/ui/shared/widgets/profile_header_paint.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -78,47 +76,12 @@ class ProfileView extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Center(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    '20',
-                                    style: TextStyle(
-                                      fontSize: 24.sp,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Donations',
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: Colors.black54,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            const ProfileStatWidget(
+                              stat: 16,
+                              title: 'Donations',
                             ),
                             100.horizontalSpace,
-                            Center(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    '2',
-                                    style: TextStyle(
-                                      fontSize: 24.sp,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Requests',
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: Colors.black54,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            const ProfileStatWidget(stat: 2, title: 'Requests'),
                           ],
                         ),
                         40.verticalSpace,
@@ -148,34 +111,6 @@ class ProfileView extends StatelessWidget {
           );
         }
       },
-    );
-  }
-}
-
-class ProfileActionButton extends StatelessWidget {
-  const ProfileActionButton({
-    Key? key,
-    required this.icon,
-    required this.onPressed,
-  }) : super(key: key);
-  final Icon icon;
-  final void Function()? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 46.h,
-      width: 46.h,
-      decoration: const BoxDecoration(
-        color: AppColors.secondary,
-        shape: BoxShape.circle,
-      ),
-      child: IconButton(
-        onPressed: onPressed,
-        color: Colors.white,
-        padding: EdgeInsets.all(1.r),
-        icon: icon,
-      ),
     );
   }
 }
