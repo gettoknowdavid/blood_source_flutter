@@ -132,35 +132,13 @@ class ProfileView extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        height: 46.h,
-                        width: 46.h,
-                        decoration: const BoxDecoration(
-                          color: AppColors.secondary,
-                          shape: BoxShape.circle,
-                        ),
-                        child: IconButton(
-                          onPressed: () {
-                            print(model.data!.name);
-                          },
-                          color: Colors.white,
-                          padding: EdgeInsets.all(1.r),
-                          icon: const Icon(Icons.edit),
-                        ),
+                      ProfileActionButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () {},
                       ),
-                      Container(
-                        height: 46.h,
-                        width: 46.h,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: IconButton(
-                          onPressed: () => model.signOut(),
-                          color: Colors.red,
-                          padding: EdgeInsets.all(1.r),
-                          icon: const Icon(Icons.power_settings_new_outlined),
-                        ),
+                      ProfileActionButton(
+                        icon: const Icon(Icons.power_settings_new),
+                        onPressed: () => model.signOut(),
                       ),
                     ],
                   ),
@@ -170,6 +148,34 @@ class ProfileView extends StatelessWidget {
           );
         }
       },
+    );
+  }
+}
+
+class ProfileActionButton extends StatelessWidget {
+  const ProfileActionButton({
+    Key? key,
+    required this.icon,
+    required this.onPressed,
+  }) : super(key: key);
+  final Icon icon;
+  final void Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 46.h,
+      width: 46.h,
+      decoration: const BoxDecoration(
+        color: AppColors.secondary,
+        shape: BoxShape.circle,
+      ),
+      child: IconButton(
+        onPressed: onPressed,
+        color: Colors.white,
+        padding: EdgeInsets.all(1.r),
+        icon: icon,
+      ),
     );
   }
 }
