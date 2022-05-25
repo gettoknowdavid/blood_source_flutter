@@ -35,7 +35,7 @@ class DonorListItem extends StatelessWidget {
           CircleAvatar(
             radius: 25.w,
             backgroundColor: AppColors.swatch.shade400,
-            foregroundImage: NetworkImage(donor.avatar),
+            foregroundImage: NetworkImage(donor.avatar!),
           ),
           10.horizontalSpace,
           Column(
@@ -43,7 +43,7 @@ class DonorListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${donor.firstName} ${donor.lastName}',
+                donor.name!,
                 style: TextStyle(fontSize: 17.sp),
               ),
               Row(
@@ -55,7 +55,7 @@ class DonorListItem extends StatelessWidget {
                     size: 18.sp,
                   ),
                   Text(
-                    donor.city,
+                    donor.city!,
                     style: TextStyle(
                       fontSize: 12.sp,
                       color: Colors.black87,
