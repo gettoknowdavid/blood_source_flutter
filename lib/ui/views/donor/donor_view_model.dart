@@ -21,9 +21,13 @@ class DonorViewModel extends BaseViewModel with ReactiveServiceMixin {
   String getDonorCountString() {
     if (_donorCount.value > 1) {
       return '${_donorCount.value} donor are available';
-    } else {
+    }
+
+    if (_donorCount.value == 1) {
       return '${_donorCount.value} donors are available';
     }
+
+    return 'No donors available';
   }
 
   List<BloodSourceUser> getDonors() {
