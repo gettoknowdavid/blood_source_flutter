@@ -4,6 +4,7 @@ import 'package:blood_source/models/gender.dart';
 import 'package:blood_source/ui/shared/widgets/profile/avatar.dart';
 import 'package:blood_source/ui/shared/widgets/profile/blood_group_widget.dart';
 import 'package:blood_source/ui/shared/widgets/profile/profile_details_item.dart';
+import 'package:blood_source/ui/shared/widgets/profile_header_paint.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -209,20 +210,4 @@ class ProfileView extends StatelessWidget {
       },
     );
   }
-}
-
-class ProfileHeaderPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = AppColors.primary;
-    Path path = Path()
-      ..relativeLineTo(0.w, 120.w)
-      ..quadraticBezierTo(size.width / 2, 220.w, size.width, 120.w)
-      ..relativeLineTo(0.w, -120.w)
-      ..close();
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
