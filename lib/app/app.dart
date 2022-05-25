@@ -1,4 +1,7 @@
+import 'package:blood_source/services/auth_service.dart';
+import 'package:blood_source/services/storage_service.dart';
 import 'package:blood_source/services/mail_app_service.dart';
+import 'package:blood_source/services/store_service.dart';
 import 'package:blood_source/ui/layouts/app_layout/app_layout_view.dart';
 import 'package:blood_source/ui/layouts/app_layout/app_layout_view_model.dart';
 import 'package:blood_source/ui/views/check_email/check_email_view.dart';
@@ -55,6 +58,9 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: NavigationService),
     LazySingleton(classType: DialogService),
     LazySingleton(classType: MailAppService),
+    LazySingleton(classType: StorageService),
+    LazySingleton(classType: AuthService),
+    LazySingleton(classType: StoreService),
     LazySingleton(classType: FirebaseAuthenticationService),
     LazySingleton(classType: SplashViewModel),
     LazySingleton(classType: MainScaffoldViewModel),
