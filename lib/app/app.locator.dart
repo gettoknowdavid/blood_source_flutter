@@ -12,7 +12,10 @@ import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../services/auth_service.dart';
 import '../services/mail_app_service.dart';
+import '../services/storage_service.dart';
+import '../services/store_service.dart';
 import '../ui/layouts/app_layout/app_layout_view_model.dart';
 import '../ui/views/check_email/check_email_view_model.dart';
 import '../ui/views/dashboard/dashboard_view_model.dart';
@@ -40,6 +43,9 @@ void setupLocator({String? environment, EnvironmentFilter? environmentFilter}) {
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => DialogService());
   locator.registerLazySingleton(() => MailAppService());
+  locator.registerLazySingleton(() => StorageService());
+  locator.registerLazySingleton(() => AuthService());
+  locator.registerLazySingleton(() => StoreService());
   locator.registerLazySingleton(() => FirebaseAuthenticationService());
   locator.registerLazySingleton(() => SplashViewModel());
   locator.registerLazySingleton(() => MainScaffoldViewModel());
