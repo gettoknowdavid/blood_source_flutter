@@ -1,17 +1,13 @@
-import 'dart:developer';
-
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_colors.dart';
-import 'package:blood_source/models/custom_user.dart';
+import 'package:blood_source/models/gender.dart';
 import 'package:blood_source/models/user-type.dart';
+import 'package:blood_source/services/auth_service.dart';
 import 'package:blood_source/utils/dialog_type.dart';
 import 'package:blood_source/utils/password_rules.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
@@ -21,10 +17,9 @@ class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
 
   Future<void> init() async {}
 
-  DialogService dialogService = locator<DialogService>();
-  NavigationService navigationService = locator<NavigationService>();
-  FirebaseAuthenticationService authService =
-      locator<FirebaseAuthenticationService>();
+  final DialogService _dialogService = locator<DialogService>();
+  final AuthService _authService = locator<AuthService>();
+  final NavigationService _navService = locator<NavigationService>();
 
   final GlobalKey<FormState> _signUpFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> get signUpFormKey => _signUpFormKey;
@@ -85,38 +80,27 @@ class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
 
   Future signUp() async {
     if (_signUpFormKey.currentState!.validate()) {
-      dialogService.showCustomDialog(variant: DialogType.loading);
+      _dialogService.showCustomDialog(variant: DialogType.loading);
 
-      final FirebaseAuthenticationResult result =
-          await authService.createAccountWithEmail(
+      final result = await _authService.signUp(
+        name: nameController.text.trim(),
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
-      );
-
-      if (result.hasError) {
-        navigationService.popRepeated(1);
-        signUpError = result.errorMessage;
-      }
-
-      final _customUser = CustomUser(
-        userType: _userType.value,
+        gender: Gender.none,
         isDonorFormComplete: false,
+        userType: _userType.value,
       );
 
       if (result.user != null) {
-        final collection = FirebaseFirestore.instance.collection;
-        final doc = collection('users').doc(result.user!.uid);
-
-        await doc.set(_customUser.toFirestore());
-        navigationService.clearStackAndShow(Routes.verifyEmailView);
+        _navService.clearStackAndShow(Routes.verifyEmailView);
         notifyListeners();
       }
 
-      authService.authStateChanges.listen((User? user) {
-        if (user != null) {
-          user.updateDisplayName(nameController.text.trim());
-        }
-      });
+      if (result.hasError) {
+        _navService.popRepeated(1);
+        signUpError = result.errorMessage;
+        notifyListeners();
+      }
     }
   }
 
