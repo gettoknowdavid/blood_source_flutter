@@ -14,6 +14,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../services/auth_service.dart';
 import '../services/mail_app_service.dart';
+import '../services/media_service.dart';
 import '../services/storage_service.dart';
 import '../services/store_service.dart';
 import '../ui/layouts/app_layout/app_layout_view_model.dart';
@@ -48,6 +49,7 @@ void setupLocator({String? environment, EnvironmentFilter? environmentFilter}) {
   locator.registerLazySingleton(() => AuthService());
   locator.registerLazySingleton(() => StoreService());
   locator.registerLazySingleton(() => FirebaseAuthenticationService());
+  locator.registerLazySingleton(() => MediaService());
   locator.registerLazySingleton(() => SplashViewModel());
   locator.registerLazySingleton(() => MainScaffoldViewModel());
   locator.registerLazySingleton(() => SignInViewModel());
