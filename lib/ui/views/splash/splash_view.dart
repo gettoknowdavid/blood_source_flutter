@@ -19,6 +19,7 @@ class SplashView extends StatelessWidget {
     return ViewModelBuilder<SplashViewModel>.reactive(
       viewModelBuilder: () => SplashViewModel(),
       onModelReady: (model) async => await model.init(),
+      fireOnModelReadyOnce: true,
       builder: (context, model, Widget? child) {
         return WidgetsApp(
           color: AppColors.primary,
