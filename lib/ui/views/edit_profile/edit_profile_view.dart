@@ -30,7 +30,13 @@ class EditProfileView extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () {},
-                child: const Text('Save'),
+                child: const Text(
+                  'Save',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),
