@@ -2,9 +2,11 @@ import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_constants.dart';
 import 'package:blood_source/models/blood_group.dart';
-import 'package:blood_source/models/custom_user.dart';
+import 'package:blood_source/models/blood_source_user.dart';
 import 'package:blood_source/models/disease_types.dart';
+import 'package:blood_source/models/gender.dart';
 import 'package:blood_source/models/user-type.dart';
+import 'package:blood_source/services/store_service.dart';
 import 'package:blood_source/utils/dialog_type.dart';
 import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -29,6 +31,7 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
 
   final DialogService _dialogService = locator<DialogService>();
   final NavigationService _navService = locator<NavigationService>();
+  final StoreService _storeService = locator<StoreService>();
 
   final ReactiveValue<BloodGroup> _bloodGroup =
       ReactiveValue<BloodGroup>(BloodGroup.aPositive);
@@ -90,14 +93,14 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
     }
   }
 
-  void goHome() {
-    _navService.clearStackAndShow(Routes.homeView);
+  void goToApp() {
+    _navService.clearStackAndShow(Routes.appLayoutView);
   }
 
   Future onSubmit() async {
-    final user = FirebaseAuth.instance.currentUser;
+    final authUser = FirebaseAuth.instance.currentUser;
     final docUser =
-        FirebaseFirestore.instance.collection('users').doc(user!.uid);
+        FirebaseFirestore.instance.collection('users').doc(authUser!.uid);
 
     // Show loading dialog
     _dialogService.showCustomDialog(variant: DialogType.loading);
@@ -122,7 +125,7 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
               buttonTitle: 'Continue',
               barrierDismissible: true,
             )
-            .then((value) => value!.confirmed ? goHome() : null);
+            .then((value) => value!.confirmed ? goToApp() : null);
         notifyListeners();
         break;
       case true:
@@ -131,7 +134,7 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
         _navService.popRepeated(1);
 
         // Set user eligibility to false;
-        _eligible.value = false;
+        _eligible.value = true;
 
         // Set user type to donor
         _userType.value = UserType.donor;
@@ -142,26 +145,30 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
               description: AppConstants.qualifiedMessage,
               buttonTitle: 'Next',
             )
-            .then((value) => value!.confirmed ? goHome() : null);
+            .then((value) => value!.confirmed ? goToApp() : null);
         notifyListeners();
         break;
       default:
         return null;
     }
 
-    final customUser = CustomUser(
+    final _bsUser = BloodSourceUser(
+      uid: authUser.uid,
       age: int.parse(ageController.text.trim()),
-      weight: int.parse(weightController.text.trim()),
-      bloodGroup: _bloodGroup.value.value.name,
+      weight: double.parse(weightController.text.trim()),
+      bloodGroup: _bloodGroup.value,
       diseases: _disease.value.map((e) => e.value).toList(),
       piercingOrTattoo: _piercingBool.value,
       pregnantOrBreastFeeding: _pregnantBool.value,
       userType: _userType.value,
       isDonorEligible: true,
       isDonorFormComplete: true,
+      email: authUser.email,
+      name: authUser.displayName,
+      gender: Gender.none,
     );
 
-    await docUser.set(customUser.toJson());
+    await _storeService.updateBloodSourceUser(_bsUser);
   }
 
   void Function(BloodGroup?)? onBloodGroupChanged(BloodGroup? newValue) {
