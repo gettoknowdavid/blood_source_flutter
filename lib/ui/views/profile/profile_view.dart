@@ -19,6 +19,8 @@ class ProfileView extends StatelessWidget {
     return ViewModelBuilder<ProfileViewModel>.reactive(
       viewModelBuilder: () => ProfileViewModel(),
       onModelReady: (model) async => await model.init(),
+      fireOnModelReadyOnce: false,
+      createNewModelOnInsert: true,
       builder: (context, model, Widget? child) {
         if (model.isBusy) {
           return const LoadingIndicator();
@@ -40,7 +42,7 @@ class ProfileView extends StatelessWidget {
                         const Avatar(),
                         10.verticalSpace,
                         Text(
-                          model.data!.name!,
+                          model.user.name!,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 22.sp,
@@ -49,7 +51,7 @@ class ProfileView extends StatelessWidget {
                         ),
                         2.verticalSpace,
                         Text(
-                          model.data!.email!,
+                          model.user.email!,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 14.sp,
@@ -58,10 +60,10 @@ class ProfileView extends StatelessWidget {
                           ),
                         ),
                         2.verticalSpace,
-                        model.data!.phone == null
+                        model.user.phone == null
                             ? const SizedBox()
                             : Text(
-                                model.data!.phone!,
+                                model.user.phone!,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 14.sp,
@@ -96,7 +98,7 @@ class ProfileView extends StatelessWidget {
                     children: [
                       ProfileActionButton(
                         icon: const Icon(Icons.edit),
-                        onPressed: () => model.goToEditProfile(),
+                        onPressed: () => model.goToEditProfile(model.user),
                       ),
                       ProfileActionButton(
                         icon: const Icon(Icons.power_settings_new),
