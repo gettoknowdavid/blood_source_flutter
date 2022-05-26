@@ -62,7 +62,6 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: NavigationService),
     LazySingleton(classType: DialogService),
     LazySingleton(classType: MailAppService),
-    LazySingleton(classType: StorageService),
     LazySingleton(classType: AuthService),
     LazySingleton(classType: StoreService),
     LazySingleton(classType: FirebaseAuthenticationService),
@@ -83,6 +82,11 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: ProfileViewModel),
     LazySingleton(classType: DonorViewModel),
     LazySingleton(classType: EditProfileViewModel),
+    Presolve(
+      asType: StorageService,
+      classType: StorageService,
+      presolveUsing: StorageService.getInstance,
+    )
   ],
 )
 class App {}

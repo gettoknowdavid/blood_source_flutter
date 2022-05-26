@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 
+import '../models/blood_source_user.dart';
 import '../ui/layouts/app_layout/app_layout_view.dart';
 import '../ui/views/check_email/check_email_view.dart';
 import '../ui/views/dashboard/dashboard_view.dart';
@@ -179,10 +180,25 @@ class StackedRouter extends RouterBase {
       );
     },
     EditProfileView: (data) {
+      var args = data.getArgs<EditProfileViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const EditProfileView(),
+        builder: (context) => EditProfileView(
+          key: args.key,
+          user: args.user,
+        ),
         settings: data,
       );
     },
   };
+}
+
+/// ************************************************************************
+/// Arguments holder classes
+/// *************************************************************************
+
+/// EditProfileView arguments holder class
+class EditProfileViewArguments {
+  final Key? key;
+  final BloodSourceUser user;
+  EditProfileViewArguments({this.key, required this.user});
 }
