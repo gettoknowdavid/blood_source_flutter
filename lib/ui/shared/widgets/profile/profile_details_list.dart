@@ -17,7 +17,6 @@ class ProfileDetailsList extends ViewModelWidget<ProfileViewModel> {
       return ListView(
         shrinkWrap: true,
         primary: false,
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 32).r,
         children: [
           Title(
             color: Colors.black,
@@ -32,21 +31,23 @@ class ProfileDetailsList extends ViewModelWidget<ProfileViewModel> {
             title: 'Gender',
             value: Gender.values[viewModel.user.gender!.index].value,
           ),
+          Divider(height: 1.h, color: Colors.black26),
           ProfileDetailsItem(
             icon: AppIcons.age,
             title: 'Age',
             value: viewModel.user.age.toString(),
           ),
+          Divider(height: 1.h, color: Colors.black26),
           ProfileDetailsItem(
             icon: AppIcons.height,
             title: 'Height',
             value: viewModel.user.height.toString(),
           ),
+          Divider(height: 1.h, color: Colors.black26),
           ProfileDetailsItem(
             icon: AppIcons.weight,
             title: 'Weight',
             value: viewModel.user.weight.toString(),
-            showSeparator: false,
           ),
         ],
       );
