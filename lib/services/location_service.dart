@@ -17,14 +17,18 @@ class LocationService with ReactiveServiceMixin {
       ReactiveValue<geo.Placemark?>(null);
   geo.Placemark? get place => _place.value;
 
+  final ReactiveValue<String?> _city = ReactiveValue<String?>(null);
+  String? get city => _city.value;
+
   LocationService() {
     listenToReactiveValues([_loc, _place]);
 
     _location.requestPermission().then((PermissionStatus granted) {
       if (granted == PermissionStatus.granted) {
-        _location.onLocationChanged.listen((LocationData? data) {
+        _location.onLocationChanged.listen((LocationData? data) async {
           if (data != null) {
             _loc.value = UserLocation(data.latitude!, data.longitude!);
+            await getPlace();
           }
         });
       }
@@ -45,7 +49,7 @@ class LocationService with ReactiveServiceMixin {
     return _loc.value!;
   }
 
-  Future<String> getPlace() async {
+  Future getPlace() async {
     await getLocation();
     List<geo.Placemark> placemarks = await geo.placemarkFromCoordinates(
       _loc.value!.latitude,
@@ -55,9 +59,6 @@ class LocationService with ReactiveServiceMixin {
     geo.Placemark place2 = placemarks[1];
 
     _place.value = place;
-    String _currentAddress =
-        "${place.name} ${place2.name} ${place.subLocality} ${place.subAdministrativeArea} ${place.postalCode}";
-    logger.i(_currentAddress);
-    return _currentAddress;
+    _city.value = place.locality;
   }
 }
