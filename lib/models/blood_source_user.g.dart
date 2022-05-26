@@ -19,7 +19,7 @@ BloodSourceUser _$BloodSourceUserFromJson(Map<String, dynamic> json) =>
       city: json['city'] as String?,
       location: json['location'] == null
           ? null
-          : Location.fromJson(json['location'] as Map<String, dynamic>),
+          : UserLocation.fromJson(json['location'] as Map<String, dynamic>),
       email: json['email'] as String?,
       avatar: json['avatar'] as String?,
       bloodGroup:

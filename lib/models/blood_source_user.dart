@@ -1,6 +1,6 @@
 import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/gender.dart';
-import 'package:blood_source/models/location.dart';
+import 'package:blood_source/models/user_location.dart';
 import 'package:blood_source/models/user-type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -30,7 +30,7 @@ class BloodSourceUser {
 
   final String? city;
 
-  final Location? location;
+  final UserLocation? location;
 
   final String? email;
 
@@ -97,7 +97,7 @@ class BloodSourceUser {
         height = snapshot.data()?["height"] as double?,
         weight = snapshot.data()?["weight"] as double?,
         city = snapshot.data()?['city'] as String?,
-        location = snapshot.data()?['location'] as Location?,
+        location = snapshot.data()?['location'] as UserLocation?,
         phone = snapshot.data()?['phone'] as String?,
         email = snapshot.data()?['email'] as String?,
         avatar = snapshot.data()?['avatar'] as String?,
@@ -123,7 +123,7 @@ class BloodSourceUser {
       if (weight != null) "weight": weight,
       if (city != null) "city": city,
       if (location != null)
-        "location": Location(location!.latitude, location!.longitude),
+        "location": UserLocation(location!.latitude, location!.longitude),
       if (phone != null) "phone": phone,
       if (email != null) "email": email,
       if (avatar != null) "avatar": avatar,
