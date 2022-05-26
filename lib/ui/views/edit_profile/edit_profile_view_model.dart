@@ -3,15 +3,13 @@ import 'dart:io';
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/gender.dart';
-import 'package:blood_source/services/auth_service.dart';
+import 'package:blood_source/services/location_service.dart';
 import 'package:blood_source/services/media_service.dart';
 import 'package:blood_source/services/storage_service.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:blood_source/services/store_service.dart';
 import 'package:blood_source/utils/dialog_type.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -23,10 +21,10 @@ class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
   Logger logger = Logger();
   final DialogService _dialogService = locator<DialogService>();
   final StoreService _storeService = locator<StoreService>();
-  final AuthService _authService = locator<AuthService>();
   final MediaService _mediaService = locator<MediaService>();
   final NavigationService _navService = locator<NavigationService>();
   final StorageService _storageService = locator<StorageService>();
+  final LocationService _locService = locator<LocationService>();
 
   final ReactiveValue<File?> _image = ReactiveValue<File?>(null);
   File? get image => _image.value;
@@ -43,6 +41,7 @@ class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
   BloodGroup get bloodType => _bloodGroup.value;
 
   BloodSourceUser get user => _storeService.bloodUser!;
+  String? get city => _locService.city;
 
   void getImage() async {
     final _pickedFile = await _mediaService.getImage(fromGallery: true);
@@ -64,6 +63,10 @@ class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
       TextEditingController(text: user.age.toString());
   late TextEditingController phoneController =
       TextEditingController(text: user.phone);
+
+  Future getLocation() async {
+    await _locService.getPlace();
+  }
 
   void Function(Gender?)? onGenderChanged(Gender? newValue) {
     _gender.value = newValue!;
@@ -125,8 +128,8 @@ class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
       gender: _gender.value,
 
       ///
-      city: user.city,
-      location: user.location,
+      city: _locService.city,
+      location: _locService.loc,
     );
 
     final res = await _storeService.updateBloodSourceUser(_editedBSUser);
