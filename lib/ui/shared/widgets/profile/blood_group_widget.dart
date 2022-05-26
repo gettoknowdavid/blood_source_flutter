@@ -18,7 +18,7 @@ class BloodGroupWidget extends ViewModelWidget<ProfileViewModel> {
         borderRadius: BorderRadius.circular(20.r),
       ),
       child: Text(
-        BloodGroup.values[viewModel.data!.bloodGroup!.index].value.desc,
+        BloodGroup.values[viewModel.user.bloodGroup!.index].value.desc,
         style: TextStyle(
           color: Colors.white,
           fontSize: 12.sp,
