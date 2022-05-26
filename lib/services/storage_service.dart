@@ -1,18 +1,41 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:logger/logger.dart';
 
 class StorageService {
+  final Logger _logger = Logger();
   static late StorageService _instance;
   static late SharedPreferences _preferences;
+  static late FirebaseStorage _firebaseStorage;
 
-  static Future<StorageService?> getInstance() async {
+  static Future<StorageService> getInstance() async {
     _instance = StorageService();
 
     _preferences = await SharedPreferences.getInstance();
+    _firebaseStorage = FirebaseStorage.instance;
 
     return _instance;
   }
 
   static const String UserKey = 'user';
+
+  Reference get storageRef => _firebaseStorage.ref();
+
+  dynamic uploadFileToCloud(String path, String name, Reference ref) async {
+    File file = File(path);
+    try {
+      await ref.putFile(file);
+    } on FirebaseException catch (e) {
+      _logger.e(e.message);
+    }
+  }
+
+  dynamic getFileFromCloud(Reference ref) async {
+    return await ref.getDownloadURL();
+  }
 
   dynamic getFromDisk(String key) {
     var value = _preferences.get(key);
