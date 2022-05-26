@@ -34,20 +34,18 @@ class AppLayoutView extends StatelessWidget {
       viewModelBuilder: () => AppLayoutViewModel(),
       builder: (context, model, Widget? child) {
         return Scaffold(
-          body: SafeArea(
-            child: PageTransitionSwitcher(
-              duration: const Duration(milliseconds: 300),
-              reverse: model.reverse,
-              transitionBuilder: (child, animation, secondaryAnimation) {
-                return SharedAxisTransition(
-                  child: child,
-                  animation: animation,
-                  secondaryAnimation: secondaryAnimation,
-                  transitionType: SharedAxisTransitionType.horizontal,
-                );
-              },
-              child: getView(model.currentIndex),
-            ),
+          body: PageTransitionSwitcher(
+            duration: const Duration(milliseconds: 300),
+            reverse: model.reverse,
+            transitionBuilder: (child, animation, secondaryAnimation) {
+              return SharedAxisTransition(
+                child: child,
+                animation: animation,
+                secondaryAnimation: secondaryAnimation,
+                transitionType: SharedAxisTransitionType.horizontal,
+              );
+            },
+            child: getView(model.currentIndex),
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.miniCenterDocked,
