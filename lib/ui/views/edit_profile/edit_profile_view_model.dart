@@ -77,6 +77,19 @@ class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
     return null;
   }
 
+  IconData? getGenderIcon(Gender e) {
+    switch (e) {
+      case Gender.male:
+        return Icons.man_rounded;
+      case Gender.female:
+        return Icons.woman_rounded;
+      case Gender.none:
+        return Icons.transgender;
+      default:
+        return Icons.transgender;
+    }
+  }
+
   Future<BloodSourceUser> save() async {
     _dialogService.showCustomDialog(variant: DialogType.loading);
 
