@@ -16,10 +16,10 @@ class Avatar extends ViewModelWidget<ProfileViewModel> {
         radius: 0.17 * 1.sw,
         foregroundColor: AppColors.primary,
         child: viewModel.isBusy
-            ? const CircularProgressIndicator()
+            ? const Center(child: CircularProgressIndicator())
             : const Icon(Icons.add_a_photo),
-        foregroundImage: viewModel.data!.avatar != null
-            ? NetworkImage(viewModel.data!.avatar!)
+        foregroundImage: viewModel.user.avatar != null
+            ? NetworkImage(viewModel.user.avatar!)
             : null,
       ),
     );
