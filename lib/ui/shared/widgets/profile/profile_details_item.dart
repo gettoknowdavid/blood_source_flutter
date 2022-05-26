@@ -7,12 +7,10 @@ class ProfileDetailsItem extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.value,
-    this.showSeparator = true,
   }) : super(key: key);
   final Widget icon;
   final String title;
   final String? value;
-  final bool showSeparator;
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +21,6 @@ class ProfileDetailsItem extends StatelessWidget {
       trailing: Text(
         value == null ? 'Not set yet' : value!,
         style: TextStyle(fontSize: 14.sp),
-      ),
-      shape: Border(
-        bottom: BorderSide(
-          width: showSeparator ? 0.5.r : 0,
-          color: showSeparator ? Colors.black26 : Colors.transparent,
-        ),
       ),
     );
   }
