@@ -1,12 +1,20 @@
 import 'package:image_picker/image_picker.dart';
+import 'package:stacked/stacked.dart';
 
-class MediaService {
+class MediaService with ReactiveServiceMixin {
+  MediaService() {
+    listenToReactiveValues([_image]);
+  }
+
   final ImagePicker _picker = ImagePicker();
 
+  final ReactiveValue<XFile?> _image = ReactiveValue<XFile?>(null);
+  XFile? get image => _image.value;
+
   Future<XFile?> getImage({required bool fromGallery}) async {
-    final image = await _picker.pickImage(
+    _image.value = await _picker.pickImage(
       source: fromGallery ? ImageSource.gallery : ImageSource.camera,
     );
-    return image;
+    return _image.value;
   }
 }
