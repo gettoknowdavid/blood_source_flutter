@@ -1,1 +1,1 @@
-enum DialogType { basic, mailApps, loading }
+enum DialogType { basic, mailApps, loading, imagePicker }

@@ -1,3 +1,4 @@
+import 'package:blood_source/models/user-type.dart';
 import 'package:blood_source/ui/layouts/auth_layout.dart';
 import 'package:blood_source/ui/shared/widgets/app_button.dart';
 import 'package:blood_source/ui/shared/widgets/app_textfield.dart';
@@ -57,6 +58,29 @@ class SignUpView extends StatelessWidget {
                   ),
                   10.verticalSpace,
                   const PasswordRulesWidget(),
+                  10.verticalSpace,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: RadioListTile<UserType>(
+                          dense: true,
+                          value: UserType.donor,
+                          title: const Text('Donor'),
+                          groupValue: model.userType,
+                          onChanged: (type) => model.onUserTypeChanged(type),
+                        ),
+                      ),
+                      Expanded(
+                        child: RadioListTile<UserType>(
+                          dense: true,
+                          value: UserType.recipient,
+                          title: const Text('Recipient'),
+                          groupValue: model.userType,
+                          onChanged: (type) => model.onUserTypeChanged(type),
+                        ),
+                      ),
+                    ],
+                  ),
                   40.verticalSpace,
                   AppButton(
                     onTap: model.isFormValidated()

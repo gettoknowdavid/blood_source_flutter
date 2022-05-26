@@ -1,35 +1,28 @@
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_colors.dart';
+import 'package:blood_source/models/gender.dart';
+import 'package:blood_source/models/user-type.dart';
+import 'package:blood_source/services/auth_service.dart';
 import 'package:blood_source/utils/dialog_type.dart';
 import 'package:blood_source/utils/password_rules.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
   SignUpViewModel() {
-    listenToReactiveValues([_rules, _rulesVisibility, _ruleColor]);
-  }
-
-  void initialise() {
-    notifyListeners();
+    listenToReactiveValues([_rules, _rulesVisibility, _ruleColor, _userType]);
   }
 
   Future<void> init() async {}
 
-  DialogService dialogService = locator<DialogService>();
-  NavigationService navigationService = locator<NavigationService>();
-  FirebaseAuthenticationService authService =
-      locator<FirebaseAuthenticationService>();
+  final DialogService _dialogService = locator<DialogService>();
+  final AuthService _authService = locator<AuthService>();
+  final NavigationService _navService = locator<NavigationService>();
 
   final GlobalKey<FormState> _signUpFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> get signUpFormKey => _signUpFormKey;
-
-  bool _isPasswordObscure = false;
-  bool get isPasswordObscure => _isPasswordObscure;
 
   String? signUpError;
 
@@ -42,15 +35,13 @@ class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
   final ReactiveValue<bool> _rulesVisibility = ReactiveValue<bool>(false);
   final ReactiveValue<Color> _ruleColor =
       ReactiveValue<Color>(AppColors.swatch.shade900);
+  final ReactiveValue<UserType> _userType =
+      ReactiveValue<UserType>(UserType.donor);
 
   List<Map> get rules => _rules.value;
   bool get rulesVisibility => _rulesVisibility.value;
   Color get ruleColor => _ruleColor.value;
-
-  void toggleObscurity() {
-    _isPasswordObscure = !_isPasswordObscure;
-    notifyListeners();
-  }
+  UserType get userType => _userType.value;
 
   bool isPasswordOk() {
     return ((!(passwordController.text.contains(nameController.text) ||
@@ -81,31 +72,35 @@ class SignUpViewModel extends BaseViewModel with ReactiveServiceMixin {
     notifyListeners();
   }
 
+  void Function(UserType?)? onUserTypeChanged(UserType? type) {
+    _userType.value = type!;
+    notifyListeners();
+    return null;
+  }
+
   Future signUp() async {
     if (_signUpFormKey.currentState!.validate()) {
-      dialogService.showCustomDialog(variant: DialogType.loading);
+      _dialogService.showCustomDialog(variant: DialogType.loading);
 
-      final FirebaseAuthenticationResult result =
-          await authService.createAccountWithEmail(
+      final result = await _authService.signUp(
+        name: nameController.text.trim(),
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
+        gender: Gender.none,
+        isDonorFormComplete: false,
+        userType: _userType.value,
       );
 
-      if (result.hasError) {
-        navigationService.popRepeated(1);
-        signUpError = result.errorMessage;
-      }
-
       if (result.user != null) {
-        navigationService.clearStackAndShow(Routes.verifyEmailView);
+        _navService.clearStackAndShow(Routes.verifyEmailView);
         notifyListeners();
       }
 
-      authService.authStateChanges.listen((User? user) {
-        if (user != null) {
-          user.updateDisplayName(nameController.text.trim());
-        }
-      });
+      if (result.hasError) {
+        _navService.popRepeated(1);
+        signUpError = result.errorMessage;
+        notifyListeners();
+      }
     }
   }
 
