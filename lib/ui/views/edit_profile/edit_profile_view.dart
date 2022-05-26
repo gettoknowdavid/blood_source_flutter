@@ -2,6 +2,7 @@ import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/gender.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
+import 'package:blood_source/ui/shared/widgets/app_button.dart';
 import 'package:blood_source/ui/shared/widgets/app_text_button.dart';
 import 'package:blood_source/ui/shared/widgets/app_textfield.dart';
 import 'package:blood_source/ui/shared/widgets/profile_header_paint.dart';
@@ -33,7 +34,7 @@ class EditProfileView extends StatelessWidget {
               SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(16, 32, 16, 32).r,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,23 +49,25 @@ class EditProfileView extends StatelessWidget {
                       ],
                     ),
                     0.verticalSpace,
-                    GestureDetector(
-                      onTap: model.getImage,
-                      child: CircleAvatar(
-                        radius: 0.18 * 1.sw,
-                        backgroundColor: Colors.white,
+                    Center(
+                      child: GestureDetector(
+                        onTap: model.getImage,
                         child: CircleAvatar(
-                          radius: 0.17 * 1.sw,
-                          foregroundColor: AppColors.primary,
-                          foregroundImage: model.image != null
-                              ? FileImage(model.image!)
-                              : null,
-                          backgroundImage: user.avatar != null
-                              ? NetworkImage(user.avatar!)
-                              : null,
-                          child: model.image == null
-                              ? const Icon(Icons.add_a_photo)
-                              : const SizedBox(),
+                          radius: 0.18 * 1.sw,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 0.17 * 1.sw,
+                            foregroundColor: AppColors.primary,
+                            foregroundImage: model.image != null
+                                ? FileImage(model.image!)
+                                : null,
+                            backgroundImage: user.avatar != null
+                                ? NetworkImage(user.avatar!)
+                                : null,
+                            child: model.image == null
+                                ? const Icon(Icons.add_a_photo)
+                                : const SizedBox(),
+                          ),
                         ),
                       ),
                     ),
@@ -162,6 +165,25 @@ class EditProfileView extends StatelessWidget {
                       label: 'Height',
                       keyboardType: TextInputType.number,
                     ),
+                    10.verticalSpace,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0).r,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('City', style: TextStyle(fontSize: 11.r)),
+                          model.city != null
+                              ? Text(
+                                  model.city!,
+                                  style: TextStyle(fontSize: 14.r),
+                                )
+                              : AppTextButton(
+                                  onTap: () => model.getLocation(),
+                                  text: 'Get Current Location',
+                                )
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),
