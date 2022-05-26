@@ -30,22 +30,22 @@ class ProfileDetailsList extends ViewModelWidget<ProfileViewModel> {
           ProfileDetailsItem(
             icon: AppIcons.gender,
             title: 'Gender',
-            value: Gender.values[viewModel.data!.gender!.index].value,
+            value: Gender.values[viewModel.user.gender!.index].value,
           ),
           ProfileDetailsItem(
             icon: AppIcons.age,
             title: 'Age',
-            value: viewModel.data!.age.toString(),
+            value: viewModel.user.age.toString(),
           ),
           ProfileDetailsItem(
             icon: AppIcons.height,
             title: 'Height',
-            value: viewModel.data!.height.toString(),
+            value: viewModel.user.height.toString(),
           ),
           ProfileDetailsItem(
             icon: AppIcons.weight,
             title: 'Weight',
-            value: viewModel.data!.weight.toString(),
+            value: viewModel.user.weight.toString(),
             showSeparator: false,
           ),
         ],
