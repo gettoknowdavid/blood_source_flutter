@@ -34,76 +34,76 @@ class ProfileView extends StatelessWidget {
                   painter: ProfileHeaderPainter(),
                 ),
                 SingleChildScrollView(
-                  child: Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        100.verticalSpace,
-                        const Avatar(),
-                        10.verticalSpace,
-                        Text(
-                          model.user.name!,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 22.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        2.verticalSpace,
-                        Text(
-                          model.user.email!,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontStyle: FontStyle.italic,
-                            color: Colors.black54,
-                          ),
-                        ),
-                        2.verticalSpace,
-                        model.user.phone == null
-                            ? const SizedBox()
-                            : Text(
-                                model.user.phone!,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontStyle: FontStyle.italic,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                        20.verticalSpace,
-                        const BloodGroupWidget(),
-                        40.verticalSpace,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                  padding: const EdgeInsets.fromLTRB(16, 32, 16, 32).r,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16).r,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const ProfileStatWidget(
-                              stat: 16,
-                              title: 'Donations',
+                            ProfileActionButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () =>
+                                  model.goToEditProfile(model.user),
                             ),
-                            100.horizontalSpace,
-                            const ProfileStatWidget(stat: 2, title: 'Requests'),
+                            ProfileActionButton(
+                              icon: const Icon(Icons.power_settings_new),
+                              onPressed: () => model.signOut(),
+                            ),
                           ],
                         ),
-                        40.verticalSpace,
-                        const ProfileDetailsList(),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(16.r),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ProfileActionButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () => model.goToEditProfile(model.user),
                       ),
-                      ProfileActionButton(
-                        icon: const Icon(Icons.power_settings_new),
-                        onPressed: () => model.signOut(),
+                      0.verticalSpace,
+                      const Avatar(),
+                      10.verticalSpace,
+                      Text(
+                        model.user.name!,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 22.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
+                      2.verticalSpace,
+                      Text(
+                        model.user.email!,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      2.verticalSpace,
+                      model.user.phone == null
+                          ? const SizedBox()
+                          : Text(
+                              model.user.phone!,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontStyle: FontStyle.italic,
+                                color: Colors.black54,
+                              ),
+                            ),
+                      20.verticalSpace,
+                      const BloodGroupWidget(),
+                      30.verticalSpace,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const ProfileStatWidget(
+                            stat: 16,
+                            title: 'Donations',
+                          ),
+                          100.horizontalSpace,
+                          const ProfileStatWidget(stat: 2, title: 'Requests'),
+                        ],
+                      ),
+                      30.verticalSpace,
+                      const ProfileDetailsList(),
                     ],
                   ),
                 ),
