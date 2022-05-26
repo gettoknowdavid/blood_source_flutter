@@ -29,40 +29,41 @@ class DashboardView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       GestureDetector(
-                        onTap: () async =>
-                            await model.locationService.getPlace(),
-                        child: Row(
-                          children: [
-                            Container(
-                              height: 36.h,
-                              width: 36.h,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: AppColors.swatch.shade100,
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                              child: Icon(
-                                model.locationService.loc != null
-                                    ? Icons.location_pin
-                                    : Icons.add_location_alt,
-                                size: 22.sp,
-                                color: AppColors.primaryDark,
-                              ),
-                            ),
-                            4.horizontalSpace,
-                            model.locationService.place!.isoCountryCode == null
-                                ? const SizedBox()
-                                : Text(
-                                    model.locationService.place!
-                                        .subAdministrativeArea!,
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: AppColors.primary,
-                                      fontWeight: FontWeight.w500,
+                        onTap: () => model.locationService.getPlace(),
+                        child: model.isBusy
+                            ? const CircularProgressIndicator()
+                            : Row(
+                                children: [
+                                  Container(
+                                    height: 36.h,
+                                    width: 36.h,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.swatch.shade100,
+                                      borderRadius: BorderRadius.circular(12.r),
+                                    ),
+                                    child: Icon(
+                                      model.locationService.loc != null
+                                          ? Icons.location_pin
+                                          : Icons.add_location_alt,
+                                      size: 22.sp,
+                                      color: AppColors.primaryDark,
                                     ),
                                   ),
-                          ],
-                        ),
+                                  4.horizontalSpace,
+                                  model.isBusy
+                                      ? const SizedBox()
+                                      : Text(
+                                          model.locationService.place!
+                                              .subAdministrativeArea!,
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: AppColors.primary,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                ],
+                              ),
                       ),
                     ],
                   ),
