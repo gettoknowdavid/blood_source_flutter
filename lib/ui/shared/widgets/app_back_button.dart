@@ -13,7 +13,7 @@ class AppBackButton extends StatelessWidget {
     NavigationService navService = locator<NavigationService>();
 
     return Padding(
-      padding: EdgeInsets.all(20.r),
+      padding: EdgeInsets.all(16.r),
       child: GestureDetector(
         onTap: () => navService.back(),
         child: ImageIcon(
