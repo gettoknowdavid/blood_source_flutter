@@ -17,51 +17,56 @@ class DashboardView extends StatelessWidget {
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            elevation: 0,
-            leadingWidth: 100.w,
-            leading: Container(
-              alignment: Alignment.centerLeft,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        height: 42.h,
-                        width: 42.h,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: AppColors.swatch.shade100,
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        child: Icon(
-                          Icons.pin_drop_outlined,
-                          size: 26.sp,
-                          color: AppColors.primaryDark,
-                        ),
-                      ),
-                      4.horizontalSpace,
-                      Text(
-                        'PHC',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
           body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                45.verticalSpace,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16).r,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () async =>
+                            await model.locationService.getPlace(),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 36.h,
+                              width: 36.h,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: AppColors.swatch.shade100,
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: Icon(
+                                model.locationService.loc != null
+                                    ? Icons.location_pin
+                                    : Icons.add_location_alt,
+                                size: 22.sp,
+                                color: AppColors.primaryDark,
+                              ),
+                            ),
+                            4.horizontalSpace,
+                            model.locationService.place!.isoCountryCode == null
+                                ? const SizedBox()
+                                : Text(
+                                    model.locationService.place!
+                                        .subAdministrativeArea!,
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 30.verticalSpace,
                 Text(
                   'GIVE THE GIFT OF LIFE',
