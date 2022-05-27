@@ -49,6 +49,12 @@ class ProfileDetailsList extends ViewModelWidget<ProfileViewModel> {
             title: 'Weight',
             value: viewModel.user.weight.toString(),
           ),
+          Divider(height: 1.h, color: Colors.black26),
+          ProfileDetailsItem(
+            icon: const Icon(Icons.location_city),
+            title: 'City',
+            value: viewModel.user.city,
+          ),
         ],
       );
     }
