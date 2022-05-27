@@ -22,51 +22,10 @@ class DashboardView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 45.verticalSpace,
-                Padding(
+                Container(
+                  alignment: Alignment.centerRight,
                   padding: const EdgeInsets.symmetric(horizontal: 16).r,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () => model.locationService.getPlace(),
-                        child: model.isBusy
-                            ? const CircularProgressIndicator()
-                            : Row(
-                                children: [
-                                  Container(
-                                    height: 36.h,
-                                    width: 36.h,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: AppColors.swatch.shade100,
-                                      borderRadius: BorderRadius.circular(12.r),
-                                    ),
-                                    child: Icon(
-                                      model.locationService.loc != null
-                                          ? Icons.location_pin
-                                          : Icons.add_location_alt,
-                                      size: 22.sp,
-                                      color: AppColors.primaryDark,
-                                    ),
-                                  ),
-                                  4.horizontalSpace,
-                                  model.isBusy
-                                      ? const SizedBox()
-                                      : Text(
-                                          model.locationService.place!
-                                              .subAdministrativeArea!,
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: AppColors.primary,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                ],
-                              ),
-                      ),
-                    ],
-                  ),
+                  child: Text('Hi ${model.firstName}!'),
                 ),
                 30.verticalSpace,
                 Text(
