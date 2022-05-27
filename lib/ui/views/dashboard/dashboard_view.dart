@@ -52,26 +52,31 @@ class DashboardView extends StatelessWidget {
                   style: TextStyle(fontSize: 14.sp, color: Colors.black87),
                 ),
                 10.verticalSpace,
-                SizedBox(
-                  height: 0.6 * 1.sh,
-                  child: GridView.builder(
-                    primary: false,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 32.w,
-                      vertical: 30.h,
-                    ),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 9 / 11,
-                      crossAxisSpacing: 20.h,
-                      mainAxisSpacing: 20.h,
-                    ),
-                    itemCount: buttonList.length,
-                    itemBuilder: (BuildContext context, i) {
-                      return DashboardButtonItem(model: buttonList[i]);
-                    },
-                  ),
-                ),
+                model.isBusy
+                    ? const Center(child: CircularProgressIndicator())
+                    : SizedBox(
+                        height: 0.6 * 1.sh,
+                        child: GridView.builder(
+                          primary: false,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 32.w,
+                            vertical: 30.h,
+                          ),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 9 / 11,
+                            crossAxisSpacing: 20.h,
+                            mainAxisSpacing: 20.h,
+                          ),
+                          itemCount: model.buttonList.length,
+                          itemBuilder: (BuildContext context, i) {
+                            return DashboardButtonItem(
+                              model: model.buttonList[i],
+                            );
+                          },
+                        ),
+                      ),
               ],
             ),
           ),
