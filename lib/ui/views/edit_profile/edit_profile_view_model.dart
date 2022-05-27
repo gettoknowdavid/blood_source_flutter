@@ -65,7 +65,7 @@ class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
       TextEditingController(text: user.phone);
 
   Future getLocation() async {
-    await _locService.getPlace();
+    await _locService.getLocation();
   }
 
   void Function(Gender?)? onGenderChanged(Gender? newValue) {
@@ -129,7 +129,7 @@ class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
 
       ///
       city: _locService.city,
-      location: _locService.loc,
+      location: user.location,
     );
 
     final res = await _storeService.updateBloodSourceUser(_editedBSUser);
