@@ -17,6 +17,50 @@ void setupBottomSheetUi() {
   bottomSheetService.setCustomSheetBuilders(builders);
 }
 
+// class _RequestBottomSheet extends StatelessWidget {
+//   const _RequestBottomSheet({
+//     Key? key,
+//     required this.request,
+//     required this.completer,
+//   }) : super(key: key);
+//   final SheetRequest request;
+//   final Function(SheetResponse) completer;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     NavigationService navService = locator<NavigationService>();
+
+//     return Column(
+//       mainAxisAlignment: MainAxisAlignment.end,
+//       children: [
+//         Padding(
+//           padding: EdgeInsets.symmetric(horizontal: 25.r, vertical: 15.r),
+//           child: TextButton(
+//             onPressed: () => completer(SheetResponse(confirmed: true)),
+//             child: CircleAvatar(
+//               backgroundColor: AppColors.primary,
+//               child: Icon(Icons.close, size: 22.sp),
+//             ),
+//           ),
+//         ),
+//         Container(
+//           decoration: BoxDecoration(
+//             color: Colors.white,
+//             borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+//           ),
+//           height: 0.5.sh,
+//           width: 1.sw,
+//           child: Column(
+//             children: [
+//               AppTextField(controller: controller)
+//             ],
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
+
 class _FloatingBoxBottomSheet extends StatelessWidget {
   final SheetRequest request;
   final Function(SheetResponse) completer;
