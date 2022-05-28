@@ -1,1 +1,1 @@
-enum BottomSheetType { floating }
+enum BottomSheetType { floating, request }
