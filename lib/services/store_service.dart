@@ -1,4 +1,5 @@
 import 'package:blood_source/app/app.locator.dart';
+import 'package:blood_source/models/request.dart';
 import 'package:blood_source/services/storage_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:blood_source/models/blood_source_user.dart';
@@ -6,8 +7,11 @@ import 'package:stacked/stacked.dart';
 
 class StoreService with ReactiveServiceMixin {
   StoreService() {
-    listenToReactiveValues([_bloodUser]);
+    listenToReactiveValues([_bloodUser, _request]);
   }
+
+  final ReactiveValue<Request?> _request = ReactiveValue<Request?>(null);
+  Request? get request => _request.value;
 
   final ReactiveValue<BloodSourceUser?> _bloodUser =
       ReactiveValue<BloodSourceUser?>(null);
@@ -16,6 +20,17 @@ class StoreService with ReactiveServiceMixin {
   final StorageService _storageService = locator<StorageService>();
 
   final _usersColRef = FirebaseFirestore.instance.collection('users');
+  final _requestColRef = FirebaseFirestore.instance.collection('requests');
+
+  Future<StoreResult> addRequest(Request request) async {
+    try {
+      await _requestColRef.doc().set(request.toFirestore());
+      _request.value = request;
+      return StoreResult(request: request);
+    } on FirebaseException catch (e) {
+      return StoreResult.error(errorMessage: e.message);
+    }
+  }
 
   Future<StoreResult> createBloodSourceUser(BloodSourceUser user) async {
     try {
@@ -67,12 +82,15 @@ class StoreService with ReactiveServiceMixin {
 
 class StoreResult {
   final BloodSourceUser? bSUser;
+  final Request? request;
 
   final String? errorMessage;
 
-  StoreResult({this.bSUser}) : errorMessage = null;
+  StoreResult({this.bSUser, this.request}) : errorMessage = null;
 
-  StoreResult.error({this.errorMessage}) : bSUser = null;
+  StoreResult.error({this.errorMessage})
+      : bSUser = null,
+        request = null;
 
   bool get hasError => errorMessage != null && errorMessage!.isNotEmpty;
 }
