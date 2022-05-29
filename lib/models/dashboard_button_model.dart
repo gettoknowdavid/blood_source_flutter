@@ -34,7 +34,7 @@ final List<DashboardButtonModel> donorButtonList = <DashboardButtonModel>[
       color: AppColors.primary,
     ),
     const Color(0xFFFA6393),
-    Routes.donateView,
+    Routes.requestListView,
   ),
   DashboardButtonModel(
     'Blood Bank',
