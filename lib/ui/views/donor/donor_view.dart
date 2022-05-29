@@ -1,4 +1,6 @@
 import 'package:blood_source/common/app_colors.dart';
+import 'package:blood_source/models/blood_group.dart';
+import 'package:blood_source/models/request.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
 import 'package:blood_source/ui/shared/widgets/app_text_button.dart';
 import 'package:blood_source/ui/shared/widgets/donor/donor_list_item.dart';
@@ -9,9 +11,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import './donor_view_model.dart';
 
 class DonorView extends StatelessWidget {
-  const DonorView({Key? key, this.fromRequestView = false}) : super(key: key);
+  const DonorView({Key? key, this.fromRequestView = false, this.request})
+      : super(key: key);
 
   final bool fromRequestView;
+  final Request? request;
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +30,15 @@ class DonorView extends StatelessWidget {
             backgroundColor: Colors.white,
             elevation: 0,
             actions: [
-              AppTextButton(
-                onTap: () {},
-                text: 'Add Request',
-                padding: EdgeInsets.only(right: 18.r),
-                fontSize: 16.sp,
-                color: AppColors.primaryDark,
-              )
+              !fromRequestView
+                  ? const SizedBox()
+                  : AppTextButton(
+                      onTap: () => model.addRequest(request!),
+                      text: 'Add Request',
+                      padding: EdgeInsets.only(right: 18.r),
+                      fontSize: 16.sp,
+                      color: AppColors.primaryDark,
+                    )
             ],
           ),
           body: SingleChildScrollView(
@@ -80,7 +86,15 @@ class DonorView extends StatelessWidget {
                                   border: Border.all(color: Colors.white),
                                 ),
                                 child: Text(
-                                  'A+',
+                                  fromRequestView
+                                      ? BloodGroup
+                                          .values[request!.bloodGroup.index]
+                                          .value
+                                          .name
+                                      : BloodGroup
+                                          .values[model.user!.bloodGroup!.index]
+                                          .value
+                                          .name,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 12.sp,
