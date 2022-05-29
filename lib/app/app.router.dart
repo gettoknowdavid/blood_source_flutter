@@ -25,6 +25,7 @@ import '../ui/views/main_scaffold/main_scaffold_view.dart';
 import '../ui/views/notifications/notifications_view.dart';
 import '../ui/views/profile/profile_view.dart';
 import '../ui/views/request/request_view.dart';
+import '../ui/views/request_list/request_list_view.dart';
 import '../ui/views/sign_in/sign_in_view.dart';
 import '../ui/views/sign_up/sign_up_view.dart';
 import '../ui/views/splash/splash_view.dart';
@@ -48,6 +49,7 @@ class Routes {
   static const String donorView = '/donor-view';
   static const String requestView = '/request-view';
   static const String editProfileView = '/edit-profile-view';
+  static const String requestListView = '/request-list-view';
   static const all = <String>{
     splashView,
     mainScaffoldView,
@@ -66,6 +68,7 @@ class Routes {
     donorView,
     requestView,
     editProfileView,
+    requestListView,
   };
 }
 
@@ -90,6 +93,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.donorView, page: DonorView),
     RouteDef(Routes.requestView, page: RequestView),
     RouteDef(Routes.editProfileView, page: EditProfileView),
+    RouteDef(Routes.requestListView, page: RequestListView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -204,6 +208,12 @@ class StackedRouter extends RouterBase {
           key: args.key,
           user: args.user,
         ),
+        settings: data,
+      );
+    },
+    RequestListView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const RequestListView(),
         settings: data,
       );
     },

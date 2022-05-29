@@ -30,6 +30,8 @@ import 'package:blood_source/ui/views/profile/profile_view.dart';
 import 'package:blood_source/ui/views/profile/profile_view_model.dart';
 import 'package:blood_source/ui/views/request/request_view.dart';
 import 'package:blood_source/ui/views/request/request_view_model.dart';
+import 'package:blood_source/ui/views/request_list/request_list_view.dart';
+import 'package:blood_source/ui/views/request_list/request_list_view_model.dart';
 import 'package:blood_source/ui/views/sign_in/sign_in_view.dart';
 import 'package:blood_source/ui/views/sign_in/sign_in_view_model.dart';
 import 'package:blood_source/ui/views/sign_up/sign_up_view.dart';
@@ -61,6 +63,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: DonorView),
     MaterialRoute(page: RequestView),
     MaterialRoute(page: EditProfileView),
+    MaterialRoute(page: RequestListView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
@@ -89,6 +92,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: DonorViewModel),
     LazySingleton(classType: RequestViewModel),
     LazySingleton(classType: EditProfileViewModel),
+    LazySingleton(classType: RequestListViewModel),
     Presolve(
       asType: StorageService,
       classType: StorageService,
