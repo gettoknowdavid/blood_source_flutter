@@ -155,7 +155,10 @@ class RequestView extends StatelessWidget {
                   25.verticalSpace,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0).r,
-                    child: AppButton(onTap: () {}, text: 'Search'),
+                    child: AppButton(
+                      onTap: model.goToDonorList,
+                      text: 'Search',
+                    ),
                   ),
                 ],
               ),
