@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -21,6 +22,16 @@ class UserLocation {
 
   @override
   int get hashCode => hashValues(latitude, longitude);
+
+  UserLocation.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  )   : latitude = snapshot.data()?['latitude'],
+        longitude = snapshot.data()?['longitude'];
+
+  Map<String, dynamic> toFirestore() {
+    return {"latitude": latitude, "longitude": longitude};
+  }
 
   factory UserLocation.fromJson(Map<String, dynamic> json) =>
       _$UserLocationFromJson(json);
