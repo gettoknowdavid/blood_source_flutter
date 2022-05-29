@@ -10,6 +10,7 @@ class AppTextButton extends StatelessWidget {
     this.color = Colors.black,
     this.fontSize,
     this.fontWeight = FontWeight.w500,
+    this.padding = EdgeInsets.zero,
   }) : super(key: key);
 
   final void Function()? onTap;
@@ -18,13 +19,14 @@ class AppTextButton extends StatelessWidget {
   final Color? color;
   final double? fontSize;
   final FontWeight fontWeight;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onTap,
       style: TextButton.styleFrom(
-        padding: EdgeInsets.zero,
+        padding: padding,
         alignment: alignment,
         splashFactory: NoSplash.splashFactory,
       ),
