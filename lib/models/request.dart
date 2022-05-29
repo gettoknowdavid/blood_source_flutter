@@ -33,7 +33,7 @@ class Request {
             snapshot.data()?['requestLocation'] as Map<String, dynamic>),
         showContactInfo = snapshot.data()?["showContactInfo"] as bool,
         requestGranted = snapshot.data()?["requestGranted"] as bool,
-        timeAdded = DateTime.parse(snapshot.data()?['timeAdded'] as String);
+        timeAdded = (snapshot.data()?['timeAdded'] as Timestamp).toDate();
 
   Map<String, dynamic> toFirestore() {
     return {
