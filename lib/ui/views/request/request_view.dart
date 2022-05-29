@@ -138,7 +138,7 @@ class RequestView extends StatelessWidget {
                   ),
                   10.verticalSpace,
                   CheckboxListTile(
-                    value: model.showPhone,
+                    value: model.showContact,
                     onChanged: (value) => model.onShowPhoneChanged(value),
                     controlAffinity: ListTileControlAffinity.leading,
                     checkboxShape: RoundedRectangleBorder(
@@ -156,7 +156,7 @@ class RequestView extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0).r,
                     child: AppButton(
-                      onTap: model.goToDonorList,
+                      onTap: model.searchDonations,
                       text: 'Search',
                     ),
                   ),
