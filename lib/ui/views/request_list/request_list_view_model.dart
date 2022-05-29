@@ -6,6 +6,8 @@ import 'package:stacked/stacked.dart';
 class RequestListViewModel extends ReactiveViewModel {
   final StoreService _storeService = locator<StoreService>();
 
+  List<Request>? get requests => _storeService.requests;
+
   Future<void> init() async {
     await longUpdateStuff();
   }
