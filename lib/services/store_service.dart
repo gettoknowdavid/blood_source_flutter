@@ -3,15 +3,23 @@ import 'package:blood_source/models/request.dart';
 import 'package:blood_source/services/storage_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:blood_source/models/blood_source_user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stacked/stacked.dart';
+import 'package:logger/logger.dart';
 
 class StoreService with ReactiveServiceMixin {
   StoreService() {
     listenToReactiveValues([_bloodUser, _request]);
   }
 
+  Logger logger = Logger();
+
   final ReactiveValue<Request?> _request = ReactiveValue<Request?>(null);
   Request? get request => _request.value;
+
+  final ReactiveValue<List<Request>?> _requests =
+      ReactiveValue<List<Request>?>(null);
+  List<Request>? get requests => _requests.value;
 
   final ReactiveValue<BloodSourceUser?> _bloodUser =
       ReactiveValue<BloodSourceUser?>(null);
@@ -22,11 +30,24 @@ class StoreService with ReactiveServiceMixin {
   final _usersColRef = FirebaseFirestore.instance.collection('users');
   final _requestColRef = FirebaseFirestore.instance.collection('requests');
 
-  Future<StoreResult> addRequest(Request request) async {
+  Future<StoreResult> addRequest(Request req) async {
     try {
-      await _requestColRef.doc().set(request.toFirestore());
-      _request.value = request;
+      await _requestColRef.doc().set(req.toFirestore());
+      _request.value = req;
       return StoreResult(request: request);
+    } on FirebaseException catch (e) {
+      return StoreResult.error(errorMessage: e.message);
+    }
+  }
+
+  Future<StoreResult> getRequests() async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+      final queryMap = await _requestColRef.where('user', isEqualTo: uid).get();
+      final List<Request> list =
+          queryMap.docs.map((e) => Request.fromFirestore(e, null)).toList();
+      _requests.value = list;
+      return StoreResult(requests: list);
     } on FirebaseException catch (e) {
       return StoreResult.error(errorMessage: e.message);
     }
@@ -83,14 +104,16 @@ class StoreService with ReactiveServiceMixin {
 class StoreResult {
   final BloodSourceUser? bSUser;
   final Request? request;
+  final List<Request>? requests;
 
   final String? errorMessage;
 
-  StoreResult({this.bSUser, this.request}) : errorMessage = null;
+  StoreResult({this.bSUser, this.request, this.requests}) : errorMessage = null;
 
   StoreResult.error({this.errorMessage})
       : bSUser = null,
-        request = null;
+        request = null,
+        requests = null;
 
   bool get hasError => errorMessage != null && errorMessage!.isNotEmpty;
 }
