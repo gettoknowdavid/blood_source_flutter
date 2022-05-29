@@ -1,4 +1,6 @@
+import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/models/blood_source_user.dart';
+import 'package:blood_source/services/store_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stacked/stacked.dart';
 
@@ -6,6 +8,8 @@ class DonorViewModel extends ReactiveViewModel with ReactiveServiceMixin {
   DonorViewModel() {
     listenToReactiveValues([_donors, _donorCount]);
   }
+
+  final StoreService _storeService = locator<StoreService>();
 
   final ReactiveValue<List<BloodSourceUser>> _donors =
       ReactiveValue<List<BloodSourceUser>>([]);
@@ -43,5 +47,5 @@ class DonorViewModel extends ReactiveViewModel with ReactiveServiceMixin {
   }
 
   @override
-  List<ReactiveServiceMixin> get reactiveServices => [];
+  List<ReactiveServiceMixin> get reactiveServices => [_storeService];
 }
