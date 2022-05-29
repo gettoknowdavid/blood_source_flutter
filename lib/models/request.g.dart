@@ -13,6 +13,9 @@ Request _$RequestFromJson(Map<String, dynamic> json) => Request(
           json['requestLocation'] as Map<String, dynamic>),
       showContactInfo: json['showContactInfo'] as bool,
       requestGranted: json['requestGranted'] as bool,
+      timeAdded: json['timeAdded'] == null
+          ? null
+          : DateTime.parse(json['timeAdded'] as String),
     );
 
 Map<String, dynamic> _$RequestToJson(Request instance) => <String, dynamic>{
@@ -21,6 +24,7 @@ Map<String, dynamic> _$RequestToJson(Request instance) => <String, dynamic>{
       'requestLocation': instance.requestLocation.toJson(),
       'showContactInfo': instance.showContactInfo,
       'requestGranted': instance.requestGranted,
+      'timeAdded': instance.timeAdded?.toIso8601String(),
     };
 
 const _$BloodGroupEnumMap = {

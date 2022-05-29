@@ -12,6 +12,7 @@ class Request {
   final UserLocation requestLocation;
   final bool showContactInfo;
   final bool requestGranted;
+  final DateTime? timeAdded;
 
   const Request({
     required this.user,
@@ -19,6 +20,7 @@ class Request {
     required this.requestLocation,
     required this.showContactInfo,
     required this.requestGranted,
+    this.timeAdded,
   });
 
   Request.fromFirestore(
@@ -30,7 +32,8 @@ class Request {
         requestLocation = UserLocation.fromJson(
             snapshot.data()?['requestLocation'] as Map<String, dynamic>),
         showContactInfo = snapshot.data()?["showContactInfo"] as bool,
-        requestGranted = snapshot.data()?["requestGranted"] as bool;
+        requestGranted = snapshot.data()?["requestGranted"] as bool,
+        timeAdded = DateTime.parse(snapshot.data()?['timeAdded'] as String);
 
   Map<String, dynamic> toFirestore() {
     return {
@@ -39,6 +42,7 @@ class Request {
       "bloodGroup": $BloodGroupTypeEnum[bloodGroup],
       "showContactInfo": showContactInfo,
       "requestGranted": requestGranted,
+      "timeAdded": Timestamp.fromDate(DateTime.now()),
     };
   }
 
