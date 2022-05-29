@@ -2,7 +2,7 @@ import 'package:blood_source/models/blood_source_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stacked/stacked.dart';
 
-class DonorViewModel extends BaseViewModel with ReactiveServiceMixin {
+class DonorViewModel extends ReactiveViewModel with ReactiveServiceMixin {
   DonorViewModel() {
     listenToReactiveValues([_donors, _donorCount]);
   }
@@ -10,6 +10,7 @@ class DonorViewModel extends BaseViewModel with ReactiveServiceMixin {
   final ReactiveValue<List<BloodSourceUser>> _donors =
       ReactiveValue<List<BloodSourceUser>>([]);
   List<BloodSourceUser> get donors => _donors.value;
+
   final ReactiveValue<int> _donorCount = ReactiveValue<int>(0);
   int get donorCount => _donorCount.value;
 
@@ -40,4 +41,7 @@ class DonorViewModel extends BaseViewModel with ReactiveServiceMixin {
 
     return _donors.value;
   }
+
+  @override
+  List<ReactiveServiceMixin> get reactiveServices => [];
 }
