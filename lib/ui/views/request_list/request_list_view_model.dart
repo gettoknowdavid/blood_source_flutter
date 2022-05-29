@@ -15,7 +15,10 @@ class RequestListViewModel extends ReactiveViewModel {
     return result;
   }
 
-  Future<List<Request>?> getRequests() async {}
+  Future<List<Request>?> getRequests() async {
+    final result = await _storeService.getRequests();
+    return result.requests;
+  }
 
   @override
   List<ReactiveServiceMixin> get reactiveServices => [_storeService];
