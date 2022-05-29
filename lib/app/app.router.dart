@@ -178,8 +178,14 @@ class StackedRouter extends RouterBase {
       );
     },
     DonorView: (data) {
+      var args = data.getArgs<DonorViewArguments>(
+        orElse: () => DonorViewArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const DonorView(),
+        builder: (context) => DonorView(
+          key: args.key,
+          fromRequestView: args.fromRequestView,
+        ),
         settings: data,
       );
     },
@@ -205,6 +211,13 @@ class StackedRouter extends RouterBase {
 /// ************************************************************************
 /// Arguments holder classes
 /// *************************************************************************
+
+/// DonorView arguments holder class
+class DonorViewArguments {
+  final Key? key;
+  final bool fromRequestView;
+  DonorViewArguments({this.key, this.fromRequestView = false});
+}
 
 /// EditProfileView arguments holder class
 class EditProfileViewArguments {
