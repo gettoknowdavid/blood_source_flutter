@@ -11,6 +11,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 
 import '../models/blood_source_user.dart';
+import '../models/request.dart';
 import '../ui/layouts/app_layout/app_layout_view.dart';
 import '../ui/views/check_email/check_email_view.dart';
 import '../ui/views/dashboard/dashboard_view.dart';
@@ -185,6 +186,7 @@ class StackedRouter extends RouterBase {
         builder: (context) => DonorView(
           key: args.key,
           fromRequestView: args.fromRequestView,
+          request: args.request,
         ),
         settings: data,
       );
@@ -216,7 +218,8 @@ class StackedRouter extends RouterBase {
 class DonorViewArguments {
   final Key? key;
   final bool fromRequestView;
-  DonorViewArguments({this.key, this.fromRequestView = false});
+  final Request? request;
+  DonorViewArguments({this.key, this.fromRequestView = false, this.request});
 }
 
 /// EditProfileView arguments holder class
