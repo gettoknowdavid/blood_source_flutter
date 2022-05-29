@@ -5,18 +5,23 @@ import 'package:blood_source/services/store_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:logger/logger.dart';
 
 class DonorViewModel extends ReactiveViewModel with ReactiveServiceMixin {
   DonorViewModel() {
     listenToReactiveValues([_donors, _donorCount]);
   }
 
+  final Logger _logger = Logger();
+
   final StoreService _storeService = locator<StoreService>();
   final NavigationService _navService = locator<NavigationService>();
+  final DialogService _dialogService = locator<DialogService>();
 
   final ReactiveValue<List<BloodSourceUser>> _donors =
       ReactiveValue<List<BloodSourceUser>>([]);
   List<BloodSourceUser> get donors => _donors.value;
+  BloodSourceUser? get user => _storeService.bloodUser;
 
   final ReactiveValue<int> _donorCount = ReactiveValue<int>(0);
   int get donorCount => _donorCount.value;
@@ -50,8 +55,14 @@ class DonorViewModel extends ReactiveViewModel with ReactiveServiceMixin {
   }
 
   Future addRequest(Request request) async {
+    _logger.i(request);
     await _storeService.addRequest(request);
-// _navService.clearTillFirstAndShow()
+    _dialogService
+        .showDialog(
+          title: 'Successfully Added',
+          description: 'Your blood request has been made.',
+        )
+        .then((value) => _navService.popRepeated(2));
   }
 
   @override
