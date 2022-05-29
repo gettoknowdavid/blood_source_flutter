@@ -7,18 +7,20 @@ part of 'request.dart';
 // **************************************************************************
 
 Request _$RequestFromJson(Map<String, dynamic> json) => Request(
-      userId: json['userId'] as String,
+      user: json['user'] as String,
       bloodGroup: $enumDecode(_$BloodGroupEnumMap, json['bloodGroup']),
       requestLocation: UserLocation.fromJson(
           json['requestLocation'] as Map<String, dynamic>),
       showContactInfo: json['showContactInfo'] as bool,
+      requestGranted: json['requestGranted'] as bool,
     );
 
 Map<String, dynamic> _$RequestToJson(Request instance) => <String, dynamic>{
-      'userId': instance.userId,
+      'user': instance.user,
       'bloodGroup': _$BloodGroupEnumMap[instance.bloodGroup],
       'requestLocation': instance.requestLocation.toJson(),
       'showContactInfo': instance.showContactInfo,
+      'requestGranted': instance.requestGranted,
     };
 
 const _$BloodGroupEnumMap = {

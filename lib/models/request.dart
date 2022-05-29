@@ -7,36 +7,38 @@ part 'request.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Request {
-  final String userId;
+  final String user;
   final BloodGroup bloodGroup;
   final UserLocation requestLocation;
   final bool showContactInfo;
+  final bool requestGranted;
 
   const Request({
-    required this.userId,
+    required this.user,
     required this.bloodGroup,
     required this.requestLocation,
     required this.showContactInfo,
+    required this.requestGranted,
   });
 
   Request.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
-  )   : userId = snapshot.data()?['userId'] as String,
+  )   : user = snapshot.data()?['user'] as String,
         bloodGroup =
             $enumDecode($BloodGroupTypeEnum, snapshot.data()?["bloodGroup"]),
-        requestLocation = snapshot.data()?['requestLocation'] as UserLocation,
-        showContactInfo = snapshot.data()?["showContactInfo"] as bool;
+        requestLocation = UserLocation.fromJson(
+            snapshot.data()?['requestLocation'] as Map<String, dynamic>),
+        showContactInfo = snapshot.data()?["showContactInfo"] as bool,
+        requestGranted = snapshot.data()?["requestGranted"] as bool;
 
   Map<String, dynamic> toFirestore() {
     return {
-      "userId": userId,
-      "requestLocation": UserLocation(
-        requestLocation.latitude,
-        requestLocation.longitude,
-      ),
+      "user": user,
+      "requestLocation": requestLocation.toFirestore(),
       "bloodGroup": $BloodGroupTypeEnum[bloodGroup],
       "showContactInfo": showContactInfo,
+      "requestGranted": requestGranted,
     };
   }
 
