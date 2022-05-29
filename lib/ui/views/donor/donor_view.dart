@@ -1,5 +1,6 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
+import 'package:blood_source/ui/shared/widgets/app_text_button.dart';
 import 'package:blood_source/ui/shared/widgets/donor/donor_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -8,7 +9,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import './donor_view_model.dart';
 
 class DonorView extends StatelessWidget {
-  const DonorView({Key? key}) : super(key: key);
+  const DonorView({Key? key, this.fromRequestView = false}) : super(key: key);
+
+  final bool fromRequestView;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +25,15 @@ class DonorView extends StatelessWidget {
             leading: const AppBackButton(color: AppColors.primaryDark),
             backgroundColor: Colors.white,
             elevation: 0,
+            actions: [
+              AppTextButton(
+                onTap: () {},
+                text: 'Add Request',
+                padding: EdgeInsets.only(right: 18.r),
+                fontSize: 16.sp,
+                color: AppColors.primaryDark,
+              )
+            ],
           ),
           body: SingleChildScrollView(
             child: Column(
