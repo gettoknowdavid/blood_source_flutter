@@ -1,8 +1,8 @@
-import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/common/image_resources.dart';
 import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
+import 'package:blood_source/utils/date_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,6 +55,7 @@ class RequestListView extends StatelessWidget {
               : SingleChildScrollView(
                   child: Column(
                     children: [
+                      20.verticalSpace,
                       ListView.builder(
                         primary: false,
                         shrinkWrap: true,
@@ -64,8 +65,33 @@ class RequestListView extends StatelessWidget {
 
                           return ListTile(
                             title: Text(request.bloodGroup.value.desc),
-                            // isThreeLine: true,
-                            // subtitle: Text(data),
+                            isThreeLine: true,
+                            subtitle: Text(
+                              dateFormatter(
+                                request.timeAdded!.toIso8601String(),
+                              ),
+                              style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            trailing: Container(
+                              padding: EdgeInsets.all(7.r),
+                              decoration: BoxDecoration(
+                                color: request.requestGranted
+                                    ? Colors.green
+                                    : Colors.red,
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              child: Text(
+                                request.requestGranted ? 'GRANTED' : 'PENDING',
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                           );
                         },
                       ),
