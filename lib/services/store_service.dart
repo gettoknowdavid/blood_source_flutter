@@ -43,10 +43,22 @@ class StoreService with ReactiveServiceMixin {
   Future<StoreResult> getRequests() async {
     try {
       final uid = FirebaseAuth.instance.currentUser!.uid;
-      final queryMap = await _requestColRef.where('user', isEqualTo: uid).get();
-      final List<Request> list =
-          queryMap.docs.map((e) => Request.fromFirestore(e, null)).toList();
-      _requests.value = list;
+      // final queryMap = await _requestColRef
+      //     .where('user', isEqualTo: uid)
+      //     .orderBy('timeAdded', descending: true)
+      //     .get();
+      // final List<Request> list =
+      //     queryMap.docs.map((e) => Request.fromFirestore(e, null)).toList();
+      // _requests.value = list;
+      List<Request>? list = [];
+      _requestColRef
+          .where('user', isEqualTo: uid)
+          .orderBy('timeAdded', descending: true)
+          .snapshots()
+          .listen((event) {
+        list = event.docs.map((e) => Request.fromFirestore(e, null)).toList();
+        _requests.value = list;
+      });
       return StoreResult(requests: list);
     } on FirebaseException catch (e) {
       return StoreResult.error(errorMessage: e.message);
