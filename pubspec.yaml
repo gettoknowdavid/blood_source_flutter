@@ -103,6 +103,7 @@ flutter:
     - assets/images/height.png
     - assets/images/weight.png
     - assets/images/blood-donation.png
+    - assets/images/empty.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
