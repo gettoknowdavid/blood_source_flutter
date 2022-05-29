@@ -1,15 +1,19 @@
 import 'package:blood_source/app/app.locator.dart';
+import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/services/store_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class RequestViewModel extends ReactiveViewModel with ReactiveServiceMixin {
   RequestViewModel() {
     listenToReactiveValues([_showPhone]);
   }
+  final NavigationService _navService = locator<NavigationService>();
+
   final ReactiveValue<bool> _showPhone = ReactiveValue<bool>(false);
   bool get showPhone => _showPhone.value;
 
@@ -36,6 +40,8 @@ class RequestViewModel extends ReactiveViewModel with ReactiveServiceMixin {
     notifyListeners();
     return null;
   }
+
+  void goToDonorList() => _navService.navigateTo(Routes.donorView);
 
   final List<BloodGroup> bgList =
       BloodGroup.values.where((e) => e != BloodGroup.none).toList();
