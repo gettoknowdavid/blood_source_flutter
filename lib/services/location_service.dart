@@ -10,14 +10,8 @@ class LocationService with ReactiveServiceMixin {
   Logger logger = Logger();
   late final Location _location = Location();
 
-  final ReactiveValue<UserLocation?> _loc = ReactiveValue<UserLocation?>(
-    const UserLocation(0.0, 0.0),
-  );
+  final ReactiveValue<UserLocation?> _loc = ReactiveValue<UserLocation?>(null);
   UserLocation? get loc => _loc.value;
-
-  // final ReactiveValue<geo.Placemark?> _place =
-  //     ReactiveValue<geo.Placemark?>(null);
-  // geo.Placemark? get place => _place.value;
 
   final ReactiveValue<String?> _city = ReactiveValue<String?>(null);
   String? get city => _city.value;
@@ -43,28 +37,21 @@ class LocationService with ReactiveServiceMixin {
   }
 
   Future<UserLocation> getLocation() async {
-    try {
-      LocationData locData = await _location.getLocation();
+    LocationData data = await _location.getLocation();
 
-      UserLocation _userLoc = UserLocation(
-        locData.latitude!,
-        locData.longitude!,
-      );
+    UserLocation? _userLoc = UserLocation(data.latitude!, data.longitude!);
 
-      _loc.value = _userLoc;
-      logger.i('${_userLoc.latitude} ${_userLoc.longitude}');
+    List<geo.Placemark> placemarks = await geo.placemarkFromCoordinates(
+      _loc.value!.latitude,
+      _loc.value!.longitude,
+    );
 
-      List<geo.Placemark> placemarks = await geo.placemarkFromCoordinates(
-        _loc.value!.latitude,
-        _loc.value!.longitude,
-      );
+    _loc.value = _userLoc;
+    _city.value = placemarks[0].locality;
 
-      geo.Placemark place = placemarks[0];
-
-      _city.value = place.locality;
-    } on Exception catch (e) {
-      logger.e(e.toString());
-    }
+    logger.i(
+      'Latitude: ${_loc.value!.latitude}, Longitude: ${_loc.value!.longitude}',
+    );
 
     return _loc.value!;
   }
