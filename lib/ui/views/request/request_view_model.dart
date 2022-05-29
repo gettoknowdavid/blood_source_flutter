@@ -1,7 +1,8 @@
 import 'package:blood_source/app/app.locator.dart';
-import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/models/blood_group.dart';
+import 'package:blood_source/models/request.dart';
 import 'package:blood_source/services/store_service.dart';
+import 'package:blood_source/ui/views/donor/donor_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:blood_source/models/blood_source_user.dart';
@@ -10,12 +11,12 @@ import 'package:stacked_services/stacked_services.dart';
 
 class RequestViewModel extends ReactiveViewModel with ReactiveServiceMixin {
   RequestViewModel() {
-    listenToReactiveValues([_showPhone]);
+    listenToReactiveValues([_showContact]);
   }
   final NavigationService _navService = locator<NavigationService>();
 
-  final ReactiveValue<bool> _showPhone = ReactiveValue<bool>(false);
-  bool get showPhone => _showPhone.value;
+  final ReactiveValue<bool?> _showContact = ReactiveValue<bool?>(false);
+  bool? get showContact => _showContact.value;
 
   final StoreService _storeService = locator<StoreService>();
   BloodSourceUser get user => _storeService.bloodUser!;
@@ -36,15 +37,27 @@ class RequestViewModel extends ReactiveViewModel with ReactiveServiceMixin {
   }
 
   void Function(bool?)? onShowPhoneChanged(bool? value) {
-    _showPhone.value = value!;
+    _showContact.value = value!;
     notifyListeners();
     return null;
   }
 
-  void goToDonorList() => _navService.navigateTo(Routes.donorView);
-
   final List<BloodGroup> bgList =
       BloodGroup.values.where((e) => e != BloodGroup.none).toList();
+
+  Future<void> searchDonations() async {
+    Request request = Request(
+      user: user.uid!,
+      bloodGroup: bloodGroup,
+      requestLocation: user.location!,
+      showContactInfo: _showContact.value!,
+      requestGranted: false,
+    );
+
+    _navService.navigateToView(
+      DonorView(fromRequestView: true, request: request),
+    );
+  }
 
   Future<void> init() async {
     await longUpdateStuff();
