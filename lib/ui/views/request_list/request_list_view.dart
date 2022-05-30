@@ -1,11 +1,7 @@
-import 'package:blood_source/common/app_colors.dart';
-import 'package:blood_source/models/blood_group.dart';
-import 'package:blood_source/models/request.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
 import 'package:blood_source/ui/shared/widgets/empty_widget.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:blood_source/ui/shared/widgets/request_list/request_list_item.dart';
-import 'package:blood_source/utils/date_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
