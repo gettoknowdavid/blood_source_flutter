@@ -1,3 +1,5 @@
+import 'package:blood_source/ui/shared/widgets/empty_widget.dart';
+import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -12,12 +14,18 @@ class NotificationsView extends StatelessWidget {
       viewModelBuilder: () => NotificationsViewModel(),
       onModelReady: (NotificationsViewModel model) async => await model.init(),
       builder: (context, model, Widget? child) {
+        if (model.isBusy) {
+          return const LoadingIndicator();
+        }
+
         return Scaffold(
-          body: Center(
-            child: Text(
-              'NotificationsView',
-            ),
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text('Notifications'),
           ),
+          body: model.notifications == null
+              ? const EmptyWidget()
+              : const Center(child: Text('NotificationsView')),
         );
       },
     );
