@@ -13,8 +13,13 @@ import 'package:blood_source/models/blood_source_user.dart';
 import './edit_profile_view_model.dart';
 
 class EditProfileView extends StatelessWidget {
-  const EditProfileView({Key? key, required this.user}) : super(key: key);
+  const EditProfileView({
+    Key? key,
+    required this.user,
+    this.isFirstEdit = false,
+  }) : super(key: key);
   final BloodSourceUser user;
+  final bool isFirstEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +43,9 @@ class EditProfileView extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const AppBackButton(),
+                        isFirstEdit ? const SizedBox() : const AppBackButton(),
                         AppTextButton(
-                          onTap: () => model.save(),
+                          onTap: () => model.save(isFirstEdit),
                           text: 'Save',
                           color: Colors.white,
                           fontSize: 16.r,
