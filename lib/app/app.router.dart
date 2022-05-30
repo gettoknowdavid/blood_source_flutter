@@ -6,7 +6,6 @@
 
 // ignore_for_file: public_member_api_docs
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -27,6 +26,7 @@ import '../ui/views/my_requests_list/my_requests_list_view.dart';
 import '../ui/views/notifications/notifications_view.dart';
 import '../ui/views/profile/profile_view.dart';
 import '../ui/views/request/request_view.dart';
+import '../ui/views/request_details/request_details_view.dart';
 import '../ui/views/request_list/request_list_view.dart';
 import '../ui/views/sign_in/sign_in_view.dart';
 import '../ui/views/sign_up/sign_up_view.dart';
@@ -53,6 +53,7 @@ class Routes {
   static const String editProfileView = '/edit-profile-view';
   static const String requestListView = '/request-list-view';
   static const String myRequestsListView = '/my-requests-list-view';
+  static const String requestDetailsView = '/request-details-view';
   static const all = <String>{
     splashView,
     mainScaffoldView,
@@ -73,6 +74,7 @@ class Routes {
     editProfileView,
     requestListView,
     myRequestsListView,
+    requestDetailsView,
   };
 }
 
@@ -99,6 +101,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.editProfileView, page: EditProfileView),
     RouteDef(Routes.requestListView, page: RequestListView),
     RouteDef(Routes.myRequestsListView, page: MyRequestsListView),
+    RouteDef(Routes.requestDetailsView, page: RequestDetailsView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -226,6 +229,12 @@ class StackedRouter extends RouterBase {
     MyRequestsListView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const MyRequestsListView(),
+        settings: data,
+      );
+    },
+    RequestDetailsView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const RequestDetailsView(),
         settings: data,
       );
     },
