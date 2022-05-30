@@ -6,8 +6,6 @@ import 'package:stacked/stacked.dart';
 class RequestListViewModel extends ReactiveViewModel {
   final StoreService _storeService = locator<StoreService>();
 
-  // List<Request>? get requests => _storeService.requests;
-
   final ReactiveValue<List<Request>?> _requests =
       ReactiveValue<List<Request>?>([]);
   List<Request>? get requests => _requests.value;
@@ -27,7 +25,6 @@ class RequestListViewModel extends ReactiveViewModel {
       return [];
     } else {
       _requests.value = result.requests!;
-      print(_requests.value);
       return _requests.value;
     }
   }
