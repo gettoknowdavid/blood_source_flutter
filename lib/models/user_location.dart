@@ -7,7 +7,7 @@ part 'user_location.g.dart';
 @JsonSerializable(explicitToJson: true)
 class UserLocation {
   /// Create [Location] instance.
-  const UserLocation(this.latitude, this.longitude)
+  const UserLocation(this.latitude,  this.longitude)
       : assert(latitude >= -90 && latitude <= 90),
         assert(longitude >= -180 && longitude <= 180);
 
