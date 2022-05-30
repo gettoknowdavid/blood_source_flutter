@@ -6,7 +6,11 @@ import 'package:stacked/stacked.dart';
 class RequestListViewModel extends ReactiveViewModel {
   final StoreService _storeService = locator<StoreService>();
 
-  List<Request>? get requests => _storeService.requests;
+  // List<Request>? get requests => _storeService.requests;
+
+  final ReactiveValue<List<Request>?> _requests =
+      ReactiveValue<List<Request>?>([]);
+  List<Request>? get requests => _requests.value;
 
   Future<void> init() async {
     await longUpdateStuff();
@@ -19,7 +23,13 @@ class RequestListViewModel extends ReactiveViewModel {
 
   Future<List<Request>?> getRequests() async {
     final result = await _storeService.getRequests();
-    return result.requests;
+    if (result.isRequestsEmpty) {
+      return [];
+    } else {
+      _requests.value = result.requests!;
+      print(_requests.value);
+      return _requests.value;
+    }
   }
 
   @override
