@@ -78,10 +78,10 @@ class StoreService with ReactiveServiceMixin {
 
   Future<StoreResult> getRequests({bool myRequests = false}) async {
     try {
+      final uid = FirebaseAuth.instance.currentUser!.uid;
       if (myRequests) {
-        final uid = FirebaseAuth.instance.currentUser!.uid;
         final list = await _requestColRef
-            .where('user', isEqualTo: uid)
+            .where('user.uid', isEqualTo: uid)
             .orderBy('timeAdded', descending: true)
             .get()
             .then((snapshot) => snapshot.docs
@@ -90,6 +90,7 @@ class StoreService with ReactiveServiceMixin {
         return StoreResult(requests: list);
       } else {
         final list = await _requestColRef
+            .where('user.uid', isNotEqualTo: uid)
             .orderBy('timeAdded', descending: true)
             .get()
             .then((snapshot) => snapshot.docs
