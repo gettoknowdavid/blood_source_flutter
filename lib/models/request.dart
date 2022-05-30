@@ -1,4 +1,5 @@
 import 'package:blood_source/models/blood_group.dart';
+import 'package:blood_source/models/request_user.dart';
 import 'package:blood_source/models/user_location.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -7,7 +8,7 @@ part 'request.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Request {
-  final String user;
+  final RequestUser user;
   final BloodGroup bloodGroup;
   final UserLocation requestLocation;
   final bool showContactInfo;
@@ -26,7 +27,8 @@ class Request {
   Request.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
-  )   : user = snapshot.data()?['user'] as String,
+  )   : user = RequestUser.fromJson(
+            snapshot.data()?['user'] as Map<String, dynamic>),
         bloodGroup =
             $enumDecode($BloodGroupTypeEnum, snapshot.data()?["bloodGroup"]),
         requestLocation = UserLocation.fromJson(
@@ -37,7 +39,7 @@ class Request {
 
   Map<String, dynamic> toFirestore() {
     return {
-      "user": user,
+      "user": user.toFirestore(),
       "requestLocation": requestLocation.toFirestore(),
       "bloodGroup": $BloodGroupTypeEnum[bloodGroup],
       "showContactInfo": showContactInfo,
