@@ -54,7 +54,7 @@ class AppLayoutView extends StatelessWidget {
               borderRadius: BorderRadius.circular(16.h),
             ),
             backgroundColor: AppColors.primary,
-            onPressed: () {},
+            onPressed: model.goToMakeRequestView,
             child: ImageIcon(
               const AssetImage('assets/images/blood.png'),
               size: 20.sp,

@@ -13,22 +13,23 @@ class LocationService with ReactiveServiceMixin {
   final ReactiveValue<UserLocation?> _loc = ReactiveValue<UserLocation?>(null);
   UserLocation? get loc => _loc.value;
 
-  final ReactiveValue<geo.Placemark?> _place =
-      ReactiveValue<geo.Placemark?>(null);
-  geo.Placemark? get place => _place.value;
-
   final ReactiveValue<String?> _city = ReactiveValue<String?>(null);
   String? get city => _city.value;
 
   LocationService() {
-    listenToReactiveValues([_loc, _place]);
+    listenToReactiveValues([_loc, _city]);
 
     _location.requestPermission().then((PermissionStatus granted) {
       if (granted == PermissionStatus.granted) {
         _location.onLocationChanged.listen((LocationData? data) async {
           if (data != null) {
             _loc.value = UserLocation(data.latitude!, data.longitude!);
-            await getPlace();
+            List<geo.Placemark> placemarks = await geo.placemarkFromCoordinates(
+              _loc.value!.latitude,
+              _loc.value!.longitude,
+            );
+            geo.Placemark place = placemarks[0];
+            _city.value = place.locality;
           }
         });
       }
@@ -36,29 +37,33 @@ class LocationService with ReactiveServiceMixin {
   }
 
   Future<UserLocation> getLocation() async {
-    try {
-      var userLocation = await _location.getLocation();
-      _loc.value = UserLocation(
-        userLocation.latitude!,
-        userLocation.longitude!,
-      );
-    } on Exception catch (e) {
-      logger.e(e.toString());
-    }
+    LocationData data = await _location.getLocation();
 
-    return _loc.value!;
-  }
+    UserLocation? _userLoc = UserLocation(data.latitude!, data.longitude!);
 
-  Future getPlace() async {
-    await getLocation();
     List<geo.Placemark> placemarks = await geo.placemarkFromCoordinates(
       _loc.value!.latitude,
       _loc.value!.longitude,
     );
-    geo.Placemark place = placemarks[0];
-    geo.Placemark place2 = placemarks[1];
 
-    _place.value = place;
-    _city.value = place.locality;
+    _loc.value = _userLoc;
+    _city.value = placemarks[0].locality;
+
+    logger.i(
+      'Latitude: ${_loc.value!.latitude}, Longitude: ${_loc.value!.longitude}',
+    );
+
+    return _loc.value!;
   }
+
+  // Future getPlace() async {
+  //   List<geo.Placemark> placemarks = await geo.placemarkFromCoordinates(
+  //     _loc.value!.latitude,
+  //     _loc.value!.longitude,
+  //   );
+  //   geo.Placemark place = placemarks[0];
+  //   geo.Placemark place2 = placemarks[1];
+
+  //   _city.value = place.locality;
+  // }
 }

@@ -24,10 +24,16 @@ import 'package:blood_source/ui/views/home/home_view.dart';
 import 'package:blood_source/ui/views/home/home_view_model.dart';
 import 'package:blood_source/ui/views/main_scaffold/main_scaffold_view.dart';
 import 'package:blood_source/ui/views/main_scaffold/main_scaffold_view_model.dart';
+import 'package:blood_source/ui/views/my_requests_list/my_requests_list_view.dart';
+import 'package:blood_source/ui/views/my_requests_list/my_requests_list_view_model.dart';
 import 'package:blood_source/ui/views/notifications/notifications_view.dart';
 import 'package:blood_source/ui/views/notifications/notifications_view_model.dart';
 import 'package:blood_source/ui/views/profile/profile_view.dart';
 import 'package:blood_source/ui/views/profile/profile_view_model.dart';
+import 'package:blood_source/ui/views/request/request_view.dart';
+import 'package:blood_source/ui/views/request/request_view_model.dart';
+import 'package:blood_source/ui/views/request_list/request_list_view.dart';
+import 'package:blood_source/ui/views/request_list/request_list_view_model.dart';
 import 'package:blood_source/ui/views/sign_in/sign_in_view.dart';
 import 'package:blood_source/ui/views/sign_in/sign_in_view_model.dart';
 import 'package:blood_source/ui/views/sign_up/sign_up_view.dart';
@@ -57,10 +63,14 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: NotificationsView),
     MaterialRoute(page: ProfileView),
     MaterialRoute(page: DonorView),
+    MaterialRoute(page: RequestView),
     MaterialRoute(page: EditProfileView),
+    MaterialRoute(page: RequestListView),
+    MaterialRoute(page: MyRequestsListView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
+    LazySingleton(classType: BottomSheetService),
     LazySingleton(classType: DialogService),
     LazySingleton(classType: MailAppService),
     LazySingleton(classType: AuthService),
@@ -83,7 +93,10 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: NotificationsViewModel),
     LazySingleton(classType: ProfileViewModel),
     LazySingleton(classType: DonorViewModel),
+    LazySingleton(classType: RequestViewModel),
     LazySingleton(classType: EditProfileViewModel),
+    LazySingleton(classType: RequestListViewModel),
+    LazySingleton(classType: MyRequestsListViewModel),
     Presolve(
       asType: StorageService,
       classType: StorageService,

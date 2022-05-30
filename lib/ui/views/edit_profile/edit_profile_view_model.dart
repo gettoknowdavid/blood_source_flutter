@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:blood_source/app/app.locator.dart';
+import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/gender.dart';
+import 'package:blood_source/models/user_location.dart';
 import 'package:blood_source/services/location_service.dart';
 import 'package:blood_source/services/media_service.dart';
 import 'package:blood_source/services/storage_service.dart';
@@ -42,6 +44,7 @@ class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
 
   BloodSourceUser get user => _storeService.bloodUser!;
   String? get city => _locService.city;
+  UserLocation? get location => _locService.loc;
 
   void getImage() async {
     final _pickedFile = await _mediaService.getImage(fromGallery: true);
@@ -65,7 +68,7 @@ class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
       TextEditingController(text: user.phone);
 
   Future getLocation() async {
-    await _locService.getPlace();
+    await _locService.getLocation();
   }
 
   void Function(Gender?)? onGenderChanged(Gender? newValue) {
@@ -93,7 +96,7 @@ class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
     }
   }
 
-  Future<BloodSourceUser> save() async {
+  Future<BloodSourceUser> save(bool isFirstEdit) async {
     _dialogService.showCustomDialog(variant: DialogType.loading);
 
     final name = "${user.uid}.jpg";
@@ -133,6 +136,10 @@ class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
     );
 
     final res = await _storeService.updateBloodSourceUser(_editedBSUser);
+
+    if (isFirstEdit) {
+      _navService.clearStackAndShow(Routes.dashboardView);
+    }
 
     _navService.popRepeated(2);
     logger.log(Level.debug, res);

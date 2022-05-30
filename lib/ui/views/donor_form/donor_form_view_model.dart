@@ -93,8 +93,11 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
     }
   }
 
-  void goToApp() {
-    _navService.clearStackAndShow(Routes.appLayoutView);
+  void goToApp(BloodSourceUser _user) {
+    _navService.clearStackAndShow(
+      Routes.editProfileView,
+      arguments: EditProfileViewArguments(user: _user, isFirstEdit: true),
+    );
   }
 
   Future onSubmit() async {
@@ -104,6 +107,24 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
 
     // Show loading dialog
     _dialogService.showCustomDialog(variant: DialogType.loading);
+
+    final _bsUser = BloodSourceUser(
+      uid: authUser.uid,
+      age: int.parse(ageController.text.trim()),
+      weight: double.parse(weightController.text.trim()),
+      bloodGroup: _bloodGroup.value,
+      diseases: _disease.value.map((e) => e.value).toList(),
+      piercingOrTattoo: _piercingBool.value,
+      pregnantOrBreastFeeding: _pregnantBool.value,
+      userType: _userType.value,
+      isDonorEligible: true,
+      isDonorFormComplete: true,
+      email: authUser.email,
+      name: authUser.displayName,
+      gender: Gender.none,
+    );
+
+    await _storeService.updateBloodSourceUser(_bsUser);
 
     switch (userEligible()) {
       case false:
@@ -125,7 +146,7 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
               buttonTitle: 'Continue',
               barrierDismissible: true,
             )
-            .then((value) => value!.confirmed ? goToApp() : null);
+            .then((value) => value!.confirmed ? goToApp(_bsUser) : null);
         notifyListeners();
         break;
       case true:
@@ -145,30 +166,12 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
               description: AppConstants.qualifiedMessage,
               buttonTitle: 'Next',
             )
-            .then((value) => value!.confirmed ? goToApp() : null);
+            .then((value) => value!.confirmed ? goToApp(_bsUser) : null);
         notifyListeners();
         break;
       default:
         return null;
     }
-
-    final _bsUser = BloodSourceUser(
-      uid: authUser.uid,
-      age: int.parse(ageController.text.trim()),
-      weight: double.parse(weightController.text.trim()),
-      bloodGroup: _bloodGroup.value,
-      diseases: _disease.value.map((e) => e.value).toList(),
-      piercingOrTattoo: _piercingBool.value,
-      pregnantOrBreastFeeding: _pregnantBool.value,
-      userType: _userType.value,
-      isDonorEligible: true,
-      isDonorFormComplete: true,
-      email: authUser.email,
-      name: authUser.displayName,
-      gender: Gender.none,
-    );
-
-    await _storeService.updateBloodSourceUser(_bsUser);
   }
 
   void Function(BloodGroup?)? onBloodGroupChanged(BloodGroup? newValue) {

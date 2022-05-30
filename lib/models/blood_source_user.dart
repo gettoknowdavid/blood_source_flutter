@@ -97,7 +97,10 @@ class BloodSourceUser {
         height = snapshot.data()?["height"] as double?,
         weight = snapshot.data()?["weight"] as double?,
         city = snapshot.data()?['city'] as String?,
-        location = snapshot.data()?['location'] as UserLocation?,
+        location = snapshot.data()?['location'] == null
+            ? null
+            : UserLocation.fromJson(
+                snapshot.data()?['location'] as Map<String, dynamic>),
         phone = snapshot.data()?['phone'] as String?,
         email = snapshot.data()?['email'] as String?,
         avatar = snapshot.data()?['avatar'] as String?,
@@ -122,8 +125,7 @@ class BloodSourceUser {
       if (height != null) "height": height,
       if (weight != null) "weight": weight,
       if (city != null) "city": city,
-      if (location != null)
-        "location": UserLocation(location!.latitude, location!.longitude),
+      if (location != null) "location": location?.toFirestore(),
       if (phone != null) "phone": phone,
       if (email != null) "email": email,
       if (avatar != null) "avatar": avatar,

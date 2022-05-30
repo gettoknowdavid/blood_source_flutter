@@ -2,7 +2,6 @@ import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/gender.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
-import 'package:blood_source/ui/shared/widgets/app_button.dart';
 import 'package:blood_source/ui/shared/widgets/app_text_button.dart';
 import 'package:blood_source/ui/shared/widgets/app_textfield.dart';
 import 'package:blood_source/ui/shared/widgets/profile_header_paint.dart';
@@ -14,8 +13,13 @@ import 'package:blood_source/models/blood_source_user.dart';
 import './edit_profile_view_model.dart';
 
 class EditProfileView extends StatelessWidget {
-  const EditProfileView({Key? key, required this.user}) : super(key: key);
+  const EditProfileView({
+    Key? key,
+    required this.user,
+    this.isFirstEdit = false,
+  }) : super(key: key);
   final BloodSourceUser user;
+  final bool isFirstEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +43,9 @@ class EditProfileView extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const AppBackButton(),
+                        isFirstEdit ? const SizedBox() : const AppBackButton(),
                         AppTextButton(
-                          onTap: () => model.save(),
+                          onTap: () => model.save(isFirstEdit),
                           text: 'Save',
                           color: Colors.white,
                           fontSize: 16.r,
@@ -173,9 +177,20 @@ class EditProfileView extends StatelessWidget {
                         children: [
                           Text('City', style: TextStyle(fontSize: 11.r)),
                           model.city != null
-                              ? Text(
-                                  model.city!,
-                                  style: TextStyle(fontSize: 14.r),
+                              ? Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      model.city!,
+                                      style: TextStyle(fontSize: 14.r),
+                                    ),
+                                    AppTextButton(
+                                      onTap: () => model.getLocation(),
+                                      text: 'Change Location',
+                                      color: AppColors.primaryDark,
+                                    )
+                                  ],
                                 )
                               : AppTextButton(
                                   onTap: () => model.getLocation(),

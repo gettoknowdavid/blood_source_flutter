@@ -1,6 +1,7 @@
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_themes.dart';
+import 'package:blood_source/ui/shared/setup_bottom_sheet_ui.dart';
 import 'package:blood_source/ui/shared/setup_dialog_ui.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ void main() async {
   await ScreenUtil.ensureScreenSize();
   setupLocator();
   setupDialogUi();
+  setupBottomSheetUi();
 
   runApp(const MyApp());
 }

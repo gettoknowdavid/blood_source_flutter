@@ -28,8 +28,11 @@ import '../ui/views/edit_profile/edit_profile_view_model.dart';
 import '../ui/views/forgot_password/forgot_password_view_model.dart';
 import '../ui/views/home/home_view_model.dart';
 import '../ui/views/main_scaffold/main_scaffold_view_model.dart';
+import '../ui/views/my_requests_list/my_requests_list_view_model.dart';
 import '../ui/views/notifications/notifications_view_model.dart';
 import '../ui/views/profile/profile_view_model.dart';
+import '../ui/views/request/request_view_model.dart';
+import '../ui/views/request_list/request_list_view_model.dart';
 import '../ui/views/sign_in/sign_in_view_model.dart';
 import '../ui/views/sign_up/sign_up_view_model.dart';
 import '../ui/views/splash/splash_view_model.dart';
@@ -45,6 +48,7 @@ Future setupLocator(
 
 // Register dependencies
   locator.registerLazySingleton(() => NavigationService());
+  locator.registerLazySingleton(() => BottomSheetService());
   locator.registerLazySingleton(() => DialogService());
   locator.registerLazySingleton(() => MailAppService());
   locator.registerLazySingleton(() => AuthService());
@@ -67,7 +71,10 @@ Future setupLocator(
   locator.registerLazySingleton(() => NotificationsViewModel());
   locator.registerLazySingleton(() => ProfileViewModel());
   locator.registerLazySingleton(() => DonorViewModel());
+  locator.registerLazySingleton(() => RequestViewModel());
   locator.registerLazySingleton(() => EditProfileViewModel());
+  locator.registerLazySingleton(() => RequestListViewModel());
+  locator.registerLazySingleton(() => MyRequestsListViewModel());
   final storageService = await StorageService.getInstance();
   locator.registerSingleton<StorageService>(storageService);
 }
