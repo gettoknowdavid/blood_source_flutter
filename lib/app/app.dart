@@ -70,6 +70,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: RequestListView),
     MaterialRoute(page: MyRequestsListView),
     MaterialRoute(page: RequestDetailsView),
+    MaterialRoute(page: DonateView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
@@ -101,6 +102,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: RequestListViewModel),
     LazySingleton(classType: MyRequestsListViewModel),
     LazySingleton(classType: RequestDetailsViewModel),
+    LazySingleton(classType: DonateViewModel),
     Presolve(
       asType: StorageService,
       classType: StorageService,
