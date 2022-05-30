@@ -80,7 +80,10 @@ class VerifyEmailViewModel extends BaseViewModel with ReactiveServiceMixin {
       }
 
       if (_user.userType == UserType.recipient) {
-        navService.clearStackAndShow(Routes.appLayoutView);
+        navService.clearStackAndShow(
+          Routes.editProfileView,
+          arguments: EditProfileViewArguments(user: _user, isFirstEdit: true),
+        );
         notifyListeners();
       }
     }
