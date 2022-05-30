@@ -64,7 +64,8 @@ class RequestListView extends StatelessWidget {
                               leading: CircleAvatar(
                                 radius: 25.w,
                                 backgroundColor: AppColors.swatch.shade400,
-                                // foregroundImage: NetworkImage(donor.avatar!),
+                                foregroundImage:
+                                    NetworkImage(request.user.avatar),
                               ),
                               subtitle: Text(
                                 dateFormatter(
