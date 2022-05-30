@@ -55,7 +55,6 @@ class RequestViewModel extends ReactiveViewModel with ReactiveServiceMixin {
         location: user.location!,
       ),
       bloodGroup: bloodGroup,
-      requestLocation: user.location!,
       showContactInfo: _showContact.value!,
       requestGranted: false,
     );
