@@ -1,9 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/common/app_icons.dart';
-import 'package:blood_source/ui/views/dashboard/dashboard_view.dart';
-import 'package:blood_source/ui/views/notifications/notifications_view.dart';
-import 'package:blood_source/ui/views/profile/profile_view.dart';
+import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,24 +13,14 @@ class AppLayoutView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget getView(int index) {
-      switch (index) {
-        case 0:
-          return const DashboardView();
-        case 1:
-          return const ProfileView();
-        case 2:
-          return const NotificationsView();
-        case 3:
-          return const ProfileView();
-        default:
-          return const DashboardView();
-      }
-    }
-
     return ViewModelBuilder<AppLayoutViewModel>.reactive(
       viewModelBuilder: () => AppLayoutViewModel(),
+      onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
+        if (model.isBusy) {
+          return const LoadingIndicator();
+        }
+
         return Scaffold(
           body: PageTransitionSwitcher(
             duration: const Duration(milliseconds: 300),
@@ -45,7 +33,7 @@ class AppLayoutView extends StatelessWidget {
                 transitionType: SharedAxisTransitionType.horizontal,
               );
             },
-            child: getView(model.currentIndex),
+            child: model.getView(model.currentIndex),
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.miniCenterDocked,
