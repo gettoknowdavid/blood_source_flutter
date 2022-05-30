@@ -233,8 +233,12 @@ class StackedRouter extends RouterBase {
       );
     },
     RequestDetailsView: (data) {
+      var args = data.getArgs<RequestDetailsViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const RequestDetailsView(),
+        builder: (context) => RequestDetailsView(
+          key: args.key,
+          request: args.request,
+        ),
         settings: data,
       );
     },
@@ -260,4 +264,11 @@ class EditProfileViewArguments {
   final bool isFirstEdit;
   EditProfileViewArguments(
       {this.key, required this.user, this.isFirstEdit = false});
+}
+
+/// RequestDetailsView arguments holder class
+class RequestDetailsViewArguments {
+  final Key? key;
+  final Request request;
+  RequestDetailsViewArguments({this.key, required this.request});
 }
