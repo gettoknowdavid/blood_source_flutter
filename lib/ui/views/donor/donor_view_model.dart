@@ -29,32 +29,7 @@ class DonorViewModel extends ReactiveViewModel with ReactiveServiceMixin {
     await longUpdateStuff();
   }
 
-  // String getDonorCountString() {
-  //   if (_donorCount.value > 1) {
-  //     return '${_donorCount.value} donor are available';
-  //   }
-
-  //   if (_donorCount.value == 1) {
-  //     return '${_donorCount.value} donors are available';
-  //   }
-
-  //   return 'No donors available';
-  // }
-
   Future getDonors() async {
-    // FirebaseFirestore.instance
-    //     .collection('users')
-    //     .where('uid', isNotEqualTo: FirebaseAuth.instance.currentUser!.uid)
-    //     .where('bloodGroup', isEqualTo: request!.bloodGroup.value.desc)
-    //     .where('userType', isEqualTo: UserType.donor.name)
-    //     .snapshots()
-    //     .listen((event) {
-    //   _donors.value = event.docs
-    //       .map((e) => BloodSourceUser.fromFirestore(e, null))
-    //       .toList();
-
-    // });
-
     final result = await _storeService.getDonors();
     _donors.value = result.donors!;
   }
