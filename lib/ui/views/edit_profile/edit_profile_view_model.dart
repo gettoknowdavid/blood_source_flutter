@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:blood_source/app/app.locator.dart';
+import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/gender.dart';
 import 'package:blood_source/models/user_location.dart';
@@ -95,7 +96,7 @@ class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
     }
   }
 
-  Future<BloodSourceUser> save() async {
+  Future<BloodSourceUser> save(bool isFirstEdit) async {
     _dialogService.showCustomDialog(variant: DialogType.loading);
 
     final name = "${user.uid}.jpg";
@@ -135,6 +136,10 @@ class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
     );
 
     final res = await _storeService.updateBloodSourceUser(_editedBSUser);
+
+    if (isFirstEdit) {
+      _navService.clearStackAndShow(Routes.dashboardView);
+    }
 
     _navService.popRepeated(2);
     logger.log(Level.debug, res);
