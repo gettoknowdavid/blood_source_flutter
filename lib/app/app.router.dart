@@ -6,6 +6,7 @@
 
 // ignore_for_file: public_member_api_docs
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -22,6 +23,7 @@ import '../ui/views/edit_profile/edit_profile_view.dart';
 import '../ui/views/forgot_password/forgot_password_view.dart';
 import '../ui/views/home/home_view.dart';
 import '../ui/views/main_scaffold/main_scaffold_view.dart';
+import '../ui/views/my_requests_list/my_requests_list_view.dart';
 import '../ui/views/notifications/notifications_view.dart';
 import '../ui/views/profile/profile_view.dart';
 import '../ui/views/request/request_view.dart';
@@ -50,6 +52,7 @@ class Routes {
   static const String requestView = '/request-view';
   static const String editProfileView = '/edit-profile-view';
   static const String requestListView = '/request-list-view';
+  static const String myRequestsListView = '/my-requests-list-view';
   static const all = <String>{
     splashView,
     mainScaffoldView,
@@ -69,6 +72,7 @@ class Routes {
     requestView,
     editProfileView,
     requestListView,
+    myRequestsListView,
   };
 }
 
@@ -94,6 +98,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.requestView, page: RequestView),
     RouteDef(Routes.editProfileView, page: EditProfileView),
     RouteDef(Routes.requestListView, page: RequestListView),
+    RouteDef(Routes.myRequestsListView, page: MyRequestsListView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -207,6 +212,7 @@ class StackedRouter extends RouterBase {
         builder: (context) => EditProfileView(
           key: args.key,
           user: args.user,
+          isFirstEdit: args.isFirstEdit,
         ),
         settings: data,
       );
@@ -214,6 +220,12 @@ class StackedRouter extends RouterBase {
     RequestListView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const RequestListView(),
+        settings: data,
+      );
+    },
+    MyRequestsListView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const MyRequestsListView(),
         settings: data,
       );
     },
@@ -236,5 +248,7 @@ class DonorViewArguments {
 class EditProfileViewArguments {
   final Key? key;
   final BloodSourceUser user;
-  EditProfileViewArguments({this.key, required this.user});
+  final bool isFirstEdit;
+  EditProfileViewArguments(
+      {this.key, required this.user, this.isFirstEdit = false});
 }

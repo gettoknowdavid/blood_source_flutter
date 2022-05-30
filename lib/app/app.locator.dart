@@ -28,6 +28,7 @@ import '../ui/views/edit_profile/edit_profile_view_model.dart';
 import '../ui/views/forgot_password/forgot_password_view_model.dart';
 import '../ui/views/home/home_view_model.dart';
 import '../ui/views/main_scaffold/main_scaffold_view_model.dart';
+import '../ui/views/my_requests_list/my_requests_list_view_model.dart';
 import '../ui/views/notifications/notifications_view_model.dart';
 import '../ui/views/profile/profile_view_model.dart';
 import '../ui/views/request/request_view_model.dart';
@@ -73,6 +74,7 @@ Future setupLocator(
   locator.registerLazySingleton(() => RequestViewModel());
   locator.registerLazySingleton(() => EditProfileViewModel());
   locator.registerLazySingleton(() => RequestListViewModel());
+  locator.registerLazySingleton(() => MyRequestsListViewModel());
   final storageService = await StorageService.getInstance();
   locator.registerSingleton<StorageService>(storageService);
 }
