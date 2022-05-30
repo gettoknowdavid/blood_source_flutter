@@ -1,10 +1,12 @@
+import 'package:blood_source/models/request.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import './request_details_view_model.dart';
 
 class RequestDetailsView extends StatelessWidget {
-  const RequestDetailsView({Key? key}) : super(key: key);
+  const RequestDetailsView({Key? key, required this.request}) : super(key: key);
+  final Request request;
 
   @override
   Widget build(BuildContext context) {
