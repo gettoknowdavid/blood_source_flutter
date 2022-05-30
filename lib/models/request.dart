@@ -1,6 +1,5 @@
 import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/request_user.dart';
-import 'package:blood_source/models/user_location.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
