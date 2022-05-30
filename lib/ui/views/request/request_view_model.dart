@@ -54,6 +54,8 @@ class RequestViewModel extends ReactiveViewModel with ReactiveServiceMixin {
       requestGranted: false,
     );
 
+    _storeService.setRequest(request);
+
     _navService.navigateToView(
       DonorView(fromRequestView: true, request: request),
     );
