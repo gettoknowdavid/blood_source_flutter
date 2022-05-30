@@ -9,8 +9,6 @@ part of 'request.dart';
 Request _$RequestFromJson(Map<String, dynamic> json) => Request(
       user: RequestUser.fromJson(json['user'] as Map<String, dynamic>),
       bloodGroup: $enumDecode(_$BloodGroupEnumMap, json['bloodGroup']),
-      requestLocation: UserLocation.fromJson(
-          json['requestLocation'] as Map<String, dynamic>),
       showContactInfo: json['showContactInfo'] as bool,
       requestGranted: json['requestGranted'] as bool,
       timeAdded: json['timeAdded'] == null
@@ -21,7 +19,6 @@ Request _$RequestFromJson(Map<String, dynamic> json) => Request(
 Map<String, dynamic> _$RequestToJson(Request instance) => <String, dynamic>{
       'user': instance.user.toJson(),
       'bloodGroup': _$BloodGroupEnumMap[instance.bloodGroup],
-      'requestLocation': instance.requestLocation.toJson(),
       'showContactInfo': instance.showContactInfo,
       'requestGranted': instance.requestGranted,
       'timeAdded': instance.timeAdded?.toIso8601String(),
