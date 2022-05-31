@@ -30,7 +30,7 @@ class RequestDetailsView extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
           body: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(18, 32, 18, 32).r,
+            padding: const EdgeInsets.fromLTRB(18, 8, 18, 32).r,
             child: Center(
               child: Column(
                 children: [
@@ -41,6 +41,15 @@ class RequestDetailsView extends StatelessWidget {
                       radius: 0.17 * 1.sw,
                       foregroundColor: AppColors.primary,
                       foregroundImage: NetworkImage(request.user.avatar),
+                    ),
+                  ),
+                  20.verticalSpace,
+                  Text(
+                    model.user!.name!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 22.sp,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
