@@ -247,8 +247,12 @@ class StackedRouter extends RouterBase {
       );
     },
     DonorDetailsView: (data) {
+      var args = data.getArgs<DonorDetailsViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const DonorDetailsView(),
+        builder: (context) => DonorDetailsView(
+          key: args.key,
+          donor: args.donor,
+        ),
         settings: data,
       );
     },
@@ -281,4 +285,11 @@ class RequestDetailsViewArguments {
   final Key? key;
   final Request request;
   RequestDetailsViewArguments({this.key, required this.request});
+}
+
+/// DonorDetailsView arguments holder class
+class DonorDetailsViewArguments {
+  final Key? key;
+  final BloodSourceUser donor;
+  DonorDetailsViewArguments({this.key, required this.donor});
 }
