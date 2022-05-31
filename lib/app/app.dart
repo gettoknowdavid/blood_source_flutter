@@ -14,6 +14,8 @@ import 'package:blood_source/ui/views/donate/donate_view.dart';
 import 'package:blood_source/ui/views/donate/donate_view_model.dart';
 import 'package:blood_source/ui/views/donor/donor_view.dart';
 import 'package:blood_source/ui/views/donor/donor_view_model.dart';
+import 'package:blood_source/ui/views/donor_details/donor_details_view.dart';
+import 'package:blood_source/ui/views/donor_details/donor_details_view_model.dart';
 import 'package:blood_source/ui/views/donor_form/donor_form_view.dart';
 import 'package:blood_source/ui/views/donor_form/donor_form_view_model.dart';
 import 'package:blood_source/ui/views/edit_profile/edit_profile_view.dart';
@@ -70,6 +72,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: RequestListView),
     MaterialRoute(page: MyRequestsListView),
     MaterialRoute(page: RequestDetailsView),
+    MaterialRoute(page: DonorDetailsView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
@@ -101,6 +104,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: RequestListViewModel),
     LazySingleton(classType: MyRequestsListViewModel),
     LazySingleton(classType: RequestDetailsViewModel),
+    LazySingleton(classType: DonorDetailsViewModel),
     Presolve(
       asType: StorageService,
       classType: StorageService,
