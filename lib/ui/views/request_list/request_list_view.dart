@@ -40,7 +40,10 @@ class RequestListView extends StatelessWidget {
                         itemBuilder: (context, i) {
                           final request = model.requests![i];
 
-                          return RequestListItem(request: request);
+                          return RequestListItem(
+                            key: Key(i.toString()),
+                            request: request,
+                          );
                         },
                       ),
                     ],
