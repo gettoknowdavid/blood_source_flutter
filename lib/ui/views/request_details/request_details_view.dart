@@ -5,8 +5,10 @@ import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
 import 'package:blood_source/ui/shared/widgets/app_button.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:blood_source/ui/shared/widgets/profile/blood_group_widget.dart';
+import 'package:blood_source/ui/shared/widgets/request_details/map_panel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -27,13 +29,26 @@ class RequestDetailsView extends StatelessWidget {
         }
 
         return Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            leading: Container(
+              margin: EdgeInsets.only(left: 8.r, top: 8.r),
+              child: const AppBackButton(color: AppColors.primary),
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+            ),
+          ),
           body: Stack(
+            clipBehavior: Clip.none,
+            fit: StackFit.loose,
             children: [
-              SizedBox(
-                height: 1.sh,
-                width: 1.sw,
-                child: OSMFlutter(
+              SlidingUpPanel(
+                body: OSMFlutter(
                   controller: model.controller,
                   trackMyPosition: false,
                   initZoom: 17,
@@ -53,20 +68,10 @@ class RequestDetailsView extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: AppBar(
-                  elevation: 0,
-                  backgroundColor: Colors.transparent,
-                  leading: Container(
-                    child: const AppBackButton(color: AppColors.primary),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                minHeight: 0.17.sh,
+                maxHeight: 0.54.sh,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
+                panelBuilder: (c) => MapPanel(controller: c, request: request),
               ),
             ],
           ),
