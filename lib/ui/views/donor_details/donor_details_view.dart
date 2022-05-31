@@ -10,19 +10,11 @@ class DonorDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DonorDetailsViewModel>.reactive(
       viewModelBuilder: () => DonorDetailsViewModel(),
-      onModelReady: (DonorDetailsViewModel model) async {
-        await model.init();
-      },
-      builder: (
-        BuildContext context,
-        DonorDetailsViewModel model,
-        Widget? child,
-      ) {
-        return Scaffold(
+      onModelReady: (model) async => await model.init(),
+      builder: (context, model, Widget? child) {
+        return const Scaffold(
           body: Center(
-            child: Text(
-              'DonorDetailsView',
-            ),
+            child: Text('DonorDetailsView'),
           ),
         );
       },
