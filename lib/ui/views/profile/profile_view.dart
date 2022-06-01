@@ -89,7 +89,7 @@ class ProfileView extends StatelessWidget {
                               ),
                             ),
                       20.verticalSpace,
-                      const BloodGroupWidget(),
+                      BloodGroupWidget(bloodGroup: model.user.bloodGroup!),
                       30.verticalSpace,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
