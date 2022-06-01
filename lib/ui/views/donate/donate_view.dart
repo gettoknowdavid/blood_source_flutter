@@ -10,8 +10,14 @@ class DonateView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DonateViewModel>.reactive(
       viewModelBuilder: () => DonateViewModel(),
-      onModelReady: (DonateViewModel model) async => await model.init(),
-      builder: (context, model, Widget? child) {
+      onModelReady: (DonateViewModel model) async {
+        await model.init();
+      },
+      builder: (
+        BuildContext context,
+        DonateViewModel model,
+        Widget? child,
+      ) {
         return Scaffold(
           body: Center(
             child: Text(

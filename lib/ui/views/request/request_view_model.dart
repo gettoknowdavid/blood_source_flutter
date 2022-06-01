@@ -1,6 +1,7 @@
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/request.dart';
+import 'package:blood_source/models/request_user.dart';
 import 'package:blood_source/services/store_service.dart';
 import 'package:blood_source/ui/views/donor/donor_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -47,9 +48,13 @@ class RequestViewModel extends ReactiveViewModel with ReactiveServiceMixin {
 
   Future<void> searchDonations() async {
     Request request = Request(
-      user: user.uid!,
+      user: RequestUser(
+        uid: user.uid!,
+        name: user.name!,
+        avatar: user.avatar!,
+        location: user.location!,
+      ),
       bloodGroup: bloodGroup,
-      requestLocation: user.location!,
       showContactInfo: _showContact.value!,
       requestGranted: false,
     );
