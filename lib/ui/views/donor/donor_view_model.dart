@@ -33,11 +33,18 @@ class DonorViewModel extends ReactiveViewModel with ReactiveServiceMixin {
     );
   }
 
-  Future<void> init(Request req) async {
+  Future<void> init(Request req, bool isCompatible) async {
     setBusy(true);
-    final result = await _storeService.getCompatibleDonors(req);
-    _donors.value = result.donors!;
-    setBusy(false);
+
+    if (isCompatible) {
+      final result = await _storeService.getCompatibleDonors(req);
+      _donors.value = result.donors!;
+      setBusy(false);
+    } else {
+      final result = await _storeService.getDonors();
+      _donors.value = result.donors!;
+      setBusy(false);
+    }
   }
 
   Future getDonors() async {
