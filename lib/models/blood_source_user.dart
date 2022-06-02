@@ -18,13 +18,13 @@ class BloodSourceUser {
   /// The age of the donor which should not be
   /// below 18 or above 60.
   /// For recipients, any age is allowed.
-  final int? age;
+  final num? age;
 
-  final double? height;
+  final num? height;
 
   /// The weight of the donor which must be
   /// greater than 45kg
-  final double? weight;
+  final num? weight;
 
   final String? phone;
 
@@ -93,9 +93,9 @@ class BloodSourceUser {
   )   : uid = snapshot.data()?['uid'] as String?,
         name = snapshot.data()?['name'] as String?,
         gender = $enumDecode($GenderTypeEnum, snapshot.data()?["gender"]),
-        age = snapshot.data()?["age"] as int?,
-        height = snapshot.data()?["height"] as double?,
-        weight = snapshot.data()?["weight"] as double?,
+        age = snapshot.data()?["age"] as num?,
+        height = snapshot.data()?["height"] as num?,
+        weight = snapshot.data()?["weight"] as num?,
         city = snapshot.data()?['city'] as String?,
         location = snapshot.data()?['location'] == null
             ? null
