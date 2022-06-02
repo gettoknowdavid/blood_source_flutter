@@ -12,12 +12,15 @@ import 'package:stacked_services/stacked_services.dart';
 
 class RequestViewModel extends ReactiveViewModel with ReactiveServiceMixin {
   RequestViewModel() {
-    listenToReactiveValues([_showContact]);
+    listenToReactiveValues([_showContact, _compatible]);
   }
   final NavigationService _navService = locator<NavigationService>();
 
   final ReactiveValue<bool?> _showContact = ReactiveValue<bool?>(false);
   bool? get showContact => _showContact.value;
+
+  final ReactiveValue<bool?> _compatible = ReactiveValue<bool?>(true);
+  bool? get compatible => _compatible.value;
 
   final StoreService _storeService = locator<StoreService>();
   BloodSourceUser get user => _storeService.bloodUser!;
@@ -43,6 +46,12 @@ class RequestViewModel extends ReactiveViewModel with ReactiveServiceMixin {
     return null;
   }
 
+  void Function(bool?)? onCompatibilityChnaged(bool? value) {
+    _compatible.value = value!;
+    notifyListeners();
+    return null;
+  }
+
   final List<BloodGroup> bgList =
       BloodGroup.values.where((e) => e != BloodGroup.none).toList();
 
@@ -62,7 +71,11 @@ class RequestViewModel extends ReactiveViewModel with ReactiveServiceMixin {
     _storeService.setRequest(request);
 
     _navService.navigateToView(
-      DonorView(fromRequestView: true, request: request),
+      DonorView(
+        fromRequestView: true,
+        request: request,
+        compatible: compatible!,
+      ),
     );
   }
 
