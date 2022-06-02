@@ -62,12 +62,12 @@ class DonorListItem extends ViewModelWidget<DonorViewModel> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
-            color: AppColors.secondary,
+            color: AppColors.primary,
           ),
           child: Text(
             donor.bloodGroup!.value.name,
             style: TextStyle(
-              fontSize: 12.sp,
+              fontSize: 16.sp,
               fontWeight: FontWeight.w600,
               color: Colors.white,
             ),
