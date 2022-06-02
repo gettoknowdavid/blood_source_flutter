@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:blood_source/app/app.locator.dart';
-import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/request.dart';
 import 'package:blood_source/models/user-type.dart';
 import 'package:blood_source/services/storage_service.dart';
+import 'package:blood_source/utils/compatible_donors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -45,7 +45,6 @@ class StoreService with ReactiveServiceMixin {
     try {
       final list = await _usersColRef
           .where('uid', isNotEqualTo: _bloodUser.value!.uid)
-          .where('bloodGroup', isEqualTo: request!.bloodGroup.value.desc)
           .where('userType', isEqualTo: UserType.donor.name)
           .get()
           .then((snapshots) => snapshots.docs
@@ -56,6 +55,15 @@ class StoreService with ReactiveServiceMixin {
       } else {
         return StoreResult(donors: list);
       }
+    } on FirebaseException catch (e) {
+      return StoreResult.error(errorMessage: e.message);
+    }
+  }
+
+  Future<StoreResult> getCompatibleDonors(Request r) async {
+    try {
+      final _result = await compatibleDonors(r.bloodGroup, _usersColRef);
+      return StoreResult(donors: _result);
     } on FirebaseException catch (e) {
       return StoreResult.error(errorMessage: e.message);
     }
