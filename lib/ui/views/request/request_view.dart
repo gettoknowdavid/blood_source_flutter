@@ -44,7 +44,7 @@ class RequestView extends StatelessWidget {
                 children: [
                   Container(
                     padding: const EdgeInsets.fromLTRB(4, 20, 4, 0).r,
-                    height: 0.32.sh,
+                    height: 0.3.sh,
                     width: 1.sw,
                     decoration: BoxDecoration(
                       color: AppColors.swatch.shade700,
@@ -54,7 +54,7 @@ class RequestView extends StatelessWidget {
                     ),
                     child: Image.asset(ImageResources.bloodDonation),
                   ),
-                  20.verticalSpace,
+                  18.verticalSpace,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18).r,
                     child: Text(
@@ -66,7 +66,7 @@ class RequestView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  10.verticalSpace,
+                  5.verticalSpace,
                   GridView.builder(
                     primary: false,
                     shrinkWrap: true,
@@ -136,11 +136,12 @@ class RequestView extends StatelessWidget {
                       );
                     },
                   ),
-                  10.verticalSpace,
+                  5.verticalSpace,
                   CheckboxListTile(
                     value: model.showContact,
                     onChanged: (value) => model.onShowPhoneChanged(value),
                     controlAffinity: ListTileControlAffinity.leading,
+                    contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0).r,
                     checkboxShape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6.r),
                     ),
@@ -152,7 +153,23 @@ class RequestView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  25.verticalSpace,
+                  CheckboxListTile(
+                    value: model.compatible,
+                    onChanged: (value) => model.onCompatibilityChnaged(value),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0).r,
+                    checkboxShape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.r),
+                    ),
+                    title: Text(
+                      'Show only compatible donors',
+                      style: TextStyle(
+                        fontSize: 16.r,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  10.verticalSpace,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0).r,
                     child: AppButton(
