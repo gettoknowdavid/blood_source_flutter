@@ -1,4 +1,5 @@
 import 'package:blood_source/app/app.locator.dart';
+import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:blood_source/models/request.dart';
 import 'package:blood_source/services/store_service.dart';
@@ -25,8 +26,18 @@ class DonorViewModel extends ReactiveViewModel with ReactiveServiceMixin {
 
   Request? get request => _storeService.request;
 
-  Future<void> init() async {
-    await longUpdateStuff();
+  void goToDonorDetails(BloodSourceUser donor) {
+    _navService.navigateTo(
+      Routes.donorDetailsView,
+      arguments: DonorDetailsViewArguments(donor: donor),
+    );
+  }
+
+  Future<void> init(Request req) async {
+    setBusy(true);
+    final result = await _storeService.getCompatibleDonors(req);
+    _donors.value = result.donors!;
+    setBusy(false);
   }
 
   Future getDonors() async {
@@ -34,9 +45,9 @@ class DonorViewModel extends ReactiveViewModel with ReactiveServiceMixin {
     _donors.value = result.donors!;
   }
 
-  Future longUpdateStuff() async {
-    await runBusyFuture(getDonors());
-  }
+  // Future longUpdateStuff() async {
+  //   await runBusyFuture(getDonors());
+  // }
 
   Future addRequest(Request request) async {
     _logger.i(request);
