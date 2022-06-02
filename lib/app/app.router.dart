@@ -202,6 +202,7 @@ class StackedRouter extends RouterBase {
         builder: (context) => DonorView(
           key: args.key,
           fromRequestView: args.fromRequestView,
+          compatible: args.compatible,
           request: args.request,
         ),
         settings: data,
@@ -267,8 +268,13 @@ class StackedRouter extends RouterBase {
 class DonorViewArguments {
   final Key? key;
   final bool fromRequestView;
+  final bool compatible;
   final Request? request;
-  DonorViewArguments({this.key, this.fromRequestView = false, this.request});
+  DonorViewArguments(
+      {this.key,
+      this.fromRequestView = false,
+      this.compatible = true,
+      this.request});
 }
 
 /// EditProfileView arguments holder class
