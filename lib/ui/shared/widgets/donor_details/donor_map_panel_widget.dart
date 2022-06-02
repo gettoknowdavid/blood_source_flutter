@@ -82,12 +82,12 @@ class DonorMapPanel extends ViewModelWidget<DonorDetailsViewModel> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               BloodGroupWidget(
-                bloodGroup: donor.bloodGroup!,
+                bloodGroup: viewModel.recipient.bloodGroup!,
                 type: BGWidgetType.complex,
                 // compatible: compatible,
               ),
               10.horizontalSpace,
-              const Icon(Icons.chevron_right, color: AppColors.primary),
+              const Icon(Icons.chevron_left, color: AppColors.primary),
               10.horizontalSpace,
               BloodGroupWidget(
                 bloodGroup: donor.bloodGroup!,
