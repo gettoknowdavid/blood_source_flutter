@@ -24,7 +24,7 @@ class DonorView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DonorViewModel>.reactive(
       viewModelBuilder: () => DonorViewModel(),
-      onModelReady: (model) async => await model.init(),
+      onModelReady: (model) async => await model.init(request!),
       builder: (context, model, Widget? child) {
         if (model.isBusy) {
           return const LoadingIndicator();
@@ -53,7 +53,7 @@ class DonorView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       BloodGroupWidget(
-                        bloodGroup: model.user!.bloodGroup!,
+                        bloodGroup: request!.bloodGroup,
                         type: BGWidgetType.complex,
                       ),
                       20.verticalSpace,
@@ -61,6 +61,7 @@ class DonorView extends StatelessWidget {
                       20.verticalSpace,
                       ListView.builder(
                         itemCount: model.donors.length,
+                        primary: false,
                         shrinkWrap: true,
                         padding: EdgeInsets.symmetric(horizontal: 18.r),
                         itemBuilder: (context, i) {
