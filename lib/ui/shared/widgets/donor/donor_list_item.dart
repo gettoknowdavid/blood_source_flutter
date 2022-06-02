@@ -1,17 +1,20 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/models/blood_source_user.dart';
+import 'package:blood_source/ui/views/donor/donor_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:blood_source/models/blood_group.dart';
+import 'package:stacked/stacked.dart';
 
-class DonorListItem extends StatelessWidget {
+class DonorListItem extends ViewModelWidget<DonorViewModel> {
   const DonorListItem({Key? key, required this.donor}) : super(key: key);
 
   final BloodSourceUser donor;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, DonorViewModel viewModel) {
     return Container(
+      margin: EdgeInsets.symmetric(vertical: 10.r),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.r),
@@ -25,6 +28,7 @@ class DonorListItem extends StatelessWidget {
         ],
       ),
       child: ListTile(
+        onTap: () => viewModel.goToDonorDetails(donor),
         leading: CircleAvatar(
           radius: 25.w,
           backgroundColor: AppColors.swatch.shade400,
