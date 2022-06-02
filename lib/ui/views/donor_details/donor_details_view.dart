@@ -1,7 +1,7 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
+import 'package:blood_source/ui/shared/widgets/donor_details/donor_map_panel_widget.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
-import 'package:blood_source/ui/shared/widgets/request_details/map_panel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -68,7 +68,7 @@ class DonorDetailsView extends StatelessWidget {
                 minHeight: 0.17.sh,
                 maxHeight: 0.54.sh,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
-                // panelBuilder: (c) => MapPanel(controller: c, request: request),
+                panelBuilder: (c) => DonorMapPanel(controller: c, donor: donor),
               ),
             ],
           ),
