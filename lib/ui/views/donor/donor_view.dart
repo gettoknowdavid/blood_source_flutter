@@ -1,5 +1,4 @@
 import 'package:blood_source/common/app_colors.dart';
-import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/request.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
 import 'package:blood_source/ui/shared/widgets/app_text_button.dart';
@@ -14,17 +13,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import './donor_view_model.dart';
 
 class DonorView extends StatelessWidget {
-  const DonorView({Key? key, this.fromRequestView = false, this.request})
-      : super(key: key);
+  const DonorView({
+    Key? key,
+    this.fromRequestView = false,
+    this.compatible = true,
+    this.request,
+  }) : super(key: key);
 
   final bool fromRequestView;
+  final bool compatible;
   final Request? request;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DonorViewModel>.reactive(
       viewModelBuilder: () => DonorViewModel(),
-      onModelReady: (model) async => await model.init(request!),
+      onModelReady: (model) async => await model.init(request!, compatible),
       builder: (context, model, Widget? child) {
         if (model.isBusy) {
           return const LoadingIndicator();
