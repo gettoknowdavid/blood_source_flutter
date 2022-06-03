@@ -1,4 +1,5 @@
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
+import 'package:blood_source/ui/shared/widgets/app_text_button.dart';
 import 'package:blood_source/ui/shared/widgets/empty_widget.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:blood_source/ui/shared/widgets/request_list/request_list_item.dart';
@@ -23,9 +24,18 @@ class RequestListView extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Available Requests'),
+            title: const Text('Requests'),
             leading: const AppBackButton(),
             elevation: 0,
+            actions: [
+              AppTextButton(
+                onTap: () => model.onCompatibilityChanged(!model.compatible),
+                text: model.compatible ? 'Show All' : 'Show Compatible',
+                fontSize: 16.sp,
+                color: Colors.white,
+                padding: EdgeInsets.only(right: 18.r),
+              )
+            ],
           ),
           body: model.requests!.isEmpty
               ? const EmptyWidget()
