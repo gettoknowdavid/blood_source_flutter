@@ -11,7 +11,7 @@ Future<List<Request>> compatibleRecipients(
   switch (bloodGroup) {
     case BloodGroup.aPositive:
       return await ref
-          .where('uid', isNotEqualTo: uid)
+          .where('user.uid', isNotEqualTo: uid)
           .where('bloodGroup', whereIn: [
             BloodGroup.aPositive.value.desc,
             BloodGroup.abPositive.value.desc,
@@ -23,7 +23,7 @@ Future<List<Request>> compatibleRecipients(
 
     case BloodGroup.oPositive:
       return await ref
-          .where('uid', isNotEqualTo: uid)
+          .where('user.uid', isNotEqualTo: uid)
           .where('bloodGroup', whereIn: [
             BloodGroup.oPositive.value.desc,
             BloodGroup.bPositive.value.desc,
@@ -37,7 +37,7 @@ Future<List<Request>> compatibleRecipients(
 
     case BloodGroup.bPositive:
       return await ref
-          .where('uid', isNotEqualTo: uid)
+          .where('user.uid', isNotEqualTo: uid)
           .where('bloodGroup', whereIn: [
             BloodGroup.bPositive.value.desc,
             BloodGroup.abPositive.value.desc,
@@ -49,8 +49,8 @@ Future<List<Request>> compatibleRecipients(
 
     case BloodGroup.abPositive:
       return await ref
-          .where('uid', isNotEqualTo: uid)
-          .where('bloodGroup', whereIn: [BloodGroup.abPositive.value.desc])
+          .where('user.uid', isNotEqualTo: uid)
+          .where('bloodGroup', isEqualTo: BloodGroup.abPositive.value.desc)
           .get()
           .then((snapshots) => snapshots.docs
               .map((e) => Request.fromFirestore(e, null))
@@ -58,7 +58,7 @@ Future<List<Request>> compatibleRecipients(
 
     case BloodGroup.aNegative:
       return await ref
-          .where('uid', isNotEqualTo: uid)
+          .where('user.uid', isNotEqualTo: uid)
           .where('bloodGroup', whereIn: [
             BloodGroup.aPositive.value.desc,
             BloodGroup.aNegative.value.desc,
@@ -71,12 +71,14 @@ Future<List<Request>> compatibleRecipients(
               .toList());
 
     case BloodGroup.oNegative:
-      return await ref.where('uid', isNotEqualTo: uid).get().then((snapshots) =>
-          snapshots.docs.map((e) => Request.fromFirestore(e, null)).toList());
+      return await ref.where('user.uid', isNotEqualTo: uid).get().then(
+          (snapshots) => snapshots.docs
+              .map((e) => Request.fromFirestore(e, null))
+              .toList());
 
     case BloodGroup.bNegative:
       return await ref
-          .where('uid', isNotEqualTo: uid)
+          .where('user.uid', isNotEqualTo: uid)
           .where('bloodGroup', whereIn: [
             BloodGroup.bPositive.value.desc,
             BloodGroup.bNegative.value.desc,
@@ -90,7 +92,7 @@ Future<List<Request>> compatibleRecipients(
 
     case BloodGroup.abNegative:
       return await ref
-          .where('uid', isNotEqualTo: uid)
+          .where('user.uid', isNotEqualTo: uid)
           .where('bloodGroup', whereIn: [
             BloodGroup.abPositive.value.desc,
             BloodGroup.abNegative.value.desc,
@@ -101,7 +103,9 @@ Future<List<Request>> compatibleRecipients(
               .toList());
 
     default:
-      return await ref.where('uid', isNotEqualTo: uid).get().then((snapshots) =>
-          snapshots.docs.map((e) => Request.fromFirestore(e, null)).toList());
+      return await ref.where('user.uid', isNotEqualTo: uid).get().then(
+          (snapshots) => snapshots.docs
+              .map((e) => Request.fromFirestore(e, null))
+              .toList());
   }
 }
