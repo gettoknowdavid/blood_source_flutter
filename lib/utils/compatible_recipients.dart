@@ -1,9 +1,9 @@
 import 'package:blood_source/models/blood_group.dart';
+import 'package:blood_source/models/request.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:blood_source/models/blood_source_user.dart';
 
-Future<List<BloodSourceUser>> compatibleRecipients(
+Future<List<Request>> compatibleRecipients(
   BloodGroup bloodGroup,
   CollectionReference<Map<String, dynamic>> ref,
 ) async {
@@ -18,7 +18,7 @@ Future<List<BloodSourceUser>> compatibleRecipients(
           ])
           .get()
           .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
+              .map((e) => Request.fromFirestore(e, null))
               .toList());
 
     case BloodGroup.oPositive:
@@ -32,7 +32,7 @@ Future<List<BloodSourceUser>> compatibleRecipients(
           ])
           .get()
           .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
+              .map((e) => Request.fromFirestore(e, null))
               .toList());
 
     case BloodGroup.bPositive:
@@ -44,7 +44,7 @@ Future<List<BloodSourceUser>> compatibleRecipients(
           ])
           .get()
           .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
+              .map((e) => Request.fromFirestore(e, null))
               .toList());
 
     case BloodGroup.abPositive:
@@ -53,7 +53,7 @@ Future<List<BloodSourceUser>> compatibleRecipients(
           .where('bloodGroup', whereIn: [BloodGroup.abPositive.value.desc])
           .get()
           .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
+              .map((e) => Request.fromFirestore(e, null))
               .toList());
 
     case BloodGroup.aNegative:
@@ -67,14 +67,12 @@ Future<List<BloodSourceUser>> compatibleRecipients(
           ])
           .get()
           .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
+              .map((e) => Request.fromFirestore(e, null))
               .toList());
 
     case BloodGroup.oNegative:
       return await ref.where('uid', isNotEqualTo: uid).get().then((snapshots) =>
-          snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
-              .toList());
+          snapshots.docs.map((e) => Request.fromFirestore(e, null)).toList());
 
     case BloodGroup.bNegative:
       return await ref
@@ -87,7 +85,7 @@ Future<List<BloodSourceUser>> compatibleRecipients(
           ])
           .get()
           .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
+              .map((e) => Request.fromFirestore(e, null))
               .toList());
 
     case BloodGroup.abNegative:
@@ -99,13 +97,11 @@ Future<List<BloodSourceUser>> compatibleRecipients(
           ])
           .get()
           .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
+              .map((e) => Request.fromFirestore(e, null))
               .toList());
 
     default:
       return await ref.where('uid', isNotEqualTo: uid).get().then((snapshots) =>
-          snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
-              .toList());
+          snapshots.docs.map((e) => Request.fromFirestore(e, null)).toList());
   }
 }
