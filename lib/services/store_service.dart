@@ -5,6 +5,7 @@ import 'package:blood_source/models/request.dart';
 import 'package:blood_source/models/user-type.dart';
 import 'package:blood_source/services/storage_service.dart';
 import 'package:blood_source/utils/compatible_donors.dart';
+import 'package:blood_source/utils/compatible_recipients.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -105,6 +106,15 @@ class StoreService with ReactiveServiceMixin {
                 .toList());
         return StoreResult(requests: list);
       }
+    } on FirebaseException catch (e) {
+      return StoreResult.error(errorMessage: e.message);
+    }
+  }
+
+  Future<StoreResult> getCompatibleRequests(Request r) async {
+    try {
+      final _result = await compatibleRecipients(r.bloodGroup, _requestColRef);
+      return StoreResult(requests: _result);
     } on FirebaseException catch (e) {
       return StoreResult.error(errorMessage: e.message);
     }
