@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:blood_source/app/app.locator.dart';
+import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/request.dart';
 import 'package:blood_source/models/user-type.dart';
 import 'package:blood_source/services/storage_service.dart';
@@ -111,9 +112,10 @@ class StoreService with ReactiveServiceMixin {
     }
   }
 
-  Future<StoreResult> getCompatibleRequests(Request r) async {
+  Future<StoreResult> getCompatibleRequests(BloodGroup bloodGroup) async {
     try {
-      final _result = await compatibleRecipients(r.bloodGroup, _requestColRef);
+      final _result = await compatibleRecipients(bloodGroup, _requestColRef);
+      logger.i(_result);
       return StoreResult(requests: _result);
     } on FirebaseException catch (e) {
       return StoreResult.error(errorMessage: e.message);
