@@ -61,6 +61,8 @@ dependencies:
   flutter_osm_plugin: ^0.34.0+1
   sliding_up_panel: ^2.0.0+1
   firebase_messaging: ^11.4.1
+  flutter_local_notifications: ^9.5.3+1
+  uuid: ^3.0.6
 
 dev_dependencies:
   flutter_test:
