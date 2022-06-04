@@ -4,123 +4,94 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 
-Future<List<BloodSourceUser>> compatibleDonors(
-  BloodGroup bloodGroup,
-  CollectionReference<Map<String, dynamic>> ref,
-) async {
+Stream<QuerySnapshot<BloodSourceUser?>> compatibleDonors(
+    BloodGroup bloodGroup) {
+  final ref = FirebaseFirestore.instance
+      .collection('users')
+      .withConverter<BloodSourceUser>(
+        fromFirestore: BloodSourceUser.fromFirestore,
+        toFirestore: (_b, _) => _b.toFirestore(),
+      );
+
   final uid = FirebaseAuth.instance.currentUser!.uid;
   switch (bloodGroup) {
     case BloodGroup.aPositive:
-      return await FirebaseFirestore.instance
-          .collection('users')
+      return ref
           .where('uid', isNotEqualTo: uid)
           .where('userType', isEqualTo: UserType.donor.name)
           .where('bloodGroup', whereIn: [
-            BloodGroup.aPositive.value.desc,
-            BloodGroup.aNegative.value.desc,
-            BloodGroup.oPositive.value.desc,
-            BloodGroup.oNegative.value.desc,
-          ])
-          .get()
-          .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
-              .toList());
+        BloodGroup.aPositive.value.desc,
+        BloodGroup.aNegative.value.desc,
+        BloodGroup.oPositive.value.desc,
+        BloodGroup.oNegative.value.desc,
+      ]).snapshots();
 
     case BloodGroup.oPositive:
-      return await ref
+      return ref
           .where('uid', isNotEqualTo: uid)
           .where('userType', isEqualTo: UserType.donor.name)
           .where('bloodGroup', whereIn: [
-            BloodGroup.oPositive.value.desc,
-            BloodGroup.oNegative.value.desc,
-          ])
-          .get()
-          .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
-              .toList());
+        BloodGroup.oPositive.value.desc,
+        BloodGroup.oNegative.value.desc,
+      ]).snapshots();
 
     case BloodGroup.bPositive:
-      return await ref
+      return ref
           .where('uid', isNotEqualTo: uid)
           .where('userType', isEqualTo: UserType.donor.name)
           .where('bloodGroup', whereIn: [
-            BloodGroup.bPositive.value.desc,
-            BloodGroup.bNegative.value.desc,
-            BloodGroup.oPositive.value.desc,
-            BloodGroup.oNegative.value.desc,
-          ])
-          .get()
-          .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
-              .toList());
+        BloodGroup.bPositive.value.desc,
+        BloodGroup.bNegative.value.desc,
+        BloodGroup.oPositive.value.desc,
+        BloodGroup.oNegative.value.desc,
+      ]).snapshots();
 
     case BloodGroup.abPositive:
-      return await ref
+      return ref
           .where('uid', isNotEqualTo: uid)
           .where('userType', isEqualTo: UserType.donor.name)
-          .get()
-          .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
-              .toList());
+          .snapshots();
 
     case BloodGroup.aNegative:
-      return await ref
+      return ref
           .where('uid', isNotEqualTo: uid)
           .where('userType', isEqualTo: UserType.donor.name)
           .where('bloodGroup', whereIn: [
-            BloodGroup.aNegative.value.desc,
-            BloodGroup.oNegative.value.desc,
-          ])
-          .get()
-          .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
-              .toList());
+        BloodGroup.aNegative.value.desc,
+        BloodGroup.oNegative.value.desc,
+      ]).snapshots();
 
     case BloodGroup.oNegative:
-      return await ref
+      return ref
           .where('uid', isNotEqualTo: uid)
           .where('userType', isEqualTo: UserType.donor.name)
           .where('bloodGroup', isEqualTo: BloodGroup.oNegative.value.desc)
-          .get()
-          .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
-              .toList());
+          .snapshots();
 
     case BloodGroup.bNegative:
-      return await ref
+      return ref
           .where('uid', isNotEqualTo: uid)
           .where('userType', isEqualTo: UserType.donor.name)
           .where('bloodGroup', whereIn: [
-            BloodGroup.bNegative.value.desc,
-            BloodGroup.oNegative.value.desc,
-          ])
-          .get()
-          .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
-              .toList());
+        BloodGroup.bNegative.value.desc,
+        BloodGroup.oNegative.value.desc,
+      ]).snapshots();
 
     case BloodGroup.abNegative:
-      return await ref
+      return ref
           .where('uid', isNotEqualTo: uid)
           .where('userType', isEqualTo: UserType.donor.name)
           .where('bloodGroup', whereIn: [
-            BloodGroup.abNegative.value.desc,
-            BloodGroup.aNegative.value.desc,
-            BloodGroup.bNegative.value.desc,
-            BloodGroup.oNegative.value.desc,
-          ])
-          .get()
-          .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
-              .toList());
+        BloodGroup.abNegative.value.desc,
+        BloodGroup.aNegative.value.desc,
+        BloodGroup.bNegative.value.desc,
+        BloodGroup.oNegative.value.desc,
+      ]).snapshots();
 
     default:
-      return await ref
+      return ref
           .where('uid', isNotEqualTo: uid)
           .where('userType', isEqualTo: UserType.donor.name)
-          .get()
-          .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
-              .toList());
+          .snapshots();
   }
 }
