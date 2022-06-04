@@ -13,24 +13,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import './donor_view_model.dart';
 
 class DonorView extends StatelessWidget {
-  const DonorView({
-    Key? key,
-    this.fromRequestView = false,
-    this.compatible = true,
-    this.request,
-  }) : super(key: key);
+  const DonorView({Key? key, this.fromRequestView = false, this.request})
+      : super(key: key);
 
   final bool fromRequestView;
-  final bool compatible;
   final Request? request;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DonorViewModel>.reactive(
       viewModelBuilder: () => DonorViewModel(),
-      onModelReady: (model) async => await model.init(request!, compatible),
+      onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
-        if (model.isBusy) {
+        if (!model.dataReady || model.isBusy) {
           return const LoadingIndicator();
         }
 
@@ -50,7 +45,7 @@ class DonorView extends StatelessWidget {
               )
             ],
           ),
-          body: model.donors.isEmpty
+          body: model.data!.docs.isEmpty
               ? const EmptyWidget()
               : SingleChildScrollView(
                   child: Column(
@@ -64,12 +59,12 @@ class DonorView extends StatelessWidget {
                       // Text(model.getDonorCountString()),
                       20.verticalSpace,
                       ListView.builder(
-                        itemCount: model.donors.length,
+                        itemCount: model.data!.docs.length,
                         primary: false,
                         shrinkWrap: true,
                         padding: EdgeInsets.symmetric(horizontal: 18.r),
                         itemBuilder: (context, i) {
-                          final donor = model.donors[i];
+                          final donor = model.data!.docs[i].data()!;
                           return DonorListItem(donor: donor);
                         },
                       ),
