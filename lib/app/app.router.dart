@@ -202,7 +202,6 @@ class StackedRouter extends RouterBase {
         builder: (context) => DonorView(
           key: args.key,
           fromRequestView: args.fromRequestView,
-          compatible: args.compatible,
           request: args.request,
         ),
         settings: data,
