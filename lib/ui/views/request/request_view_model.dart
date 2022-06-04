@@ -10,17 +10,12 @@ import 'package:blood_source/models/blood_source_user.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class RequestViewModel extends ReactiveViewModel with ReactiveServiceMixin {
-  RequestViewModel() {
-    listenToReactiveValues([_showContact, _compatible]);
-  }
+class RequestViewModel extends ReactiveViewModel {
   final NavigationService _navService = locator<NavigationService>();
 
-  final ReactiveValue<bool?> _showContact = ReactiveValue<bool?>(false);
-  bool? get showContact => _showContact.value;
+  bool showContact = false;
 
-  final ReactiveValue<bool?> _compatible = ReactiveValue<bool?>(true);
-  bool? get compatible => _compatible.value;
+  bool compatible = true;
 
   final StoreService _storeService = locator<StoreService>();
   BloodSourceUser get user => _storeService.bloodUser!;
@@ -41,13 +36,14 @@ class RequestViewModel extends ReactiveViewModel with ReactiveServiceMixin {
   }
 
   void Function(bool?)? onShowPhoneChanged(bool? value) {
-    _showContact.value = value!;
+    showContact = value!;
     notifyListeners();
     return null;
   }
 
-  void Function(bool?)? onCompatibilityChnaged(bool? value) {
-    _compatible.value = value!;
+  void Function(bool?)? onCompatibilityChanged(bool? value) {
+    compatible = value!;
+    _storeService.setCompatible(value);
     notifyListeners();
     return null;
   }
@@ -64,18 +60,14 @@ class RequestViewModel extends ReactiveViewModel with ReactiveServiceMixin {
         location: user.location!,
       ),
       bloodGroup: bloodGroup,
-      showContactInfo: _showContact.value!,
+      showContactInfo: showContact,
       requestGranted: false,
     );
 
     _storeService.setRequest(request);
 
     _navService.navigateToView(
-      DonorView(
-        fromRequestView: true,
-        request: request,
-        compatible: compatible!,
-      ),
+      DonorView(fromRequestView: true, request: request),
     );
   }
 
