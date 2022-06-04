@@ -1,5 +1,3 @@
-import 'package:blood_source/ui/shared/widgets/empty_widget.dart';
-import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -12,20 +10,20 @@ class NotificationsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<NotificationsViewModel>.reactive(
       viewModelBuilder: () => NotificationsViewModel(),
-      onModelReady: (NotificationsViewModel model) async => await model.init(),
-      builder: (context, model, Widget? child) {
-        if (model.isBusy) {
-          return const LoadingIndicator();
-        }
-
-        return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: const Text('Notifications'),
+      onModelReady: (NotificationsViewModel model) async {
+        await model.init();
+      },
+      builder: (
+        BuildContext context,
+        NotificationsViewModel model,
+        Widget? child,
+      ) {
+        return const Scaffold(
+          body: Center(
+            child: Text(
+              'NotificationsView',
+            ),
           ),
-          body: model.notifications == null
-              ? const EmptyWidget()
-              : const Center(child: Text('NotificationsView')),
         );
       },
     );
