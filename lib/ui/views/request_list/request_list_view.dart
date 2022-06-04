@@ -18,7 +18,7 @@ class RequestListView extends StatelessWidget {
       viewModelBuilder: () => RequestListViewModel(),
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
-        if (model.isBusy) {
+        if (!model.dataReady || model.isBusy) {
           return const LoadingIndicator();
         }
 
@@ -29,7 +29,7 @@ class RequestListView extends StatelessWidget {
             elevation: 0,
             actions: [
               AppTextButton(
-                onTap: () => model.onCompatibilityChanged(!model.compatible),
+                onTap: model.onCompatibilityChanged,
                 text: model.compatible ? 'Show All' : 'Show Compatible',
                 fontSize: 16.sp,
                 color: Colors.white,
@@ -37,7 +37,7 @@ class RequestListView extends StatelessWidget {
               )
             ],
           ),
-          body: model.requests!.isEmpty
+          body: model.data!.docs.isEmpty
               ? const EmptyWidget()
               : SingleChildScrollView(
                   child: Column(
@@ -46,14 +46,11 @@ class RequestListView extends StatelessWidget {
                       ListView.builder(
                         primary: false,
                         shrinkWrap: true,
-                        itemCount: model.requests!.length,
+                        itemCount: model.data!.docs.length,
                         itemBuilder: (context, i) {
-                          final request = model.requests![i];
+                          final data = model.data!.docs[i].data()!;
 
-                          return RequestListItem(
-                            key: Key(i.toString()),
-                            request: request,
-                          );
+                          return RequestListItem(request: data);
                         },
                       ),
                     ],
