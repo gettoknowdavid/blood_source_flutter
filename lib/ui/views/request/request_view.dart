@@ -155,7 +155,7 @@ class RequestView extends StatelessWidget {
                   ),
                   CheckboxListTile(
                     value: model.compatible,
-                    onChanged: (value) => model.onCompatibilityChnaged(value),
+                    onChanged: (value) => model.onCompatibilityChanged(value),
                     controlAffinity: ListTileControlAffinity.leading,
                     contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0).r,
                     checkboxShape: RoundedRectangleBorder(
