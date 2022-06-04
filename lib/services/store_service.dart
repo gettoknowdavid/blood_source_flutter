@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:blood_source/app/app.locator.dart';
-import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/request.dart';
 import 'package:blood_source/models/user-type.dart';
 import 'package:blood_source/services/storage_service.dart';
@@ -15,7 +14,8 @@ import 'package:logger/logger.dart';
 
 class StoreService with ReactiveServiceMixin {
   StoreService() {
-    listenToReactiveValues([_bloodUser, _request, _donors, _donorCount]);
+    listenToReactiveValues(
+        [_bloodUser, _compatible, _request, _donors, _donorCount]);
   }
 
   Logger logger = Logger();
@@ -30,6 +30,9 @@ class StoreService with ReactiveServiceMixin {
   final ReactiveValue<Request?> _request = ReactiveValue<Request?>(null);
   Request? get request => _request.value;
 
+  final ReactiveValue<bool> _compatible = ReactiveValue<bool>(true);
+  bool get compatible => _compatible.value;
+
   final ReactiveValue<List<Request>?> _requests =
       ReactiveValue<List<Request>?>([]);
   List<Request>? get requests => _requests.value;
@@ -40,35 +43,27 @@ class StoreService with ReactiveServiceMixin {
 
   final StorageService _storageService = locator<StorageService>();
 
-  final _usersColRef = FirebaseFirestore.instance.collection('users');
-  final _requestColRef = FirebaseFirestore.instance.collection('requests');
+  final _usersColRef = FirebaseFirestore.instance
+      .collection('users')
+      .withConverter<BloodSourceUser>(
+          fromFirestore: BloodSourceUser.fromFirestore,
+          toFirestore: (_b, _) => _b.toFirestore());
 
-  Future<StoreResult> getDonors() async {
-    try {
-      final list = await _usersColRef
-          .where('uid', isNotEqualTo: _bloodUser.value!.uid)
-          .where('userType', isEqualTo: UserType.donor.name)
-          .get()
-          .then((snapshots) => snapshots.docs
-              .map((e) => BloodSourceUser.fromFirestore(e, null))
-              .toList());
-      if (list.isEmpty) {
-        return StoreResult(donors: []);
-      } else {
-        return StoreResult(donors: list);
-      }
-    } on FirebaseException catch (e) {
-      return StoreResult.error(errorMessage: e.message);
-    }
+  final _requestColRef = FirebaseFirestore.instance
+      .collection('requests')
+      .withConverter<Request>(
+          fromFirestore: Request.fromFirestore,
+          toFirestore: (_b, _) => _b.toFirestore());
+
+  Stream<QuerySnapshot<BloodSourceUser?>> getDonors() {
+    return _usersColRef
+        .where('uid', isNotEqualTo: _bloodUser.value!.uid)
+        .where('userType', isEqualTo: UserType.donor.name)
+        .snapshots();
   }
 
-  Future<StoreResult> getCompatibleDonors(Request r) async {
-    try {
-      final _result = await compatibleDonors(r.bloodGroup, _usersColRef);
-      return StoreResult(donors: _result);
-    } on FirebaseException catch (e) {
-      return StoreResult.error(errorMessage: e.message);
-    }
+  Stream<QuerySnapshot<BloodSourceUser?>> getCompatibleDonors(Request r) {
+    return compatibleDonors(r.bloodGroup);
   }
 
   Future<Request> setRequest(Request req) async {
@@ -76,9 +71,14 @@ class StoreService with ReactiveServiceMixin {
     return req;
   }
 
+  Future<bool> setCompatible(bool value) async {
+    _compatible.value = value;
+    return value;
+  }
+
   Future<StoreResult> addRequest(Request req) async {
     try {
-      await _requestColRef.doc().set(req.toFirestore());
+      await _requestColRef.doc().set(req);
       _request.value = req;
       return StoreResult(request: request);
     } on FirebaseException catch (e) {
@@ -86,45 +86,32 @@ class StoreService with ReactiveServiceMixin {
     }
   }
 
-  Future<StoreResult> getRequests({bool myRequests = false}) async {
+  Stream<QuerySnapshot<Request?>> getRequests() {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    return _requestColRef.where('user.uid', isNotEqualTo: uid).snapshots();
+  }
+
+  Future<StoreResult> getMyRequests() async {
     try {
       final uid = FirebaseAuth.instance.currentUser!.uid;
-      if (myRequests) {
-        final list = await _requestColRef
-            .where('user.uid', isEqualTo: uid)
-            .get()
-            .then((snapshot) => snapshot.docs
-                .map((e) => Request.fromFirestore(e, null))
-                .toList());
-        return StoreResult(requests: list);
-      } else {
-        final list = await FirebaseFirestore.instance
-            .collection('requests')
-            .where('user.uid', isNotEqualTo: uid)
-            .get()
-            .then((snapshot) => snapshot.docs
-                .map((e) => Request.fromFirestore(e, null))
-                .toList());
-        return StoreResult(requests: list);
-      }
+      final list = await _requestColRef
+          .where('user.uid', isEqualTo: uid)
+          .get()
+          .then((value) => value.docs.map((e) => e.data()).toList());
+
+      return StoreResult(requests: list);
     } on FirebaseException catch (e) {
       return StoreResult.error(errorMessage: e.message);
     }
   }
 
-  Future<StoreResult> getCompatibleRequests(BloodGroup bloodGroup) async {
-    try {
-      final _result = await compatibleRecipients(bloodGroup, _requestColRef);
-      logger.i(_result);
-      return StoreResult(requests: _result);
-    } on FirebaseException catch (e) {
-      return StoreResult.error(errorMessage: e.message);
-    }
+  Stream<QuerySnapshot<Request?>> getCompatibleRequests() {
+    return compatibleRecipients(bloodUser!.bloodGroup!, _requestColRef);
   }
 
   Future<StoreResult> createBloodSourceUser(BloodSourceUser user) async {
     try {
-      await _usersColRef.doc(user.uid).set(user.toFirestore());
+      await _usersColRef.doc(user.uid).set(user);
       _storageService.saveToDisk(user.uid!, user.toJson());
       _bloodUser.value = user;
       return StoreResult(bSUser: user);
