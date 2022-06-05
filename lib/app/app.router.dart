@@ -193,8 +193,15 @@ class StackedRouter extends RouterBase {
       );
     },
     ProfileView: (data) {
+      var args = data.getArgs<ProfileViewArguments>(
+        orElse: () => ProfileViewArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const ProfileView(),
+        builder: (context) => ProfileView(
+          key: args.key,
+          user: args.user,
+          isFromRoute: args.isFromRoute,
+        ),
         settings: data,
       );
     },
@@ -272,6 +279,14 @@ class DonateViewArguments {
   final Key? key;
   final BloodSourceUser donor;
   DonateViewArguments({this.key, required this.donor});
+}
+
+/// ProfileView arguments holder class
+class ProfileViewArguments {
+  final Key? key;
+  final BloodSourceUser? user;
+  final bool isFromRoute;
+  ProfileViewArguments({this.key, this.user, this.isFromRoute = false});
 }
 
 /// DonorView arguments holder class
