@@ -22,7 +22,35 @@ class AppBottomNav extends ViewModelWidget<AppLayoutViewModel> {
           backgroundColor: Colors.grey[100],
           label: item.title,
           icon: navItems.indexOf(item) != 2
-              ? Icon(item.icon)
+              ? Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Icon(item.icon, size: 28.sp),
+                    navItems.indexOf(item) == 3
+                        ? Positioned(
+                            right: -8.w,
+                            top: -8.h,
+                            child: Container(
+                              height: 18.w,
+                              width: 18.w,
+                              alignment: Alignment.center,
+                              decoration: const BoxDecoration(
+                                color: AppColors.primary,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Text(
+                                viewModel.eventsCount.toString(),
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
+                  ],
+                )
               : Container(
                   child: Icon(item.icon, color: Colors.white),
                   height: 40.h,
