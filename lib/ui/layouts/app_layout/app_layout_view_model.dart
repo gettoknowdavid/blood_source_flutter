@@ -4,7 +4,7 @@ import 'package:blood_source/models/user-type.dart';
 import 'package:blood_source/services/store_service.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:blood_source/ui/views/dashboard/dashboard_view.dart';
-import 'package:blood_source/ui/views/notifications/notifications_view.dart';
+import 'package:blood_source/ui/views/events/events_view.dart';
 import 'package:blood_source/ui/views/profile/profile_view.dart';
 import 'package:blood_source/ui/views/request/request_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,7 +30,7 @@ class AppLayoutViewModel extends IndexTrackingViewModel
       case 2:
         return const RequestView();
       case 3:
-        return const NotificationsView();
+        return const EventsView();
       default:
         return const LoadingIndicator();
     }
