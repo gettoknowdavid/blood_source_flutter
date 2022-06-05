@@ -46,7 +46,7 @@ class StoreService with ReactiveServiceMixin {
       ReactiveValue<BloodSourceUser?>(null);
   BloodSourceUser? get bloodUser => _bloodUser.value;
 
-  final StorageService _storageService = locator<StorageService>();
+  // final StorageService _storageService = locator<StorageService>();
 
   final _usersColRef = FirebaseFirestore.instance
       .collection('users')
@@ -127,7 +127,7 @@ class StoreService with ReactiveServiceMixin {
   Future<StoreResult> createBloodSourceUser(BloodSourceUser user) async {
     try {
       await _usersColRef.doc(user.uid).set(user);
-      _storageService.saveToDisk(user.uid!, user.toJson());
+      // _storageService.saveToDisk(user.uid!, user.toJson());
       _bloodUser.value = user;
       return StoreResult(bSUser: user);
     } on FirebaseException catch (e) {
@@ -138,7 +138,7 @@ class StoreService with ReactiveServiceMixin {
   Future<StoreResult> updateBloodSourceUser(BloodSourceUser user) async {
     try {
       await _usersColRef.doc(user.uid).update(user.toFirestore());
-      _storageService.saveToDisk(user.uid!, user.toJson());
+      // _storageService.saveToDisk(user.uid!, user.toJson());
       _bloodUser.value = user;
       return StoreResult(bSUser: user);
     } on FirebaseException catch (e) {
@@ -157,15 +157,15 @@ class StoreService with ReactiveServiceMixin {
     }
   }
 
-  Future<StoreResult?> getUserFromLocalStorage(String uid) async {
-    try {
-      final _result = _storageService.getFromDisk(uid);
-      _bloodUser.value = _result;
-      return StoreResult(bSUser: _result);
-    } on FirebaseException catch (e) {
-      return StoreResult.error(errorMessage: e.message);
-    }
-  }
+  // Future<StoreResult?> getUserFromLocalStorage(String uid) async {
+  //   try {
+  //     final _result = _storageService.getFromDisk(uid);
+  //     _bloodUser.value = _result;
+  //     return StoreResult(bSUser: _result);
+  //   } on FirebaseException catch (e) {
+  //     return StoreResult.error(errorMessage: e.message);
+  //   }
+  // }
 }
 
 class StoreResult {
