@@ -10,7 +10,6 @@ class Request {
   final String uid;
   final RequestUser user;
   final BloodGroup bloodGroup;
-  final bool showContactInfo;
   final bool requestGranted;
   final DateTime? timeAdded;
 
@@ -18,7 +17,6 @@ class Request {
     required this.uid,
     required this.user,
     required this.bloodGroup,
-    required this.showContactInfo,
     required this.requestGranted,
     this.timeAdded,
   });
@@ -31,7 +29,6 @@ class Request {
             snapshot.data()?['user'] as Map<String, dynamic>),
         bloodGroup =
             $enumDecode($BloodGroupTypeEnum, snapshot.data()?["bloodGroup"]),
-        showContactInfo = snapshot.data()?["showContactInfo"] as bool,
         requestGranted = snapshot.data()?["requestGranted"] as bool,
         timeAdded = (snapshot.data()?['timeAdded'] as Timestamp).toDate();
 
@@ -40,7 +37,6 @@ class Request {
       "uid": uid,
       "user": user.toFirestore(),
       "bloodGroup": $BloodGroupTypeEnum[bloodGroup],
-      "showContactInfo": showContactInfo,
       "requestGranted": requestGranted,
       "timeAdded": Timestamp.fromDate(DateTime.now()),
     };
