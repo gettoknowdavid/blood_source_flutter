@@ -18,10 +18,15 @@ class EventsView extends StatelessWidget {
         EventsViewModel model,
         Widget? child,
       ) {
-        return const Scaffold(
-          body: Center(
-            child: Text(
-              'EventsView',
+        return Scaffold(
+          appBar: AppBar(title: const Text('Events')),
+          body: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                children: const [
+                  Text('EventsView'),
+                ],
+              ),
             ),
           ),
         );
