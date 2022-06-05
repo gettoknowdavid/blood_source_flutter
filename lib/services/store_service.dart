@@ -150,6 +150,7 @@ class StoreService with ReactiveServiceMixin {
     try {
       final _userData = await _usersColRef.doc(uid).get();
       _bloodUser.value = _userData.data();
+      // _storageService.saveToDisk(uid, _userData.data()!.toJson());
       return StoreResult(bSUser: _userData.data());
     } on FirebaseException catch (e) {
       return StoreResult.error(errorMessage: e.message);
