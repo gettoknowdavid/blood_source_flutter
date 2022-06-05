@@ -2,21 +2,17 @@ import 'dart:async';
 
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
-import 'package:blood_source/models/blood_source_user.dart';
 import 'package:blood_source/models/user-type.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:blood_source/services/store_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class SplashViewModel extends StreamViewModel<User?> {
   Timer? timer;
 
+  StoreService storeService = locator<StoreService>();
   NavigationService navService = locator<NavigationService>();
-  // StorageService storageService = locator<StorageService>();
-  FirebaseAuthenticationService authService =
-      locator<FirebaseAuthenticationService>();
 
   bool hasAccess() {
     bool access = false;
@@ -31,11 +27,8 @@ class SplashViewModel extends StreamViewModel<User?> {
   }
 
   bool isVerified() {
-    return authService.currentUser!.emailVerified;
+    return FirebaseAuth.instance.currentUser!.emailVerified;
   }
-
-  @override
-  Stream<User?> get stream => authService.authStateChanges;
 
   Future checkVerification() async {
     await FirebaseAuth.instance.currentUser!.reload();
@@ -45,16 +38,10 @@ class SplashViewModel extends StreamViewModel<User?> {
     }
 
     if (isVerified()) {
-      final authUser = FirebaseAuth.instance.currentUser!;
-      final _ref = FirebaseFirestore.instance
-          .collection('users')
-          .doc(authUser.uid)
-          .withConverter<BloodSourceUser>(
-              fromFirestore: BloodSourceUser.fromFirestore,
-              toFirestore: (_cs, _) => _cs.toFirestore());
+      final uid = FirebaseAuth.instance.currentUser!.uid;
 
-      final _docSnap = await _ref.get();
-      final _user = _docSnap.data();
+      final result = await storeService.getUser(uid);
+      final _user = result!.bSUser;
 
       if (_user!.userType == UserType.donor && !_user.isDonorFormComplete) {
         navService.clearStackAndShow(Routes.donorFormView);
@@ -81,4 +68,7 @@ class SplashViewModel extends StreamViewModel<User?> {
     timer?.cancel();
     super.dispose();
   }
+
+  @override
+  Stream<User?> get stream => FirebaseAuth.instance.authStateChanges();
 }
