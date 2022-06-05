@@ -1,5 +1,6 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/ui/shared/widgets/app_button.dart';
+import 'package:blood_source/ui/shared/widgets/app_text_button.dart';
 import 'package:blood_source/ui/shared/widgets/profile/blood_group_widget.dart';
 import 'package:blood_source/ui/views/donor_details/donor_details_view_model.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class DonorMapPanel extends ViewModelWidget<DonorDetailsViewModel> {
               ),
             ),
           ),
-          12.verticalSpace,
+          20.verticalSpace,
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -55,7 +56,6 @@ class DonorMapPanel extends ViewModelWidget<DonorDetailsViewModel> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  4.verticalSpace,
                   Text(
                     'City: ${donor.city!}',
                     style: TextStyle(
@@ -64,7 +64,6 @@ class DonorMapPanel extends ViewModelWidget<DonorDetailsViewModel> {
                       color: Colors.black54,
                     ),
                   ),
-                  4.verticalSpace,
                   Text(
                     'Age: ${donor.age!}',
                     style: TextStyle(
@@ -72,6 +71,12 @@ class DonorMapPanel extends ViewModelWidget<DonorDetailsViewModel> {
                       fontStyle: FontStyle.italic,
                       color: Colors.black54,
                     ),
+                  ),
+                  AppTextButton(
+                    onTap: () => viewModel.goToDonorProfile(donor),
+                    text: 'View Profile',
+                    color: AppColors.primary,
+                    padding: EdgeInsets.zero,
                   ),
                 ],
               ),
@@ -95,7 +100,7 @@ class DonorMapPanel extends ViewModelWidget<DonorDetailsViewModel> {
               ),
             ],
           ),
-          40.verticalSpace,
+          30.verticalSpace,
           AppButton(
             onTap: () => viewModel.goToDonate(donor),
             text: 'Contact Donor',
