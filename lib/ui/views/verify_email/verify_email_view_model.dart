@@ -5,14 +5,13 @@ import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/models/user-type.dart';
 import 'package:blood_source/services/storage_service.dart';
+import 'package:blood_source/services/store_service.dart';
 import 'package:blood_source/utils/dialog_type.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:blood_source/models/blood_source_user.dart';
 
 class VerifyEmailViewModel extends BaseViewModel with ReactiveServiceMixin {
   VerifyEmailViewModel() {
@@ -21,6 +20,7 @@ class VerifyEmailViewModel extends BaseViewModel with ReactiveServiceMixin {
   final ReactiveValue<bool> _isEmailVerified = ReactiveValue<bool>(false);
   bool get isEmailVerified => _isEmailVerified.value;
 
+  StoreService storeService = locator<StoreService>();
   StorageService storageService = locator<StorageService>();
   DialogService dialogService = locator<DialogService>();
   NavigationService navService = locator<NavigationService>();
@@ -56,36 +56,23 @@ class VerifyEmailViewModel extends BaseViewModel with ReactiveServiceMixin {
     if (_isEmailVerified.value == true) {
       timer?.cancel();
 
-      final authUser = FirebaseAuth.instance.currentUser!;
-      final _ref = FirebaseFirestore.instance
-          .collection('users')
-          .doc(authUser.uid)
-          .withConverter<BloodSourceUser>(
-              fromFirestore: BloodSourceUser.fromFirestore,
-              toFirestore: (_cs, _) => _cs.toFirestore());
+      final uid = FirebaseAuth.instance.currentUser!.uid;
 
-      final _docSnap = await _ref.get();
-      final _user = _docSnap.data();
+      final result = await storeService.getUser(uid);
+      final _user = result!.bSUser;
 
-      storageService.saveToDisk(authUser.uid, _user!.toJson());
+      storageService.saveToDisk(uid, _user!.toJson());
 
       if (_user.userType == UserType.donor && !_user.isDonorFormComplete) {
         navService.clearStackAndShow(Routes.donorFormView);
         notifyListeners();
       }
 
-      if (_user.userType == UserType.donor && _user.isDonorFormComplete) {
-        navService.clearStackAndShow(Routes.appLayoutView);
-        notifyListeners();
-      }
-
-      if (_user.userType == UserType.recipient) {
-        navService.clearStackAndShow(
-          Routes.editProfileView,
-          arguments: EditProfileViewArguments(user: _user, isFirstEdit: true),
-        );
-        notifyListeners();
-      }
+      navService.clearStackAndShow(
+        Routes.editProfileView,
+        arguments: EditProfileViewArguments(user: _user, isFirstEdit: true),
+      );
+      notifyListeners();
     }
 
     notifyListeners();
