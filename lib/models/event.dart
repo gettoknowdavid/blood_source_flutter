@@ -11,7 +11,8 @@ class Event {
     required this.title,
     required this.description,
     required this.location,
-    required this.dateTime,
+    required this.date,
+    required this.time,
     required this.timeAdded,
     required this.creator,
   });
@@ -20,7 +21,8 @@ class Event {
   final String title;
   final String description;
   final String location;
-  final DateTime dateTime;
+  final DateTime date;
+  final String time;
   final DateTime timeAdded;
   final EventCreator creator;
 
@@ -31,8 +33,11 @@ class Event {
         title = snapshot.data()?['title'] as String,
         description = snapshot.data()?['description'] as String,
         location = snapshot.data()?['location'] as String,
-        dateTime = DateTime.parse(snapshot.data()?['dateTime'] as String),
-        timeAdded = DateTime.parse(snapshot.data()?['timeAdded'] as String),
+        date = DateTime.parse(
+            (snapshot.data()?['date'] as Timestamp).toDate().toString()),
+        time = snapshot.data()?['time'] as String,
+        timeAdded = DateTime.parse(
+            (snapshot.data()?['timeAdded'] as Timestamp).toDate().toString()),
         creator = EventCreator.fromJson(
             snapshot.data()?["creator"] as Map<String, dynamic>);
 
@@ -42,13 +47,18 @@ class Event {
       "title": title,
       "description": description,
       "location": location,
-      'dateTime': dateTime.toIso8601String(),
-      'timeAdded': timeAdded.toIso8601String(),
-      "creetor": creator.toJson(),
+      'date': date,
+      'time': time,
+      'timeAdded': timeAdded,
+      "creator": creator.toJson(),
     };
   }
 
   factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
 
   Map<String, dynamic> toJson() => _$EventToJson(this);
+
+  static DateTime _fromJson(int int) =>
+      DateTime.fromMillisecondsSinceEpoch(int);
+  static int _toJson(DateTime time) => time.millisecondsSinceEpoch;
 }
