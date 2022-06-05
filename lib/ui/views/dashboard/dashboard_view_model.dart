@@ -13,6 +13,10 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:uuid/uuid.dart';
 
 class DashboardViewModel extends ReactiveViewModel with ReactiveServiceMixin {
+  DashboardViewModel() {
+    listenToReactiveValues([_buttonList]);
+  }
+
   Future<void> init() async {
     setBusy(true);
     final result = await getList();
