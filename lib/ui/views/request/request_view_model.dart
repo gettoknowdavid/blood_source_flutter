@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:uuid/uuid.dart';
 
 class RequestViewModel extends ReactiveViewModel {
   final NavigationService _navService = locator<NavigationService>();
@@ -59,6 +60,7 @@ class RequestViewModel extends ReactiveViewModel {
         avatar: user.avatar!,
         location: user.location!,
       ),
+      uid: const Uuid().v4(),
       bloodGroup: bloodGroup,
       showContactInfo: showContact,
       requestGranted: false,
