@@ -4,7 +4,6 @@ import 'package:blood_source/ui/shared/widgets/profile/avatar.dart';
 import 'package:blood_source/ui/shared/widgets/profile/blood_group_widget.dart';
 import 'package:blood_source/ui/shared/widgets/profile/profile_action_button.dart';
 import 'package:blood_source/ui/shared/widgets/profile/profile_details_list.dart';
-import 'package:blood_source/ui/shared/widgets/profile/profile_stat_widget.dart';
 import 'package:blood_source/ui/shared/widgets/profile_header_paint.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:flutter/material.dart';
@@ -103,19 +102,7 @@ class ProfileView extends StatelessWidget {
                           ),
                     20.verticalSpace,
                     BloodGroupWidget(bloodGroup: profile.bloodGroup!),
-                    30.verticalSpace,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const ProfileStatWidget(
-                          stat: 16,
-                          title: 'Donations',
-                        ),
-                        100.horizontalSpace,
-                        const ProfileStatWidget(stat: 2, title: 'Requests'),
-                      ],
-                    ),
-                    30.verticalSpace,
+                    20.verticalSpace,
                     ProfileDetailsList(user: profile),
                   ],
                 ),
