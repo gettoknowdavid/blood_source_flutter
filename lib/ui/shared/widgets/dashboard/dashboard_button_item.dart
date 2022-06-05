@@ -1,20 +1,25 @@
 import 'package:blood_source/app/app.locator.dart';
+import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/models/dashboard_button_model.dart';
+import 'package:blood_source/ui/views/dashboard/dashboard_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class DashboardButtonItem extends StatelessWidget {
+class DashboardButtonItem extends ViewModelWidget<DashboardViewModel> {
   const DashboardButtonItem({Key? key, required this.model}) : super(key: key);
 
   final DashboardButtonModel model;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, DashboardViewModel viewModel) {
     final NavigationService _navService = locator<NavigationService>();
 
     return GestureDetector(
-      onTap: () => _navService.navigateTo(model.route),
+      onTap: model.route == Routes.donorView
+          ? () => viewModel.goToDonors()
+          : () => _navService.navigateTo(model.route),
       child: Container(
         alignment: Alignment.center,
         height: 0.5 * 1.sh,
@@ -42,9 +47,13 @@ class DashboardButtonItem extends StatelessWidget {
               ),
             ),
             12.verticalSpace,
-            Text(
-              model.title,
-              style: TextStyle(fontSize: 16.sp),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0.r),
+              child: Text(
+                model.title,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16.sp),
+              ),
             ),
             15.verticalSpace,
             Container(
