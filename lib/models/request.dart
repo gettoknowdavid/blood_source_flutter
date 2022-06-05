@@ -7,16 +7,16 @@ part 'request.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Request {
+  final String uid;
   final RequestUser user;
   final BloodGroup bloodGroup;
-  final bool showContactInfo;
   final bool requestGranted;
   final DateTime? timeAdded;
 
   const Request({
+    required this.uid,
     required this.user,
     required this.bloodGroup,
-    required this.showContactInfo,
     required this.requestGranted,
     this.timeAdded,
   });
@@ -24,19 +24,19 @@ class Request {
   Request.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
-  )   : user = RequestUser.fromJson(
+  )   : uid = snapshot.data()?["uid"] as String,
+        user = RequestUser.fromJson(
             snapshot.data()?['user'] as Map<String, dynamic>),
         bloodGroup =
             $enumDecode($BloodGroupTypeEnum, snapshot.data()?["bloodGroup"]),
-        showContactInfo = snapshot.data()?["showContactInfo"] as bool,
         requestGranted = snapshot.data()?["requestGranted"] as bool,
         timeAdded = (snapshot.data()?['timeAdded'] as Timestamp).toDate();
 
   Map<String, dynamic> toFirestore() {
     return {
+      "uid": uid,
       "user": user.toFirestore(),
       "bloodGroup": $BloodGroupTypeEnum[bloodGroup],
-      "showContactInfo": showContactInfo,
       "requestGranted": requestGranted,
       "timeAdded": Timestamp.fromDate(DateTime.now()),
     };

@@ -2,11 +2,9 @@ import 'package:blood_source/common/image_resources.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class EmptyWidget extends StatelessWidget {
-  const EmptyWidget({
-    Key? key,
-  }) : super(key: key);
+  const EmptyWidget({Key? key, required this.message}) : super(key: key);
+  final String message;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +18,7 @@ class EmptyWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'It\'s lonely here. It seems you haven\'t made any requests yet.',
+                message,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 18.r,

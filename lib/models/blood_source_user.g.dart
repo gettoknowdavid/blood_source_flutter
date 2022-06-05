@@ -12,9 +12,9 @@ BloodSourceUser _$BloodSourceUserFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String?,
       gender:
           $enumDecodeNullable(_$GenderEnumMap, json['gender']) ?? Gender.none,
-      age: json['age'] as int?,
-      height: (json['height'] as num?)?.toDouble(),
-      weight: (json['weight'] as num?)?.toDouble(),
+      age: json['age'] as num?,
+      height: json['height'] as num?,
+      weight: json['weight'] as num?,
       phone: json['phone'] as String?,
       city: json['city'] as String?,
       location: json['location'] == null

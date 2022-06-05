@@ -20,6 +20,7 @@ import '../ui/views/donor/donor_view.dart';
 import '../ui/views/donor_details/donor_details_view.dart';
 import '../ui/views/donor_form/donor_form_view.dart';
 import '../ui/views/edit_profile/edit_profile_view.dart';
+import '../ui/views/events/events_view.dart';
 import '../ui/views/forgot_password/forgot_password_view.dart';
 import '../ui/views/home/home_view.dart';
 import '../ui/views/main_scaffold/main_scaffold_view.dart';
@@ -56,6 +57,7 @@ class Routes {
   static const String myRequestsListView = '/my-requests-list-view';
   static const String requestDetailsView = '/request-details-view';
   static const String donorDetailsView = '/donor-details-view';
+  static const String eventsView = '/events-view';
   static const all = <String>{
     splashView,
     mainScaffoldView,
@@ -78,6 +80,7 @@ class Routes {
     myRequestsListView,
     requestDetailsView,
     donorDetailsView,
+    eventsView,
   };
 }
 
@@ -106,6 +109,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.myRequestsListView, page: MyRequestsListView),
     RouteDef(Routes.requestDetailsView, page: RequestDetailsView),
     RouteDef(Routes.donorDetailsView, page: DonorDetailsView),
+    RouteDef(Routes.eventsView, page: EventsView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -177,8 +181,12 @@ class StackedRouter extends RouterBase {
       );
     },
     DonateView: (data) {
+      var args = data.getArgs<DonateViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const DonateView(),
+        builder: (context) => DonateView(
+          key: args.key,
+          donor: args.donor,
+        ),
         settings: data,
       );
     },
@@ -189,8 +197,15 @@ class StackedRouter extends RouterBase {
       );
     },
     ProfileView: (data) {
+      var args = data.getArgs<ProfileViewArguments>(
+        orElse: () => ProfileViewArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const ProfileView(),
+        builder: (context) => ProfileView(
+          key: args.key,
+          user: args.user,
+          isFromRoute: args.isFromRoute,
+        ),
         settings: data,
       );
     },
@@ -256,12 +271,33 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+    EventsView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const EventsView(),
+        settings: data,
+      );
+    },
   };
 }
 
 /// ************************************************************************
 /// Arguments holder classes
 /// *************************************************************************
+
+/// DonateView arguments holder class
+class DonateViewArguments {
+  final Key? key;
+  final BloodSourceUser donor;
+  DonateViewArguments({this.key, required this.donor});
+}
+
+/// ProfileView arguments holder class
+class ProfileViewArguments {
+  final Key? key;
+  final BloodSourceUser? user;
+  final bool isFromRoute;
+  ProfileViewArguments({this.key, this.user, this.isFromRoute = false});
+}
 
 /// DonorView arguments holder class
 class DonorViewArguments {

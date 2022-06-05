@@ -1,25 +1,24 @@
-import 'package:blood_source/app/app.locator.dart';
-import 'package:blood_source/app/app.router.dart';
-import 'package:blood_source/models/dashboard_button_model.dart';
-import 'package:blood_source/ui/views/dashboard/dashboard_view_model.dart';
+import 'package:blood_source/common/app_colors.dart';
+import 'package:blood_source/models/contact_button_model.dart';
+import 'package:blood_source/ui/views/donate/donate_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
 
-class DashboardButtonItem extends ViewModelWidget<DashboardViewModel> {
-  const DashboardButtonItem({Key? key, required this.model}) : super(key: key);
+class ContactButtonItem extends ViewModelWidget<DonateViewModel> {
+  const ContactButtonItem({
+    Key? key,
+    required this.model,
+    required this.onTap,
+  }) : super(key: key);
 
-  final DashboardButtonModel model;
+  final ContactButtonModel model;
+  final void Function()? onTap;
 
   @override
-  Widget build(BuildContext context, DashboardViewModel viewModel) {
-    final NavigationService _navService = locator<NavigationService>();
-
+  Widget build(BuildContext context, DonateViewModel viewModel) {
     return GestureDetector(
-      onTap: model.route == Routes.donorView
-          ? () => viewModel.goToDonors()
-          : () => _navService.navigateTo(model.route),
+      onTap: onTap,
       child: Container(
         alignment: Alignment.center,
         height: 0.5 * 1.sh,
@@ -40,7 +39,7 @@ class DashboardButtonItem extends ViewModelWidget<DashboardViewModel> {
             Container(
               alignment: Alignment.center,
               padding: EdgeInsets.all(24.r),
-              child: model.icon,
+              child: Icon(model.icon, color: AppColors.primary),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: model.backgroundColor.withOpacity(0.2),

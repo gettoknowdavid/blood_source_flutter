@@ -1,4 +1,5 @@
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
+import 'package:blood_source/ui/shared/widgets/app_text_button.dart';
 import 'package:blood_source/ui/shared/widgets/empty_widget.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:blood_source/ui/shared/widgets/request_list/request_list_item.dart';
@@ -17,18 +18,27 @@ class RequestListView extends StatelessWidget {
       viewModelBuilder: () => RequestListViewModel(),
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
-        if (model.isBusy) {
+        if (!model.dataReady || model.isBusy) {
           return const LoadingIndicator();
         }
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Available Requests'),
+            title: const Text('Requests'),
             leading: const AppBackButton(),
             elevation: 0,
+            actions: [
+              AppTextButton(
+                onTap: model.onCompatibilityChanged,
+                text: model.compatible ? 'Show All' : 'Show Compatible',
+                fontSize: 16.sp,
+                color: Colors.white,
+                padding: EdgeInsets.only(right: 18.r),
+              )
+            ],
           ),
-          body: model.requests!.isEmpty
-              ? const EmptyWidget()
+          body: model.data!.docs.isEmpty
+              ? const EmptyWidget(message: 'There are currently no requests.')
               : SingleChildScrollView(
                   child: Column(
                     children: [
@@ -36,14 +46,11 @@ class RequestListView extends StatelessWidget {
                       ListView.builder(
                         primary: false,
                         shrinkWrap: true,
-                        itemCount: model.requests!.length,
+                        itemCount: model.data!.docs.length,
                         itemBuilder: (context, i) {
-                          final request = model.requests![i];
+                          final data = model.data!.docs[i].data()!;
 
-                          return RequestListItem(
-                            key: Key(i.toString()),
-                            request: request,
-                          );
+                          return RequestListItem(request: data);
                         },
                       ),
                     ],

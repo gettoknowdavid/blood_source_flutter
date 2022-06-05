@@ -45,6 +45,7 @@ class SignInView extends StatelessWidget {
                   AppTextField(
                     controller: model.passwordController,
                     hintText: 'Password',
+                    maxLines: 1,
                     isPassword: true,
                     onChanged: (value) => model.onChanged(value),
                     textInputAction: TextInputAction.done,

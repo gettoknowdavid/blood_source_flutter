@@ -14,6 +14,9 @@ class AppTextField extends StatefulWidget {
     this.textInputAction,
     this.label,
     this.initialValue,
+    this.maxLines,
+    this.readOnly = false,
+    this.onTap,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -25,6 +28,9 @@ class AppTextField extends StatefulWidget {
   final TextInputAction? textInputAction;
   final String? label;
   final String? initialValue;
+  final int? maxLines;
+  final bool readOnly;
+  final void Function()? onTap;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -46,6 +52,9 @@ class _AppTextFieldState extends State<AppTextField> {
           obscureText: widget.isPassword ? !_isObscure : _isObscure,
           style: TextStyle(fontSize: 14.sp),
           initialValue: widget.initialValue,
+          maxLines: widget.maxLines,
+          readOnly: widget.readOnly,
+          onTap: widget.onTap,
           decoration: InputDecoration(
             labelText: widget.label,
             labelStyle: const TextStyle(fontWeight: FontWeight.w500),

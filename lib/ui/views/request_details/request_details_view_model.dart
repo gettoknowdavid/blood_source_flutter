@@ -33,13 +33,19 @@ class RequestDetailsViewModel extends BaseViewModel
       FirebaseAuth.instance.currentUser!.uid,
     );
 
-    controller = MapController(initMapWithUserPosition: true);
+    controller = MapController(
+      initMapWithUserPosition: false,
+      initPosition: GeoPointWithOrientation(
+        latitude: _recipientResult!.bSUser!.location!.latitude,
+        longitude: _recipientResult.bSUser!.location!.longitude,
+      ),
+    );
 
     controller.addObserver(this);
 
     setBusy(false);
 
-    _recipient.value = _recipientResult!.bSUser;
+    _recipient.value = _recipientResult.bSUser;
     _user.value = _userResult!.bSUser;
 
     notifyListeners();

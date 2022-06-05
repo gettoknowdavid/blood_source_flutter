@@ -1,17 +1,20 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/models/blood_source_user.dart';
+import 'package:blood_source/ui/views/donor/donor_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:blood_source/models/blood_group.dart';
+import 'package:stacked/stacked.dart';
 
-class DonorListItem extends StatelessWidget {
+class DonorListItem extends ViewModelWidget<DonorViewModel> {
   const DonorListItem({Key? key, required this.donor}) : super(key: key);
 
   final BloodSourceUser donor;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, DonorViewModel viewModel) {
     return Container(
+      margin: EdgeInsets.symmetric(vertical: 10.r),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.r),
@@ -25,10 +28,14 @@ class DonorListItem extends StatelessWidget {
         ],
       ),
       child: ListTile(
-        leading: CircleAvatar(
-          radius: 25.w,
-          backgroundColor: AppColors.swatch.shade400,
-          foregroundImage: NetworkImage(donor.avatar!),
+        onTap: () => viewModel.goToDonorDetails(donor),
+        leading: GestureDetector(
+          onTap: () => viewModel.goToDonorProfile(donor),
+          child: CircleAvatar(
+            radius: 25.w,
+            backgroundColor: AppColors.swatch.shade400,
+            foregroundImage: NetworkImage(donor.avatar!),
+          ),
         ),
         title: Text(
           donor.name!,
@@ -58,12 +65,12 @@ class DonorListItem extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
-            color: AppColors.secondary,
+            color: AppColors.primary,
           ),
           child: Text(
             donor.bloodGroup!.value.name,
             style: TextStyle(
-              fontSize: 12.sp,
+              fontSize: 16.sp,
               fontWeight: FontWeight.w600,
               color: Colors.white,
             ),

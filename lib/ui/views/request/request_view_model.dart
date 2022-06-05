@@ -9,17 +9,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:uuid/uuid.dart';
 
-class RequestViewModel extends ReactiveViewModel with ReactiveServiceMixin {
-  RequestViewModel() {
-    listenToReactiveValues([_showContact]);
-  }
+class RequestViewModel extends ReactiveViewModel {
   final NavigationService _navService = locator<NavigationService>();
-
-  final ReactiveValue<bool?> _showContact = ReactiveValue<bool?>(false);
-  bool? get showContact => _showContact.value;
-
   final StoreService _storeService = locator<StoreService>();
+
   BloodSourceUser get user => _storeService.bloodUser!;
 
   late BloodGroup bloodGroup = _storeService.bloodUser!.bloodGroup!;
@@ -27,18 +22,6 @@ class RequestViewModel extends ReactiveViewModel with ReactiveServiceMixin {
 
   void Function(BloodGroup?)? onBloodGroupChanged(BloodGroup? newValue) {
     bloodGroup = newValue!;
-    notifyListeners();
-    return null;
-  }
-
-  void Function(BloodGroup)? onBGChanged(BloodGroup bg) {
-    bloodGroup = bg;
-    notifyListeners();
-    return null;
-  }
-
-  void Function(bool?)? onShowPhoneChanged(bool? value) {
-    _showContact.value = value!;
     notifyListeners();
     return null;
   }
@@ -54,8 +37,8 @@ class RequestViewModel extends ReactiveViewModel with ReactiveServiceMixin {
         avatar: user.avatar!,
         location: user.location!,
       ),
+      uid: const Uuid().v4(),
       bloodGroup: bloodGroup,
-      showContactInfo: _showContact.value!,
       requestGranted: false,
     );
 

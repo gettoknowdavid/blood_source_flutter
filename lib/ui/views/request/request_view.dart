@@ -1,7 +1,6 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/common/image_resources.dart';
 import 'package:blood_source/models/blood_group.dart';
-import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
 import 'package:blood_source/ui/shared/widgets/app_button.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,6 @@ class RequestView extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: AppColors.swatch.shade700,
-            leading: const AppBackButton(),
             centerTitle: true,
             elevation: 0,
             title: Text(
@@ -44,7 +42,7 @@ class RequestView extends StatelessWidget {
                 children: [
                   Container(
                     padding: const EdgeInsets.fromLTRB(4, 20, 4, 0).r,
-                    height: 0.32.sh,
+                    height: 0.3.sh,
                     width: 1.sw,
                     decoration: BoxDecoration(
                       color: AppColors.swatch.shade700,
@@ -54,7 +52,7 @@ class RequestView extends StatelessWidget {
                     ),
                     child: Image.asset(ImageResources.bloodDonation),
                   ),
-                  20.verticalSpace,
+                  18.verticalSpace,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18).r,
                     child: Text(
@@ -66,7 +64,7 @@ class RequestView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  10.verticalSpace,
+                  20.verticalSpace,
                   GridView.builder(
                     primary: false,
                     shrinkWrap: true,
@@ -81,7 +79,7 @@ class RequestView extends StatelessWidget {
                     itemBuilder: (BuildContext context, i) {
                       final isSelected = model.bloodGroup == model.bgList[i];
                       return GestureDetector(
-                        onTap: () => model.onBGChanged(model.bgList[i]),
+                        onTap: () => model.onBloodGroupChanged(model.bgList[i]),
                         child: Opacity(
                           opacity: isSelected ? 1 : 0.5,
                           child: Container(
@@ -136,23 +134,7 @@ class RequestView extends StatelessWidget {
                       );
                     },
                   ),
-                  10.verticalSpace,
-                  CheckboxListTile(
-                    value: model.showContact,
-                    onChanged: (value) => model.onShowPhoneChanged(value),
-                    controlAffinity: ListTileControlAffinity.leading,
-                    checkboxShape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.r),
-                    ),
-                    title: Text(
-                      'Make my contact information visible',
-                      style: TextStyle(
-                        fontSize: 16.r,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  25.verticalSpace,
+                  30.verticalSpace,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0).r,
                     child: AppButton(

@@ -39,7 +39,7 @@ class _Simple extends StatelessWidget {
       height: 36.h,
       padding: EdgeInsets.symmetric(vertical: 10.r, horizontal: 20.r),
       decoration: BoxDecoration(
-        color: AppColors.secondary,
+        color: AppColors.primary,
         borderRadius: BorderRadius.circular(20.r),
       ),
       child: Text(

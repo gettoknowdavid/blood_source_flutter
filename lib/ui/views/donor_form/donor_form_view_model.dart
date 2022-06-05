@@ -93,7 +93,7 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
     }
   }
 
-  void goToApp(BloodSourceUser _user) {
+  void goToEditProfile(BloodSourceUser _user) {
     _navService.clearStackAndShow(
       Routes.editProfileView,
       arguments: EditProfileViewArguments(user: _user, isFirstEdit: true),
@@ -101,9 +101,7 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
   }
 
   Future onSubmit() async {
-    final authUser = FirebaseAuth.instance.currentUser;
-    final docUser =
-        FirebaseFirestore.instance.collection('users').doc(authUser!.uid);
+    final authUser = FirebaseAuth.instance.currentUser!;
 
     // Show loading dialog
     _dialogService.showCustomDialog(variant: DialogType.loading);
@@ -146,7 +144,7 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
               buttonTitle: 'Continue',
               barrierDismissible: true,
             )
-            .then((value) => value!.confirmed ? goToApp(_bsUser) : null);
+            .then((v) => v!.confirmed ? goToEditProfile(_bsUser) : null);
         notifyListeners();
         break;
       case true:
@@ -166,7 +164,7 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
               description: AppConstants.qualifiedMessage,
               buttonTitle: 'Next',
             )
-            .then((value) => value!.confirmed ? goToApp(_bsUser) : null);
+            .then((v) => v!.confirmed ? goToEditProfile(_bsUser) : null);
         notifyListeners();
         break;
       default:

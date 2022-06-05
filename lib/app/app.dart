@@ -1,4 +1,5 @@
 import 'package:blood_source/services/auth_service.dart';
+import 'package:blood_source/services/event_service.dart';
 import 'package:blood_source/services/location_service.dart';
 import 'package:blood_source/services/media_service.dart';
 import 'package:blood_source/services/storage_service.dart';
@@ -20,6 +21,8 @@ import 'package:blood_source/ui/views/donor_form/donor_form_view.dart';
 import 'package:blood_source/ui/views/donor_form/donor_form_view_model.dart';
 import 'package:blood_source/ui/views/edit_profile/edit_profile_view.dart';
 import 'package:blood_source/ui/views/edit_profile/edit_profile_view_model.dart';
+import 'package:blood_source/ui/views/events/events_view.dart';
+import 'package:blood_source/ui/views/events/events_view_model.dart';
 import 'package:blood_source/ui/views/forgot_password/forgot_password_view.dart';
 import 'package:blood_source/ui/views/forgot_password/forgot_password_view_model.dart';
 import 'package:blood_source/ui/views/home/home_view.dart';
@@ -73,6 +76,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: MyRequestsListView),
     MaterialRoute(page: RequestDetailsView),
     MaterialRoute(page: DonorDetailsView),
+    MaterialRoute(page: EventsView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
@@ -81,6 +85,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: MailAppService),
     LazySingleton(classType: AuthService),
     LazySingleton(classType: StoreService),
+    LazySingleton(classType: EventService),
     LazySingleton(classType: LocationService),
     LazySingleton(classType: FirebaseAuthenticationService),
     LazySingleton(classType: MediaService),
@@ -105,11 +110,12 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: MyRequestsListViewModel),
     LazySingleton(classType: RequestDetailsViewModel),
     LazySingleton(classType: DonorDetailsViewModel),
+    LazySingleton(classType: EventsViewModel),
     Presolve(
       asType: StorageService,
       classType: StorageService,
       presolveUsing: StorageService.getInstance,
-    )
+    ),
   ],
 )
 class App {}

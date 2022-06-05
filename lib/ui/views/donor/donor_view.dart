@@ -1,7 +1,7 @@
 import 'package:blood_source/common/app_colors.dart';
-import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/request.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
+import 'package:blood_source/ui/shared/widgets/app_button.dart';
 import 'package:blood_source/ui/shared/widgets/app_text_button.dart';
 import 'package:blood_source/ui/shared/widgets/donor/donor_list_item.dart';
 import 'package:blood_source/ui/shared/widgets/empty_widget.dart';
@@ -26,7 +26,7 @@ class DonorView extends StatelessWidget {
       viewModelBuilder: () => DonorViewModel(),
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
-        if (model.isBusy) {
+        if (!model.dataReady || model.isBusy) {
           return const LoadingIndicator();
         }
 
@@ -38,39 +38,74 @@ class DonorView extends StatelessWidget {
             elevation: 0,
             actions: [
               AppTextButton(
-                onTap: () => model.addRequest(request!),
-                text: 'Add Request',
+                onTap: model.onChangeCompatible,
+                text: model.compatible ? 'Show All' : 'Show Compatible',
                 padding: EdgeInsets.only(right: 18.r),
                 fontSize: 16.sp,
                 color: AppColors.primaryDark,
               )
             ],
           ),
-          body: model.donors.isEmpty
-              ? const EmptyWidget()
+          body: model.data!.docs.isEmpty
+              ? const EmptyWidget(
+                  message: 'It\'s lonely here. It seems there are no donors.',
+                )
               : SingleChildScrollView(
+                  padding: EdgeInsets.only(bottom: 0.15.sh),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       BloodGroupWidget(
-                        bloodGroup: model.user!.bloodGroup!,
+                        bloodGroup: request!.bloodGroup,
                         type: BGWidgetType.complex,
                       ),
                       20.verticalSpace,
                       // Text(model.getDonorCountString()),
                       20.verticalSpace,
                       ListView.builder(
-                        itemCount: model.donors.length,
+                        itemCount: model.data!.docs.length,
+                        primary: false,
                         shrinkWrap: true,
                         padding: EdgeInsets.symmetric(horizontal: 18.r),
                         itemBuilder: (context, i) {
-                          final donor = model.donors[i];
+                          final donor = model.data!.docs[i].data()!;
                           return DonorListItem(donor: donor);
                         },
                       ),
                     ],
                   ),
                 ),
+          bottomSheet: BottomSheet(
+            onClosing: () {},
+            builder: (context) {
+              return Container(
+                height: 0.135.sh,
+                width: 1.sw,
+                padding: EdgeInsets.symmetric(vertical: 20.r, horizontal: 18.r),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(30.r),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0.w, -20.h),
+                      blurRadius: 30.r,
+                      color: Colors.black12,
+                    )
+                  ],
+                ),
+                child: SizedBox(
+                  height: 0.1.sh,
+                  width: 1.sw,
+                  child: AppButton(
+                    onTap: () => model.addRequest(request!),
+                    text: 'Add Request',
+                  ),
+                ),
+              );
+            },
+          ),
         );
       },
     );

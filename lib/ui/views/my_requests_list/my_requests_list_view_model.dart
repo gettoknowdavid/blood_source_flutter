@@ -22,7 +22,7 @@ class MyRequestsListViewModel extends ReactiveViewModel {
   }
 
   Future<List<Request>?> getRequests() async {
-    final result = await _storeService.getRequests(myRequests: true);
+    final result = await _storeService.getMyRequests();
     if (result.isRequestsEmpty) {
       return [];
     } else {
