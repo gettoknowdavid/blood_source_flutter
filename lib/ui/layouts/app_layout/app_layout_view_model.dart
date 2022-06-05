@@ -6,6 +6,7 @@ import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:blood_source/ui/views/dashboard/dashboard_view.dart';
 import 'package:blood_source/ui/views/notifications/notifications_view.dart';
 import 'package:blood_source/ui/views/profile/profile_view.dart';
+import 'package:blood_source/ui/views/request/request_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
@@ -27,9 +28,9 @@ class AppLayoutViewModel extends IndexTrackingViewModel
       case 1:
         return const ProfileView();
       case 2:
-        return const NotificationsView();
+        return const RequestView();
       case 3:
-        return const ProfileView();
+        return const NotificationsView();
       default:
         return const LoadingIndicator();
     }
