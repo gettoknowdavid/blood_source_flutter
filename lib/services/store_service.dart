@@ -14,8 +14,13 @@ import 'package:logger/logger.dart';
 
 class StoreService with ReactiveServiceMixin {
   StoreService() {
-    listenToReactiveValues(
-        [_bloodUser, _compatible, _request, _donors, _donorCount]);
+    listenToReactiveValues([
+      _bloodUser,
+      _compatible,
+      _request,
+      _donors,
+      _donorCount,
+    ]);
   }
 
   Logger logger = Logger();
@@ -63,7 +68,8 @@ class StoreService with ReactiveServiceMixin {
   }
 
   Stream<QuerySnapshot<BloodSourceUser?>> getCompatibleDonors(Request r) {
-    return compatibleDonors(r.bloodGroup);
+    final stream = compatibleDonors(r.bloodGroup);
+    return stream;
   }
 
   Future<Request> setRequest(Request req) async {
@@ -80,6 +86,15 @@ class StoreService with ReactiveServiceMixin {
     try {
       await _requestColRef.doc().set(req);
       _request.value = req;
+      return StoreResult(request: request);
+    } on FirebaseException catch (e) {
+      return StoreResult.error(errorMessage: e.message);
+    }
+  }
+
+  Future<StoreResult> getRequest(String reqUid) async {
+    try {
+      await _requestColRef.doc(reqUid).get();
       return StoreResult(request: request);
     } on FirebaseException catch (e) {
       return StoreResult.error(errorMessage: e.message);
