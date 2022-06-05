@@ -1,5 +1,6 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
+import 'package:blood_source/ui/shared/widgets/app_text_button.dart';
 import 'package:blood_source/ui/shared/widgets/donate/contact_button_item.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -42,6 +43,12 @@ class DonateView extends StatelessWidget {
                 Text(
                   'Contact ${donor.name}',
                   style: TextStyle(fontSize: 16.sp),
+                ),
+                10.verticalSpace,
+                AppTextButton(
+                  onTap: () => model.gotToDonorProfile(donor),
+                  text: 'View Profile',
+                  color: AppColors.primary,
                 ),
                 SizedBox(
                   height: 0.6 * 1.sh,
