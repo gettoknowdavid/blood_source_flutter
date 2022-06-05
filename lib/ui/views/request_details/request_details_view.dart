@@ -1,10 +1,7 @@
 import 'package:blood_source/common/app_colors.dart';
-import 'package:blood_source/models/blood_source_user.dart';
 import 'package:blood_source/models/request.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
-import 'package:blood_source/ui/shared/widgets/app_button.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
-import 'package:blood_source/ui/shared/widgets/profile/blood_group_widget.dart';
 import 'package:blood_source/ui/shared/widgets/request_details/map_panel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
@@ -77,70 +74,6 @@ class RequestDetailsView extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class _BodyWidget extends StatelessWidget {
-  const _BodyWidget({
-    Key? key,
-    required this.request,
-    required this.user,
-  }) : super(key: key);
-
-  final Request request;
-  final BloodSourceUser user;
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(18, 8, 18, 32).r,
-      child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            CircleAvatar(
-              radius: 0.18 * 1.sw,
-              backgroundColor: AppColors.swatch.shade100,
-              child: CircleAvatar(
-                radius: 0.17 * 1.sw,
-                foregroundColor: AppColors.primary,
-                foregroundImage: NetworkImage(request.user.avatar),
-              ),
-            ),
-            20.verticalSpace,
-            Text(
-              user.name!,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 22.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            10.verticalSpace,
-            Text(
-              user.city!,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16.sp),
-            ),
-            10.verticalSpace,
-            !request.showContactInfo
-                ? const SizedBox()
-                : Text(
-                    user.phone!,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16.sp),
-                  ),
-            20.verticalSpace,
-            BloodGroupWidget(
-              bloodGroup: request.bloodGroup,
-              type: BGWidgetType.complex,
-            ),
-            30.verticalSpace,
-            AppButton(onTap: () {}, text: 'Donate Blood'),
-          ],
-        ),
-      ),
     );
   }
 }
