@@ -23,6 +23,13 @@ class DonorViewModel extends StreamViewModel<QuerySnapshot<BloodSourceUser?>> {
     );
   }
 
+  void goToDonorProfile(BloodSourceUser donor) {
+    _navService.navigateTo(
+      Routes.profileView,
+      arguments: ProfileViewArguments(user: donor, isFromRoute: true),
+    );
+  }
+
   Future<void> init() async {}
 
   void onChangeCompatible() {
