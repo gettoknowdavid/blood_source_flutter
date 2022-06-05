@@ -33,6 +33,35 @@ class ProfileView extends StatelessWidget {
         final profile = isFromRoute ? user : model.user;
         return Scaffold(
           backgroundColor: Colors.white,
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            leading: isFromRoute
+                ? Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.all(0).r,
+                    child: const AppBackButton(),
+                  )
+                : Padding(
+                    padding: EdgeInsets.only(left: 18.0.r),
+                    child: ProfileActionButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () => model.goToEditProfile(model.user),
+                    ),
+                  ),
+            actions: [
+              isFromRoute
+                  ? const SizedBox()
+                  : Padding(
+                      padding: EdgeInsets.only(right: 18.0.r),
+                      child: ProfileActionButton(
+                        icon: const Icon(Icons.power_settings_new),
+                        onPressed: () => model.signOut(),
+                      ),
+                    ),
+            ],
+          ),
           body: Stack(
             children: [
               CustomPaint(
@@ -40,34 +69,10 @@ class ProfileView extends StatelessWidget {
                 painter: ProfileHeaderPainter(),
               ),
               SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(0, 32, 0, 32).r,
+                padding: const EdgeInsets.fromLTRB(0, 60, 0, 0).r,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    isFromRoute
-                        ? Container(
-                            alignment: Alignment.centerLeft,
-                            padding: const EdgeInsets.all(0).r,
-                            child: const AppBackButton(),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.all(16).r,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                ProfileActionButton(
-                                  icon: const Icon(Icons.edit),
-                                  onPressed: () =>
-                                      model.goToEditProfile(model.user),
-                                ),
-                                ProfileActionButton(
-                                  icon: const Icon(Icons.power_settings_new),
-                                  onPressed: () => model.signOut(),
-                                ),
-                              ],
-                            ),
-                          ),
-                    0.verticalSpace,
                     Avatar(user: profile),
                     10.verticalSpace,
                     Text(
