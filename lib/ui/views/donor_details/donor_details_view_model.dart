@@ -1,9 +1,11 @@
 import 'package:blood_source/app/app.locator.dart';
+import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/services/store_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class DonorDetailsViewModel extends ReactiveViewModel
     with ReactiveServiceMixin, OSMMixinObserver {
@@ -11,6 +13,7 @@ class DonorDetailsViewModel extends ReactiveViewModel
     listenToReactiveValues([_geoPoint]);
   }
 
+  final NavigationService _navService = locator<NavigationService>();
   final StoreService _storeService = locator<StoreService>();
 
   BloodSourceUser get recipient => _storeService.bloodUser!;
@@ -22,6 +25,13 @@ class DonorDetailsViewModel extends ReactiveViewModel
   late MapController controller;
 
   bool isMapReady = false;
+
+  void goToDonate(BloodSourceUser donor) {
+    _navService.navigateTo(
+      Routes.donateView,
+      arguments: DonateViewArguments(donor: donor),
+    );
+  }
 
   Future<void> init(BloodSourceUser donor) async {
     setBusy(true);
