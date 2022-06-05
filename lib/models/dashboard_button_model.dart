@@ -37,7 +37,7 @@ final List<DashboardButtonModel> donorButtonList = <DashboardButtonModel>[
     Routes.myRequestsListView,
   ),
   DashboardButtonModel(
-    'Blood Bank',
+    'Events',
     'Map',
     const ImageIcon(
       AssetImage('assets/images/blood.png'),
@@ -67,17 +67,17 @@ final List<DashboardButtonModel> recipientButtonList = <DashboardButtonModel>[
     Routes.donorView,
   ),
   DashboardButtonModel(
-    'Request Blood',
+    'My Requests',
     '32k',
     const ImageIcon(
       AssetImage('assets/images/bell.png'),
       color: AppColors.primary,
     ),
     const Color(0xFFFA6393),
-    Routes.donateView,
+    Routes.myRequestsListView,
   ),
   DashboardButtonModel(
-    'Blood Bank',
+    'Events',
     'Map',
     const ImageIcon(
       AssetImage('assets/images/blood.png'),
