@@ -6,6 +6,7 @@
 
 // ignore_for_file: public_member_api_docs
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -267,13 +268,8 @@ class StackedRouter extends RouterBase {
 class DonorViewArguments {
   final Key? key;
   final bool fromRequestView;
-  final bool compatible;
   final Request? request;
-  DonorViewArguments(
-      {this.key,
-      this.fromRequestView = false,
-      this.compatible = true,
-      this.request});
+  DonorViewArguments({this.key, this.fromRequestView = false, this.request});
 }
 
 /// EditProfileView arguments holder class
