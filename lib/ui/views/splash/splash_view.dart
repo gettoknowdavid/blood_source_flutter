@@ -1,10 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/common/image_resources.dart';
-import 'package:blood_source/ui/views/donor_form/donor_form_view.dart';
-import 'package:blood_source/ui/views/sign_in/sign_in_view.dart';
-import 'package:blood_source/ui/views/verify_email/verify_email_view.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:stacked/stacked.dart';
