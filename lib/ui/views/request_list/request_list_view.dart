@@ -38,7 +38,7 @@ class RequestListView extends StatelessWidget {
             ],
           ),
           body: model.data!.docs.isEmpty
-              ? const EmptyWidget()
+              ? const EmptyWidget(message: 'There are currently no requests.')
               : SingleChildScrollView(
                   child: Column(
                     children: [
