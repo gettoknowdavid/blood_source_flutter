@@ -60,8 +60,15 @@ class DonateViewModel extends BaseViewModel with ReactiveServiceMixin {
         }
         break;
       case ContactType.telegram:
-        final url = Uri(path: "https://telegram.me/${donor.phone}");
-        await launchUrl(url);
+        final phone = "+234${donor.phone}";
+        final androidUrl = "https://telegram.me/$phone?text=Hello";
+        final iOSUrl = "https://telegram.me/$phone?text=${Uri.parse("Hello")}";
+
+        if (Platform.isIOS) {
+          await launchUrlString(iOSUrl);
+        } else {
+          await launchUrlString(androidUrl);
+        }
         break;
       default:
         null;
