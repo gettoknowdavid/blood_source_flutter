@@ -29,10 +29,13 @@ class DonorListItem extends ViewModelWidget<DonorViewModel> {
       ),
       child: ListTile(
         onTap: () => viewModel.goToDonorDetails(donor),
-        leading: CircleAvatar(
-          radius: 25.w,
-          backgroundColor: AppColors.swatch.shade400,
-          foregroundImage: NetworkImage(donor.avatar!),
+        leading: GestureDetector(
+          onTap: () => viewModel.goToDonorProfile(donor),
+          child: CircleAvatar(
+            radius: 25.w,
+            backgroundColor: AppColors.swatch.shade400,
+            foregroundImage: NetworkImage(donor.avatar!),
+          ),
         ),
         title: Text(
           donor.name!,
