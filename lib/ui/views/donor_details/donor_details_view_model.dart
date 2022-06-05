@@ -33,6 +33,13 @@ class DonorDetailsViewModel extends ReactiveViewModel
     );
   }
 
+  void goToDonorProfile(BloodSourceUser donor) {
+    _navService.navigateTo(
+      Routes.profileView,
+      arguments: ProfileViewArguments(user: donor, isFromRoute: true),
+    );
+  }
+
   Future<void> init(BloodSourceUser donor) async {
     setBusy(true);
 
