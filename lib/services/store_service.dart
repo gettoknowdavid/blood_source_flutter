@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/models/request.dart';
 import 'package:blood_source/models/user-type.dart';
-import 'package:blood_source/services/storage_service.dart';
 import 'package:blood_source/utils/compatible_donors.dart';
 import 'package:blood_source/utils/compatible_recipients.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,6 +18,8 @@ class StoreService with ReactiveServiceMixin {
       _request,
       _donors,
       _donorCount,
+      _requestCount,
+      _eventsCount,
     ]);
   }
 
@@ -31,6 +31,12 @@ class StoreService with ReactiveServiceMixin {
 
   final ReactiveValue<int> _donorCount = ReactiveValue<int>(0);
   int get donorCount => _donorCount.value;
+
+  final ReactiveValue<int> _requestCount = ReactiveValue<int>(0);
+  int get requestCount => _requestCount.value;
+
+  final ReactiveValue<int> _eventsCount = ReactiveValue<int>(0);
+  int get eventsCount => _eventsCount.value;
 
   final ReactiveValue<Request?> _request = ReactiveValue<Request?>(null);
   Request? get request => _request.value;
@@ -155,6 +161,19 @@ class StoreService with ReactiveServiceMixin {
     } on FirebaseException catch (e) {
       return StoreResult.error(errorMessage: e.message);
     }
+  }
+
+  Future<int> getDonorCount() async {
+    final s = await _usersColRef.where('userType', isEqualTo: 'donor').get();
+    _donorCount.value = s.size;
+    return s.size;
+  }
+
+  Future<int> getMyRequestCount() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final s = await _requestColRef.where('user.uid', isEqualTo: uid).get();
+    _requestCount.value = s.size;
+    return s.size;
   }
 
   // Future<StoreResult?> getUserFromLocalStorage(String uid) async {
