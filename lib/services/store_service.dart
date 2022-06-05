@@ -148,12 +148,7 @@ class StoreService with ReactiveServiceMixin {
 
   Future<StoreResult?> getUser(String uid) async {
     try {
-      final _userData = await _usersColRef
-          .doc(uid)
-          .withConverter<BloodSourceUser>(
-              fromFirestore: BloodSourceUser.fromFirestore,
-              toFirestore: (_u, _) => _u.toFirestore())
-          .get();
+      final _userData = await _usersColRef.doc(uid).get();
       _bloodUser.value = _userData.data();
       return StoreResult(bSUser: _userData.data());
     } on FirebaseException catch (e) {
