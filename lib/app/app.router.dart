@@ -6,6 +6,7 @@
 
 // ignore_for_file: public_member_api_docs
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -20,6 +21,7 @@ import '../ui/views/donor/donor_view.dart';
 import '../ui/views/donor_details/donor_details_view.dart';
 import '../ui/views/donor_form/donor_form_view.dart';
 import '../ui/views/edit_profile/edit_profile_view.dart';
+import '../ui/views/events/events_view.dart';
 import '../ui/views/forgot_password/forgot_password_view.dart';
 import '../ui/views/home/home_view.dart';
 import '../ui/views/main_scaffold/main_scaffold_view.dart';
@@ -56,6 +58,7 @@ class Routes {
   static const String myRequestsListView = '/my-requests-list-view';
   static const String requestDetailsView = '/request-details-view';
   static const String donorDetailsView = '/donor-details-view';
+  static const String eventsView = '/events-view';
   static const all = <String>{
     splashView,
     mainScaffoldView,
@@ -78,6 +81,7 @@ class Routes {
     myRequestsListView,
     requestDetailsView,
     donorDetailsView,
+    eventsView,
   };
 }
 
@@ -106,6 +110,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.myRequestsListView, page: MyRequestsListView),
     RouteDef(Routes.requestDetailsView, page: RequestDetailsView),
     RouteDef(Routes.donorDetailsView, page: DonorDetailsView),
+    RouteDef(Routes.eventsView, page: EventsView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -264,6 +269,12 @@ class StackedRouter extends RouterBase {
           key: args.key,
           donor: args.donor,
         ),
+        settings: data,
+      );
+    },
+    EventsView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const EventsView(),
         settings: data,
       );
     },
