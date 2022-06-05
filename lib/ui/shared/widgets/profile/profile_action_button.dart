@@ -13,18 +13,20 @@ class ProfileActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 46.h,
-      width: 46.h,
-      decoration: const BoxDecoration(
-        color: AppColors.secondary,
-        shape: BoxShape.circle,
-      ),
-      child: IconButton(
-        onPressed: onPressed,
-        color: Colors.white,
-        padding: EdgeInsets.all(1.r),
-        icon: icon,
+    return Center(
+      child: Container(
+        height: 46.h,
+        width: 46.h,
+        decoration: const BoxDecoration(
+          color: AppColors.secondary,
+          shape: BoxShape.circle,
+        ),
+        child: IconButton(
+          onPressed: onPressed,
+          color: Colors.white,
+          padding: EdgeInsets.zero,
+          icon: icon,
+        ),
       ),
     );
   }
