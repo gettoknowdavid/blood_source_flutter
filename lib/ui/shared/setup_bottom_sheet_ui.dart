@@ -76,69 +76,31 @@ class _CreateEventBottomSheet extends StatelessWidget {
               children: [
                 Expanded(
                   child: AppTextField(
-                    controller: viewModel.locationController,
                     hintText: 'Date',
                     readOnly: true,
-                    onTap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2101),
-                      );
-
-                      if (pickedDate != null) {
-                        print(pickedDate);
-                        //pickedDate output format => 2021-03-10 00:00:00.000
-                        String formattedDate =
-                            DateFormat('yyyy-MM-dd').format(pickedDate);
-                        print(formattedDate);
-                        //formatted date output using intl package =>  2021-03-16
-                        //you can implement different kind of Date Format here according to your requirement
-
-                        // setState(() {
-                        //    dateinput.text = formattedDate; //set output date to TextField value.
-                        // });
-                      } else {
-                        print("Date is not selected");
-                      }
-                    },
+                    controller: viewModel.dateController,
+                    onTap: () async => viewModel.setEventDate(context),
                   ),
                 ),
                 10.horizontalSpace,
                 Expanded(
                   child: AppTextField(
-                    controller: viewModel.locationController,
                     hintText: 'Time',
                     readOnly: true,
-                    onTap: () async {
-                      TimeOfDay? pickedTime = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                        initialEntryMode: TimePickerEntryMode.input,
-                      );
-
-                      if (pickedTime != null) {
-                        print(pickedTime);
-                        //pickedDate output format => 2021-03-10 00:00:00.000
-                        String formattedTime = pickedTime.format(context);
-                        print(formattedTime);
-                        //formatted date output using intl package =>  2021-03-16
-                        //you can implement different kind of Date Format here according to your requirement
-
-                        // setState(() {
-                        //    dateinput.text = formattedDate; //set output date to TextField value.
-                        // });
-                      } else {
-                        print("Time is not selected");
-                      }
-                    },
+                    controller: viewModel.timeController,
+                    onTap: () async => viewModel.setEventTime(context),
                   ),
                 ),
               ],
             ),
             24.verticalSpace,
-            AppButton(onTap: () {}, text: 'Add Event'),
+            AppButton(
+              text: 'Add Event',
+              onTap: () async {
+                completer(SheetResponse(confirmed: true));
+                await viewModel.createNewEvent();
+              },
+            ),
           ],
         ),
       ),
