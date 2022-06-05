@@ -2,11 +2,11 @@ import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:blood_source/ui/shared/widgets/profile/avatar.dart';
 import 'package:blood_source/ui/shared/widgets/profile/blood_group_widget.dart';
-import 'package:blood_source/ui/shared/widgets/profile/profile_action_button.dart';
 import 'package:blood_source/ui/shared/widgets/profile/profile_details_list.dart';
 import 'package:blood_source/ui/shared/widgets/profile_header_paint.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -43,22 +43,16 @@ class ProfileView extends StatelessWidget {
                     padding: const EdgeInsets.all(0).r,
                     child: const AppBackButton(),
                   )
-                : Padding(
-                    padding: EdgeInsets.only(left: 18.0.r),
-                    child: ProfileActionButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () => model.goToEditProfile(model.user),
-                    ),
+                : IconButton(
+                    icon: const Icon(PhosphorIcons.pencil),
+                    onPressed: () => model.goToEditProfile(model.user),
                   ),
             actions: [
               isFromRoute
                   ? const SizedBox()
-                  : Padding(
-                      padding: EdgeInsets.only(right: 18.0.r),
-                      child: ProfileActionButton(
-                        icon: const Icon(Icons.power_settings_new),
-                        onPressed: () => model.signOut(),
-                      ),
+                  : IconButton(
+                      icon: const Icon(PhosphorIcons.signOut),
+                      onPressed: () => model.signOut(),
                     ),
             ],
           ),
@@ -74,7 +68,7 @@ class ProfileView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Avatar(user: profile),
-                    10.verticalSpace,
+                    20.verticalSpace,
                     Text(
                       profile!.name!,
                       textAlign: TextAlign.center,
