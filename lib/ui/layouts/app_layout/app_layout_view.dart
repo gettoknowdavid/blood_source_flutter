@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/common/app_icons.dart';
+import 'package:blood_source/ui/shared/widgets/app_bottom_nav.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -35,47 +36,7 @@ class AppLayoutView extends StatelessWidget {
             },
             child: model.getView(model.currentIndex),
           ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.miniCenterDocked,
-          floatingActionButton: FloatingActionButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.h),
-            ),
-            backgroundColor: AppColors.primary,
-            onPressed: model.goToMakeRequestView,
-            child: ImageIcon(
-              const AssetImage('assets/images/blood.png'),
-              size: 20.sp,
-              color: Colors.white,
-            ),
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            currentIndex: model.currentIndex,
-            onTap: model.setIndex,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            iconSize: 20.sp,
-            landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
-            items: [
-              BottomNavigationBarItem(
-                label: 'Home',
-                icon: AppIcons.home,
-              ),
-              BottomNavigationBarItem(
-                label: 'Profile',
-                icon: AppIcons.profile,
-              ),
-              BottomNavigationBarItem(
-                label: 'Notifications',
-                icon: AppIcons.bell,
-              ),
-              BottomNavigationBarItem(
-                label: 'Settings',
-                icon: AppIcons.settings,
-              ),
-            ],
-          ),
+          bottomNavigationBar: const AppBottomNav(),
         );
       },
     );
