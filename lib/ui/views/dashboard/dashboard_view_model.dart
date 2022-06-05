@@ -59,7 +59,6 @@ class DashboardViewModel extends ReactiveViewModel with ReactiveServiceMixin {
       uid: const Uuid().v4(),
       bloodGroup: user.bloodGroup!,
       requestGranted: false,
-      showContactInfo: true,
       timeAdded: DateTime.now(),
       user: RequestUser(
         uid: user.uid!,
