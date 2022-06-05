@@ -95,20 +95,11 @@ class DonorMapPanel extends ViewModelWidget<DonorDetailsViewModel> {
               ),
             ],
           ),
-          14.verticalSpace,
-          // compatible
-          //     ? const SizedBox()
-          //     : const Text(
-          //         'Not Compatible',
-          //         textAlign: TextAlign.center,
-          //         style: TextStyle(
-          //           color: Colors.red,
-          //           fontStyle: FontStyle.italic,
-          //         ),
-          //       ),
-          // compatible ? 26.verticalSpace : 20.verticalSpace,
-          20.verticalSpace,
-          AppButton(onTap: () {}, text: 'Receive Blood')
+          40.verticalSpace,
+          AppButton(
+            onTap: () => viewModel.goToDonate(donor),
+            text: 'Contact Donor',
+          )
         ],
       ),
     );
