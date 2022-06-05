@@ -1,4 +1,5 @@
 import 'package:blood_source/services/auth_service.dart';
+import 'package:blood_source/services/event_service.dart';
 import 'package:blood_source/services/location_service.dart';
 import 'package:blood_source/services/media_service.dart';
 import 'package:blood_source/services/storage_service.dart';
@@ -84,6 +85,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: MailAppService),
     LazySingleton(classType: AuthService),
     LazySingleton(classType: StoreService),
+    LazySingleton(classType: EventService),
     LazySingleton(classType: LocationService),
     LazySingleton(classType: FirebaseAuthenticationService),
     LazySingleton(classType: MediaService),
