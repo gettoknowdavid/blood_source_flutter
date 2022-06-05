@@ -62,18 +62,6 @@ class StoreService with ReactiveServiceMixin {
           fromFirestore: Request.fromFirestore,
           toFirestore: (_b, _) => _b.toFirestore());
 
-  Stream<QuerySnapshot<BloodSourceUser?>> getDonors() {
-    return _usersColRef
-        .where('uid', isNotEqualTo: _bloodUser.value!.uid)
-        .where('userType', isEqualTo: UserType.donor.name)
-        .snapshots();
-  }
-
-  Stream<QuerySnapshot<BloodSourceUser?>> getCompatibleDonors(Request r) {
-    final stream = compatibleDonors(r.bloodGroup);
-    return stream;
-  }
-
   Future<Request> setRequest(Request req) async {
     _request.value = req;
     return req;
@@ -157,12 +145,6 @@ class StoreService with ReactiveServiceMixin {
     } on FirebaseException catch (e) {
       return StoreResult.error(errorMessage: e.message);
     }
-  }
-
-  Future<int> getDonorCount() async {
-    final s = await _usersColRef.where('userType', isEqualTo: 'donor').get();
-    _donorCount.value = s.size;
-    return s.size;
   }
 
   Future<int> getMyRequestCount() async {
