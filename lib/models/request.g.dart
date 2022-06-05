@@ -10,7 +10,6 @@ Request _$RequestFromJson(Map<String, dynamic> json) => Request(
       uid: json['uid'] as String,
       user: RequestUser.fromJson(json['user'] as Map<String, dynamic>),
       bloodGroup: $enumDecode(_$BloodGroupEnumMap, json['bloodGroup']),
-      showContactInfo: json['showContactInfo'] as bool,
       requestGranted: json['requestGranted'] as bool,
       timeAdded: json['timeAdded'] == null
           ? null
@@ -21,7 +20,6 @@ Map<String, dynamic> _$RequestToJson(Request instance) => <String, dynamic>{
       'uid': instance.uid,
       'user': instance.user.toJson(),
       'bloodGroup': _$BloodGroupEnumMap[instance.bloodGroup],
-      'showContactInfo': instance.showContactInfo,
       'requestGranted': instance.requestGranted,
       'timeAdded': instance.timeAdded?.toIso8601String(),
     };
