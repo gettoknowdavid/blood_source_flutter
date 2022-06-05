@@ -55,18 +55,6 @@ class DashboardButtonItem extends ViewModelWidget<DashboardViewModel> {
                 style: TextStyle(fontSize: 16.sp),
               ),
             ),
-            15.verticalSpace,
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 12.r),
-              decoration: BoxDecoration(
-                color: Colors.blue[300],
-                borderRadius: BorderRadius.circular(16.r),
-              ),
-              child: Text(
-                model.subtitle,
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
           ],
         ),
       ),
