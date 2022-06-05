@@ -6,7 +6,6 @@
 
 // ignore_for_file: public_member_api_docs
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -178,8 +177,12 @@ class StackedRouter extends RouterBase {
       );
     },
     DonateView: (data) {
+      var args = data.getArgs<DonateViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const DonateView(),
+        builder: (context) => DonateView(
+          key: args.key,
+          donor: args.donor,
+        ),
         settings: data,
       );
     },
@@ -263,6 +266,13 @@ class StackedRouter extends RouterBase {
 /// ************************************************************************
 /// Arguments holder classes
 /// *************************************************************************
+
+/// DonateView arguments holder class
+class DonateViewArguments {
+  final Key? key;
+  final BloodSourceUser donor;
+  DonateViewArguments({this.key, required this.donor});
+}
 
 /// DonorView arguments holder class
 class DonorViewArguments {
