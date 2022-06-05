@@ -17,6 +17,12 @@ class ProfileDetailsList extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 8.r),
       children: [
         ProfileDetailsItem(
+          icon: const Icon(Icons.person),
+          title: 'User Type',
+          value: user!.userType.name.toUpperCase(),
+        ),
+        Divider(height: 1.h, color: Colors.black26),
+        ProfileDetailsItem(
           icon: AppIcons.gender,
           title: 'Gender',
           value: user!.gender!.value,
