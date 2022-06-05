@@ -1,5 +1,4 @@
 import 'package:blood_source/app/app.locator.dart';
-import 'package:blood_source/models/user_location.dart';
 import 'package:blood_source/utils/bottom_sheet_type.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
