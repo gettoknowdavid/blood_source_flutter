@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/models/contact_button_model.dart';
@@ -6,6 +8,7 @@ import 'package:stacked/stacked.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class DonateViewModel extends BaseViewModel with ReactiveServiceMixin {
   DonateViewModel() {}
@@ -16,14 +19,15 @@ class DonateViewModel extends BaseViewModel with ReactiveServiceMixin {
 
   Future<void> init() async {}
 
-  void getAction(ContactType contactType, BloodSourceUser user) async {
+  void getAction(ContactType contactType, BloodSourceUser donor) async {
     switch (contactType) {
       case ContactType.call:
-        final urlString = Uri(scheme: 'tel', path: user.phone);
+        final urlString = Uri(scheme: 'tel', path: donor.phone);
         await launchUrl(urlString);
         break;
       case ContactType.email:
-        EmailContent email = EmailContent(to: [user.email!], subject: 'Hello!');
+        EmailContent email =
+            EmailContent(to: [donor.email!], subject: 'Hello!');
 
         OpenMailAppResult result = await OpenMailApp.composeNewEmailInMailApp(
           nativePickerTitle: 'Select email app to compose',
@@ -45,11 +49,18 @@ class DonateViewModel extends BaseViewModel with ReactiveServiceMixin {
         }
         break;
       case ContactType.whatsapp:
-        final url = Uri(path: "https://wa.me/?text=Your%20text%20here");
-        await launchUrl(url);
+        final phone = "+234${donor.phone}";
+        final androidUrl = "whatsapp://send?phone=$phone&text=Hello";
+        final iOSUrl = "https://wa.me/$phone?text=${Uri.parse("Hello")}";
+
+        if (Platform.isIOS) {
+          await launchUrlString(iOSUrl);
+        } else {
+          await launchUrlString(androidUrl);
+        }
         break;
       case ContactType.telegram:
-        final url = Uri(path: "https://telegram.me/${user.phone}");
+        final url = Uri(path: "https://telegram.me/${donor.phone}");
         await launchUrl(url);
         break;
       default:
