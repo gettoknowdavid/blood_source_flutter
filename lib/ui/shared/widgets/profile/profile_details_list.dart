@@ -14,15 +14,8 @@ class ProfileDetailsList extends StatelessWidget {
     return ListView(
       shrinkWrap: true,
       primary: false,
+      padding: EdgeInsets.symmetric(horizontal: 8.r),
       children: [
-        Title(
-          color: Colors.black,
-          child: Text(
-            'Other Details',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
-          ),
-        ),
         ProfileDetailsItem(
           icon: AppIcons.gender,
           title: 'Gender',
