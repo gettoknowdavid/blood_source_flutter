@@ -47,7 +47,9 @@ class DonorView extends StatelessWidget {
             ],
           ),
           body: model.data!.docs.isEmpty
-              ? const EmptyWidget()
+              ? const EmptyWidget(
+                  message: 'It\'s lonely here. It seems there are no donors.',
+                )
               : SingleChildScrollView(
                   padding: EdgeInsets.only(bottom: 0.15.sh),
                   child: Column(
