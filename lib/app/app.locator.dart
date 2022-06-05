@@ -13,6 +13,7 @@ import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../services/auth_service.dart';
+import '../services/donor_service.dart';
 import '../services/event_service.dart';
 import '../services/location_service.dart';
 import '../services/mail_app_service.dart';
@@ -60,6 +61,7 @@ Future setupLocator(
   locator.registerLazySingleton(() => EventService());
   locator.registerLazySingleton(() => LocationService());
   locator.registerLazySingleton(() => FirebaseAuthenticationService());
+  locator.registerLazySingleton(() => DonorService());
   locator.registerLazySingleton(() => MediaService());
   locator.registerLazySingleton(() => SplashViewModel());
   locator.registerLazySingleton(() => MainScaffoldViewModel());
