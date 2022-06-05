@@ -13,12 +13,8 @@ import 'package:uuid/uuid.dart';
 
 class RequestViewModel extends ReactiveViewModel {
   final NavigationService _navService = locator<NavigationService>();
-
-  bool showContact = false;
-
-  bool compatible = true;
-
   final StoreService _storeService = locator<StoreService>();
+
   BloodSourceUser get user => _storeService.bloodUser!;
 
   late BloodGroup bloodGroup = _storeService.bloodUser!.bloodGroup!;
@@ -26,25 +22,6 @@ class RequestViewModel extends ReactiveViewModel {
 
   void Function(BloodGroup?)? onBloodGroupChanged(BloodGroup? newValue) {
     bloodGroup = newValue!;
-    notifyListeners();
-    return null;
-  }
-
-  void Function(BloodGroup)? onBGChanged(BloodGroup bg) {
-    bloodGroup = bg;
-    notifyListeners();
-    return null;
-  }
-
-  void Function(bool?)? onShowPhoneChanged(bool? value) {
-    showContact = value!;
-    notifyListeners();
-    return null;
-  }
-
-  void Function(bool?)? onCompatibilityChanged(bool? value) {
-    compatible = value!;
-    _storeService.setCompatible(value);
     notifyListeners();
     return null;
   }
@@ -62,7 +39,6 @@ class RequestViewModel extends ReactiveViewModel {
       ),
       uid: const Uuid().v4(),
       bloodGroup: bloodGroup,
-      showContactInfo: showContact,
       requestGranted: false,
     );
 
