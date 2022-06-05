@@ -9,9 +9,9 @@ class BottomNavItem {
 }
 
 List<BottomNavItem> navItems = [
-  BottomNavItem(title: 'Home', icon: PhosphorIcons.houseSimpleBold),
-  BottomNavItem(title: 'Profile', icon: PhosphorIcons.userBold),
-  BottomNavItem(title: 'Make Request', icon: PhosphorIcons.dropBold),
-  BottomNavItem(title: 'Events', icon: PhosphorIcons.calendarBold),
-  BottomNavItem(title: 'Settings', icon: PhosphorIcons.gearSixBold),
+  BottomNavItem(title: 'Home', icon: PhosphorIcons.houseSimple),
+  BottomNavItem(title: 'Profile', icon: PhosphorIcons.user),
+  BottomNavItem(title: 'Make Request', icon: PhosphorIcons.drop),
+  BottomNavItem(title: 'Events', icon: PhosphorIcons.calendar),
+  BottomNavItem(title: 'Settings', icon: PhosphorIcons.gearSix),
 ];
