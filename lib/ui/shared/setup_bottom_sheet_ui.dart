@@ -6,6 +6,7 @@ import 'package:blood_source/ui/shared/widgets/app_textfield.dart';
 import 'package:blood_source/ui/views/events/events_view_model.dart';
 import 'package:blood_source/utils/bottom_sheet_type.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -71,9 +72,70 @@ class _CreateEventBottomSheet extends StatelessWidget {
               hintText: 'Location or Address',
             ),
             10.verticalSpace,
-            AppTextField(
-              controller: viewModel.locationController,
-              hintText: 'Date and Time',
+            Row(
+              children: [
+                Expanded(
+                  child: AppTextField(
+                    controller: viewModel.locationController,
+                    hintText: 'Date',
+                    readOnly: true,
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2101),
+                      );
+
+                      if (pickedDate != null) {
+                        print(pickedDate);
+                        //pickedDate output format => 2021-03-10 00:00:00.000
+                        String formattedDate =
+                            DateFormat('yyyy-MM-dd').format(pickedDate);
+                        print(formattedDate);
+                        //formatted date output using intl package =>  2021-03-16
+                        //you can implement different kind of Date Format here according to your requirement
+
+                        // setState(() {
+                        //    dateinput.text = formattedDate; //set output date to TextField value.
+                        // });
+                      } else {
+                        print("Date is not selected");
+                      }
+                    },
+                  ),
+                ),
+                10.horizontalSpace,
+                Expanded(
+                  child: AppTextField(
+                    controller: viewModel.locationController,
+                    hintText: 'Time',
+                    readOnly: true,
+                    onTap: () async {
+                      TimeOfDay? pickedTime = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                        initialEntryMode: TimePickerEntryMode.input,
+                      );
+
+                      if (pickedTime != null) {
+                        print(pickedTime);
+                        //pickedDate output format => 2021-03-10 00:00:00.000
+                        String formattedTime = pickedTime.format(context);
+                        print(formattedTime);
+                        //formatted date output using intl package =>  2021-03-16
+                        //you can implement different kind of Date Format here according to your requirement
+
+                        // setState(() {
+                        //    dateinput.text = formattedDate; //set output date to TextField value.
+                        // });
+                      } else {
+                        print("Time is not selected");
+                      }
+                    },
+                  ),
+                ),
+              ],
             ),
             24.verticalSpace,
             AppButton(onTap: () {}, text: 'Add Event'),
