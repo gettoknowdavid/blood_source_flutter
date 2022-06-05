@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:blood_source/models/request.dart';
-import 'package:blood_source/models/user-type.dart';
-import 'package:blood_source/utils/compatible_donors.dart';
 import 'package:blood_source/utils/compatible_recipients.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:blood_source/models/blood_source_user.dart';
