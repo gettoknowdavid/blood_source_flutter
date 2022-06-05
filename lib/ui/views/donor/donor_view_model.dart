@@ -14,7 +14,7 @@ class DonorViewModel extends StreamViewModel<QuerySnapshot<BloodSourceUser?>> {
 
   Request? get request => _storeService.request;
 
-  bool get compatible => _storeService.compatible;
+  bool compatible = true;
 
   void goToDonorDetails(BloodSourceUser donor) {
     _navService.navigateTo(
@@ -25,6 +25,12 @@ class DonorViewModel extends StreamViewModel<QuerySnapshot<BloodSourceUser?>> {
 
   Future<void> init() async {}
 
+  void onChangeCompatible() {
+    compatible = !compatible;
+    notifyListeners();
+    notifySourceChanged();
+  }
+
   Future addRequest(Request request) async {
     await _storeService.addRequest(request);
     _dialogService
@@ -32,7 +38,7 @@ class DonorViewModel extends StreamViewModel<QuerySnapshot<BloodSourceUser?>> {
           title: 'Successfully Added',
           description: 'Your blood request has been made.',
         )
-        .then((value) => _navService.popRepeated(2));
+        .then((value) => _navService.popRepeated(1));
   }
 
   @override
