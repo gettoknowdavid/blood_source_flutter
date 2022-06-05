@@ -29,7 +29,9 @@ class MyRequestsListView extends StatelessWidget {
             elevation: 0,
           ),
           body: model.myRequests!.isEmpty
-              ? const EmptyWidget()
+              ? const EmptyWidget(
+                  message: 'It seems you haven\'t made any requests yet.',
+                )
               : SingleChildScrollView(
                   child: Column(
                     children: [
