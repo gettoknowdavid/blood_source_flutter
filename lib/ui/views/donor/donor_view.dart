@@ -1,6 +1,7 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/models/request.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
+import 'package:blood_source/ui/shared/widgets/app_button.dart';
 import 'package:blood_source/ui/shared/widgets/app_text_button.dart';
 import 'package:blood_source/ui/shared/widgets/donor/donor_list_item.dart';
 import 'package:blood_source/ui/shared/widgets/empty_widget.dart';
@@ -37,8 +38,8 @@ class DonorView extends StatelessWidget {
             elevation: 0,
             actions: [
               AppTextButton(
-                onTap: () => model.addRequest(request!),
-                text: 'Add Request',
+                onTap: model.onChangeCompatible,
+                text: model.compatible ? 'Show All' : 'Show Compatible',
                 padding: EdgeInsets.only(right: 18.r),
                 fontSize: 16.sp,
                 color: AppColors.primaryDark,
@@ -48,6 +49,7 @@ class DonorView extends StatelessWidget {
           body: model.data!.docs.isEmpty
               ? const EmptyWidget()
               : SingleChildScrollView(
+                  padding: EdgeInsets.only(bottom: 0.15.sh),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -71,6 +73,37 @@ class DonorView extends StatelessWidget {
                     ],
                   ),
                 ),
+          bottomSheet: BottomSheet(
+            onClosing: () {},
+            builder: (context) {
+              return Container(
+                height: 0.135.sh,
+                width: 1.sw,
+                padding: EdgeInsets.symmetric(vertical: 20.r, horizontal: 18.r),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(30.r),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0.w, -20.h),
+                      blurRadius: 30.r,
+                      color: Colors.black12,
+                    )
+                  ],
+                ),
+                child: SizedBox(
+                  height: 0.1.sh,
+                  width: 1.sw,
+                  child: AppButton(
+                    onTap: () => model.addRequest(request!),
+                    text: 'Add Request',
+                  ),
+                ),
+              );
+            },
+          ),
         );
       },
     );
