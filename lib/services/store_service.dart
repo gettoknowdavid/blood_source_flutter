@@ -19,7 +19,6 @@ class StoreService with ReactiveServiceMixin {
       _donors,
       _donorCount,
       _requestCount,
-      _eventsCount,
     ]);
   }
 
@@ -34,9 +33,6 @@ class StoreService with ReactiveServiceMixin {
 
   final ReactiveValue<int> _requestCount = ReactiveValue<int>(0);
   int get requestCount => _requestCount.value;
-
-  final ReactiveValue<int> _eventsCount = ReactiveValue<int>(0);
-  int get eventsCount => _eventsCount.value;
 
   final ReactiveValue<Request?> _request = ReactiveValue<Request?>(null);
   Request? get request => _request.value;
