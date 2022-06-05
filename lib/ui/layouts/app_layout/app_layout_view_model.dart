@@ -18,19 +18,6 @@ class AppLayoutViewModel extends IndexTrackingViewModel
 
   UserType get userType => _storeService.bloodUser!.userType;
 
-  // void goToMakeRequestView() {
-  //   switch (userType) {
-  //     case UserType.recipient:
-  //       _navService.navigateTo(Routes.requestView);
-  //       break;
-  //     case UserType.donor:
-  //       _navService.navigateTo(Routes.donateView);
-  //       break;
-  //     default:
-  //       null;
-  //   }
-  // }
-
   void goToMakeRequestView() => _navService.navigateTo(Routes.requestView);
 
   Widget getView(int index) {
