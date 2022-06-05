@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:blood_source/app/app.locator.dart';
+import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/models/contact_button_model.dart';
 import 'package:open_mail_app/open_mail_app.dart';
@@ -14,10 +15,18 @@ class DonateViewModel extends BaseViewModel with ReactiveServiceMixin {
   DonateViewModel() {}
 
   final DialogService _dialogService = locator<DialogService>();
+  final NavigationService _navService = locator<NavigationService>();
 
   List<ContactButtonModel> buttons = contactButtonList;
 
   Future<void> init() async {}
+
+  void gotToDonorProfile(BloodSourceUser donor) {
+    _navService.navigateTo(
+      Routes.profileView,
+      arguments: ProfileViewArguments(user: donor, isFromRoute: true),
+    );
+  }
 
   void getAction(ContactType contactType, BloodSourceUser donor) async {
     switch (contactType) {
