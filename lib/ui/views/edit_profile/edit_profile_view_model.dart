@@ -42,7 +42,7 @@ class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
       ReactiveValue<BloodGroup>(user.bloodGroup!);
   BloodGroup get bloodType => _bloodGroup.value;
 
-  BloodSourceUser get user => _storeService.bloodUser!;
+  BloodSourceUser get user => _storeService.bsUser!;
   String? get city => _locService.city;
   UserLocation? get location => _locService.loc;
 
