@@ -1,3 +1,4 @@
+// ignore: file_names
 enum UserType { donor, recipient }
 
 const $UserTypeEnum = {

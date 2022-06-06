@@ -27,8 +27,6 @@ import 'package:blood_source/ui/views/events/events_view.dart';
 import 'package:blood_source/ui/views/events/events_view_model.dart';
 import 'package:blood_source/ui/views/forgot_password/forgot_password_view.dart';
 import 'package:blood_source/ui/views/forgot_password/forgot_password_view_model.dart';
-import 'package:blood_source/ui/views/home/home_view.dart';
-import 'package:blood_source/ui/views/home/home_view_model.dart';
 import 'package:blood_source/ui/views/main_scaffold/main_scaffold_view.dart';
 import 'package:blood_source/ui/views/main_scaffold/main_scaffold_view_model.dart';
 import 'package:blood_source/ui/views/my_requests_list/my_requests_list_view.dart';
@@ -63,7 +61,6 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: ForgotPasswordView),
     MaterialRoute(page: CheckEmailView),
     MaterialRoute(page: SignUpView),
-    MaterialRoute(page: HomeView),
     MaterialRoute(page: DonorFormView),
     MaterialRoute(page: VerifyEmailView),
     MaterialRoute(page: DashboardView),
@@ -99,7 +96,6 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: ForgotPasswordViewModel),
     LazySingleton(classType: CheckEmailViewModel),
     LazySingleton(classType: SignUpViewModel),
-    LazySingleton(classType: HomeViewModel),
     LazySingleton(classType: DonorFormViewModel),
     LazySingleton(classType: VerifyEmailViewModel),
     LazySingleton(classType: DashboardViewModel),

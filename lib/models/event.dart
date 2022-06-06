@@ -57,8 +57,4 @@ class Event {
   factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
 
   Map<String, dynamic> toJson() => _$EventToJson(this);
-
-  static DateTime _fromJson(int int) =>
-      DateTime.fromMillisecondsSinceEpoch(int);
-  static int _toJson(DateTime time) => time.millisecondsSinceEpoch;
 }

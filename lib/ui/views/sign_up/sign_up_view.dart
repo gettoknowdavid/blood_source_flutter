@@ -1,4 +1,4 @@
-import 'package:blood_source/models/user-type.dart';
+import 'package:blood_source/models/user_type.dart';
 import 'package:blood_source/ui/layouts/auth_layout.dart';
 import 'package:blood_source/ui/shared/widgets/app_button.dart';
 import 'package:blood_source/ui/shared/widgets/app_textfield.dart';

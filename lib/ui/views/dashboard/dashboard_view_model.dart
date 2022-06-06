@@ -3,7 +3,7 @@ import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/models/dashboard_button_model.dart';
 import 'package:blood_source/models/request.dart';
 import 'package:blood_source/models/request_user.dart';
-import 'package:blood_source/models/user-type.dart';
+import 'package:blood_source/models/user_type.dart';
 import 'package:blood_source/models/user_location.dart';
 import 'package:blood_source/services/auth_service.dart';
 import 'package:blood_source/services/request_service.dart';

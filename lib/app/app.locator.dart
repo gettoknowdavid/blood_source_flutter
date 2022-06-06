@@ -31,7 +31,6 @@ import '../ui/views/donor_form/donor_form_view_model.dart';
 import '../ui/views/edit_profile/edit_profile_view_model.dart';
 import '../ui/views/events/events_view_model.dart';
 import '../ui/views/forgot_password/forgot_password_view_model.dart';
-import '../ui/views/home/home_view_model.dart';
 import '../ui/views/main_scaffold/main_scaffold_view_model.dart';
 import '../ui/views/my_requests_list/my_requests_list_view_model.dart';
 import '../ui/views/notifications/notifications_view_model.dart';
@@ -71,7 +70,6 @@ Future setupLocator(
   locator.registerLazySingleton(() => ForgotPasswordViewModel());
   locator.registerLazySingleton(() => CheckEmailViewModel());
   locator.registerLazySingleton(() => SignUpViewModel());
-  locator.registerLazySingleton(() => HomeViewModel());
   locator.registerLazySingleton(() => DonorFormViewModel());
   locator.registerLazySingleton(() => VerifyEmailViewModel());
   locator.registerLazySingleton(() => DashboardViewModel());

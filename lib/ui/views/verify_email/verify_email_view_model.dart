@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_colors.dart';
-import 'package:blood_source/models/user-type.dart';
+import 'package:blood_source/models/user_type.dart';
 import 'package:blood_source/services/storage_service.dart';
 import 'package:blood_source/services/store_service.dart';
 import 'package:blood_source/utils/dialog_type.dart';

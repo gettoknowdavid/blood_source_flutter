@@ -2,7 +2,7 @@ import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/models/gender.dart';
-import 'package:blood_source/models/user-type.dart';
+import 'package:blood_source/models/user_type.dart';
 import 'package:blood_source/services/auth_service.dart';
 import 'package:blood_source/utils/dialog_type.dart';
 import 'package:blood_source/utils/password_rules.dart';

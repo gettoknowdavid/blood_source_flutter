@@ -13,14 +13,13 @@ import 'package:blood_source/services/store_service.dart';
 import 'package:blood_source/utils/dialog_type.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
   EditProfileViewModel() {
     listenToReactiveValues([_image, _photoUrl, _gender]);
   }
-  Logger logger = Logger();
+
   final DialogService _dialogService = locator<DialogService>();
   final StoreService _storeService = locator<StoreService>();
   final MediaService _mediaService = locator<MediaService>();
@@ -142,12 +141,16 @@ class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
     }
 
     _navService.popRepeated(2);
-    logger.log(Level.debug, res);
     return res.bSUser!;
   }
 
   @override
   void dispose() {
+    nameController.dispose();
+    weightController.dispose();
+    heightController.dispose();
+    ageController.dispose();
+    phoneController.dispose();
     super.dispose();
   }
 

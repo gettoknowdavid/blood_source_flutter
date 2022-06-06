@@ -1,1 +1,1 @@
-enum BottomSheetType { floating, createEvent }
+enum BottomSheetType { createEvent }

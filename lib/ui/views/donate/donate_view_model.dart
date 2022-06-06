@@ -11,9 +11,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class DonateViewModel extends BaseViewModel with ReactiveServiceMixin {
-  DonateViewModel() {}
-
+class DonateViewModel extends BaseViewModel {
   final DialogService _dialogService = locator<DialogService>();
   final NavigationService _navService = locator<NavigationService>();
 
@@ -83,7 +81,4 @@ class DonateViewModel extends BaseViewModel with ReactiveServiceMixin {
         null;
     }
   }
-
-  // final StoreService _storeService = locator<StoreService>();
-  // final NavigationService _navService = locator<NavigationService>();
 }

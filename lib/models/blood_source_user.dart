@@ -1,7 +1,7 @@
 import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/gender.dart';
 import 'package:blood_source/models/user_location.dart';
-import 'package:blood_source/models/user-type.dart';
+import 'package:blood_source/models/user_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 

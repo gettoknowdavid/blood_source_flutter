@@ -1,11 +1,8 @@
 import 'package:animations/animations.dart';
-import 'package:blood_source/common/app_colors.dart';
-import 'package:blood_source/common/app_icons.dart';
 import 'package:blood_source/ui/shared/widgets/app_bottom_nav.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import './app_layout_view_model.dart';
 

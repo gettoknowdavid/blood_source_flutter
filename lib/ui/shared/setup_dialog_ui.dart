@@ -35,7 +35,7 @@ class _BasicDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog();
+    return const Dialog();
   }
 }
 

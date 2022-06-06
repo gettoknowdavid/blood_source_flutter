@@ -22,7 +22,6 @@ import '../ui/views/donor_form/donor_form_view.dart';
 import '../ui/views/edit_profile/edit_profile_view.dart';
 import '../ui/views/events/events_view.dart';
 import '../ui/views/forgot_password/forgot_password_view.dart';
-import '../ui/views/home/home_view.dart';
 import '../ui/views/main_scaffold/main_scaffold_view.dart';
 import '../ui/views/my_requests_list/my_requests_list_view.dart';
 import '../ui/views/notifications/notifications_view.dart';
@@ -42,7 +41,6 @@ class Routes {
   static const String forgotPasswordView = '/forgot-password-view';
   static const String checkEmailView = '/check-email-view';
   static const String signUpView = '/sign-up-view';
-  static const String homeView = '/home-view';
   static const String donorFormView = '/donor-form-view';
   static const String verifyEmailView = '/verify-email-view';
   static const String dashboardView = '/dashboard-view';
@@ -65,7 +63,6 @@ class Routes {
     forgotPasswordView,
     checkEmailView,
     signUpView,
-    homeView,
     donorFormView,
     verifyEmailView,
     dashboardView,
@@ -94,7 +91,6 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.forgotPasswordView, page: ForgotPasswordView),
     RouteDef(Routes.checkEmailView, page: CheckEmailView),
     RouteDef(Routes.signUpView, page: SignUpView),
-    RouteDef(Routes.homeView, page: HomeView),
     RouteDef(Routes.donorFormView, page: DonorFormView),
     RouteDef(Routes.verifyEmailView, page: VerifyEmailView),
     RouteDef(Routes.dashboardView, page: DashboardView),
@@ -147,12 +143,6 @@ class StackedRouter extends RouterBase {
     SignUpView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const SignUpView(),
-        settings: data,
-      );
-    },
-    HomeView: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => const HomeView(),
         settings: data,
       );
     },

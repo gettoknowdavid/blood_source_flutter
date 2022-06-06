@@ -1,6 +1,6 @@
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/models/request.dart';
-import 'package:blood_source/models/user-type.dart';
+import 'package:blood_source/models/user_type.dart';
 import 'package:blood_source/services/store_service.dart';
 import 'package:blood_source/utils/compatible_donors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
