@@ -1,52 +1,17 @@
 import 'dart:async';
 
-import 'package:blood_source/models/request.dart';
-import 'package:blood_source/utils/compatible_recipients.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:blood_source/models/blood_source_user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stacked/stacked.dart';
-import 'package:logger/logger.dart';
 
 class StoreService with ReactiveServiceMixin {
   StoreService() {
-    listenToReactiveValues([
-      _bloodUser,
-      _compatible,
-      _request,
-      _donors,
-      _donorCount,
-      _requestCount,
-    ]);
+    listenToReactiveValues([_bsUser]);
   }
 
-  Logger logger = Logger();
-
-  final ReactiveValue<List<BloodSourceUser>> _donors =
-      ReactiveValue<List<BloodSourceUser>>([]);
-  List<BloodSourceUser> get donors => _donors.value;
-
-  final ReactiveValue<int> _donorCount = ReactiveValue<int>(0);
-  int get donorCount => _donorCount.value;
-
-  final ReactiveValue<int> _requestCount = ReactiveValue<int>(0);
-  int get requestCount => _requestCount.value;
-
-  final ReactiveValue<Request?> _request = ReactiveValue<Request?>(null);
-  Request? get request => _request.value;
-
-  final ReactiveValue<bool> _compatible = ReactiveValue<bool>(true);
-  bool get compatible => _compatible.value;
-
-  final ReactiveValue<List<Request>?> _requests =
-      ReactiveValue<List<Request>?>([]);
-  List<Request>? get requests => _requests.value;
-
-  final ReactiveValue<BloodSourceUser?> _bloodUser =
+  final ReactiveValue<BloodSourceUser?> _bsUser =
       ReactiveValue<BloodSourceUser?>(null);
-  BloodSourceUser? get bloodUser => _bloodUser.value;
-
-  // final StorageService _storageService = locator<StorageService>();
+  BloodSourceUser? get bsUser => _bsUser.value;
 
   final _usersColRef = FirebaseFirestore.instance
       .collection('users')
@@ -54,69 +19,10 @@ class StoreService with ReactiveServiceMixin {
           fromFirestore: BloodSourceUser.fromFirestore,
           toFirestore: (_b, _) => _b.toFirestore());
 
-  final _requestColRef = FirebaseFirestore.instance
-      .collection('requests')
-      .withConverter<Request>(
-          fromFirestore: Request.fromFirestore,
-          toFirestore: (_b, _) => _b.toFirestore());
-
-  Future<Request> setRequest(Request req) async {
-    _request.value = req;
-    return req;
-  }
-
-  Future<bool> setCompatible(bool value) async {
-    _compatible.value = value;
-    return value;
-  }
-
-  Future<StoreResult> addRequest(Request req) async {
-    try {
-      await _requestColRef.doc().set(req);
-      _request.value = req;
-      return StoreResult(request: request);
-    } on FirebaseException catch (e) {
-      return StoreResult.error(errorMessage: e.message);
-    }
-  }
-
-  Future<StoreResult> getRequest(String reqUid) async {
-    try {
-      await _requestColRef.doc(reqUid).get();
-      return StoreResult(request: request);
-    } on FirebaseException catch (e) {
-      return StoreResult.error(errorMessage: e.message);
-    }
-  }
-
-  Stream<QuerySnapshot<Request?>> getRequests() {
-    final uid = FirebaseAuth.instance.currentUser!.uid;
-    return _requestColRef.where('user.uid', isNotEqualTo: uid).snapshots();
-  }
-
-  Future<StoreResult> getMyRequests() async {
-    try {
-      final uid = FirebaseAuth.instance.currentUser!.uid;
-      final list = await _requestColRef
-          .where('user.uid', isEqualTo: uid)
-          .get()
-          .then((value) => value.docs.map((e) => e.data()).toList());
-
-      return StoreResult(requests: list);
-    } on FirebaseException catch (e) {
-      return StoreResult.error(errorMessage: e.message);
-    }
-  }
-
-  Stream<QuerySnapshot<Request?>> getCompatibleRequests() {
-    return compatibleRecipients(bloodUser!.bloodGroup!, _requestColRef);
-  }
-
   Future<StoreResult> createBloodSourceUser(BloodSourceUser user) async {
     try {
       await _usersColRef.doc(user.uid).set(user);
-      // _storageService.saveToDisk(user.uid!, user.toJson());
-      _bloodUser.value = user;
+      _bsUser.value = user;
       return StoreResult(bSUser: user);
     } on FirebaseException catch (e) {
       return StoreResult.error(errorMessage: e.message);
@@ -126,8 +32,7 @@ class StoreService with ReactiveServiceMixin {
   Future<StoreResult> updateBloodSourceUser(BloodSourceUser user) async {
     try {
       await _usersColRef.doc(user.uid).update(user.toFirestore());
-      // _storageService.saveToDisk(user.uid!, user.toJson());
-      _bloodUser.value = user;
+      _bsUser.value = user;
       return StoreResult(bSUser: user);
     } on FirebaseException catch (e) {
       return StoreResult.error(errorMessage: e.message);
@@ -137,52 +42,22 @@ class StoreService with ReactiveServiceMixin {
   Future<StoreResult?> getUser(String uid) async {
     try {
       final _userData = await _usersColRef.doc(uid).get();
-      _bloodUser.value = _userData.data();
-      // _storageService.saveToDisk(uid, _userData.data()!.toJson());
+      _bsUser.value = _userData.data();
       return StoreResult(bSUser: _userData.data());
     } on FirebaseException catch (e) {
       return StoreResult.error(errorMessage: e.message);
     }
   }
-
-  Future<int> getMyRequestCount() async {
-    final uid = FirebaseAuth.instance.currentUser!.uid;
-    final s = await _requestColRef.where('user.uid', isEqualTo: uid).get();
-    _requestCount.value = s.size;
-    return s.size;
-  }
-
-  // Future<StoreResult?> getUserFromLocalStorage(String uid) async {
-  //   try {
-  //     final _result = _storageService.getFromDisk(uid);
-  //     _bloodUser.value = _result;
-  //     return StoreResult(bSUser: _result);
-  //   } on FirebaseException catch (e) {
-  //     return StoreResult.error(errorMessage: e.message);
-  //   }
-  // }
 }
 
 class StoreResult {
   final BloodSourceUser? bSUser;
-  final Request? request;
-  final List<Request>? requests;
-  final List<BloodSourceUser>? donors;
 
   final String? errorMessage;
 
-  StoreResult({this.bSUser, this.request, this.requests, this.donors})
-      : errorMessage = null;
+  StoreResult({this.bSUser}) : errorMessage = null;
 
-  StoreResult.error({this.errorMessage})
-      : bSUser = null,
-        request = null,
-        requests = null,
-        donors = null;
+  StoreResult.error({this.errorMessage}) : bSUser = null;
 
   bool get hasError => errorMessage != null && errorMessage!.isNotEmpty;
-
-  bool get isRequestsEmpty => requests == null && requests!.isEmpty;
-
-  bool get isDonorsEmpty => donors == null && requests!.isEmpty;
 }
