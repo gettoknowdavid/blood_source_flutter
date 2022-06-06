@@ -26,7 +26,7 @@ class AppLayoutViewModel extends IndexTrackingViewModel
   final ReactiveValue<int> _eventsCount = ReactiveValue<int>(0);
   int get eventsCount => _eventsCount.value;
 
-  UserType get userType => _storeService.bloodUser!.userType;
+  UserType get userType => _storeService.bsUser!.userType;
 
   void goToMakeRequestView() => _navService.navigateTo(Routes.requestView);
 
