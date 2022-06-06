@@ -3,18 +3,18 @@ import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:blood_source/models/request.dart';
 import 'package:blood_source/services/donor_service.dart';
-import 'package:blood_source/services/store_service.dart';
+import 'package:blood_source/services/request_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class DonorViewModel extends StreamViewModel<QuerySnapshot<BloodSourceUser?>> {
-  final StoreService _storeService = locator<StoreService>();
   final DonorService _donorService = locator<DonorService>();
+  final RequestService _requestService = locator<RequestService>();
   final NavigationService _navService = locator<NavigationService>();
   final DialogService _dialogService = locator<DialogService>();
 
-  Request? get request => _storeService.request;
+  Request? get request => _requestService.request;
 
   bool compatible = true;
 
@@ -41,7 +41,7 @@ class DonorViewModel extends StreamViewModel<QuerySnapshot<BloodSourceUser?>> {
   }
 
   Future addRequest(Request request) async {
-    await _storeService.addRequest(request);
+    await _requestService.addRequest(request);
     _dialogService
         .showDialog(
           title: 'Successfully Added',
@@ -49,9 +49,6 @@ class DonorViewModel extends StreamViewModel<QuerySnapshot<BloodSourceUser?>> {
         )
         .then((value) => _navService.popRepeated(1));
   }
-
-  @override
-  List<ReactiveServiceMixin> get reactiveServices => [_storeService];
 
   @override
   Stream<QuerySnapshot<BloodSourceUser?>> get stream => compatible
