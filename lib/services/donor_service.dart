@@ -8,7 +8,7 @@ import 'package:blood_source/models/blood_source_user.dart';
 
 class DonorService {
   final StoreService _storeService = locator<StoreService>();
-  BloodSourceUser get _bsUser => _storeService.bloodUser!;
+  BloodSourceUser get _bsUser => _storeService.bsUser!;
 
   final usersRef = FirebaseFirestore.instance
       .collection('users')
