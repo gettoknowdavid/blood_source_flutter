@@ -1,14 +1,14 @@
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/models/request.dart';
-import 'package:blood_source/services/store_service.dart';
+import 'package:blood_source/services/request_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class RequestListViewModel extends StreamViewModel<QuerySnapshot<Request?>> {
   final NavigationService _navService = locator<NavigationService>();
-  final StoreService _storeService = locator<StoreService>();
+  final RequestService _requestService = locator<RequestService>();
 
   bool compatible = true;
 
@@ -28,10 +28,10 @@ class RequestListViewModel extends StreamViewModel<QuerySnapshot<Request?>> {
   }
 
   @override
-  List<ReactiveServiceMixin> get reactiveServices => [_storeService];
+  List<ReactiveServiceMixin> get reactiveServices => [_requestService];
 
   @override
   Stream<QuerySnapshot<Request?>> get stream => compatible
-      ? _storeService.getCompatibleRequests()
-      : _storeService.getRequests();
+      ? _requestService.getCompatibleRequests()
+      : _requestService.getRequests();
 }
