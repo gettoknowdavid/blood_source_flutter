@@ -6,6 +6,7 @@ import 'package:blood_source/models/request_user.dart';
 import 'package:blood_source/models/user-type.dart';
 import 'package:blood_source/models/user_location.dart';
 import 'package:blood_source/services/auth_service.dart';
+import 'package:blood_source/services/request_service.dart';
 import 'package:blood_source/services/store_service.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:stacked/stacked.dart';
@@ -25,10 +26,9 @@ class DashboardViewModel extends ReactiveViewModel with ReactiveServiceMixin {
   }
 
   final AuthService _authService = locator<AuthService>();
+  final RequestService _requestService = locator<RequestService>();
   final StoreService _storeService = locator<StoreService>();
   final NavigationService _navService = locator<NavigationService>();
-
-  // final ReactiveValue<int> _donorCount = ReactiveValue<int>(0);
 
   final ReactiveValue<List<DashboardButtonModel>> _buttonList =
       ReactiveValue<List<DashboardButtonModel>>(donorButtonList);
@@ -36,7 +36,7 @@ class DashboardViewModel extends ReactiveViewModel with ReactiveServiceMixin {
 
   String get displayName => _authService.currentUser!.displayName!;
 
-  BloodSourceUser get user => _storeService.bloodUser!;
+  BloodSourceUser get user => _storeService.bsUser!;
 
   String get firstName => displayName.toString().split(" ").first;
 
@@ -46,10 +46,10 @@ class DashboardViewModel extends ReactiveViewModel with ReactiveServiceMixin {
         _buttonList.value = donorButtonList;
         break;
       case UserType.recipient:
-        _buttonList.value = await recipientButtonList;
+        _buttonList.value = recipientButtonList;
         break;
       default:
-        _buttonList.value = await donorButtonList;
+        _buttonList.value = donorButtonList;
     }
     return _buttonList.value;
   }
@@ -71,7 +71,7 @@ class DashboardViewModel extends ReactiveViewModel with ReactiveServiceMixin {
       ),
     );
 
-    await _storeService.setRequest(request);
+    await _requestService.setRequest(request);
 
     _navService.navigateTo(
       Routes.donorView,
