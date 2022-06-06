@@ -16,7 +16,7 @@ class DonorDetailsViewModel extends ReactiveViewModel
   final NavigationService _navService = locator<NavigationService>();
   final StoreService _storeService = locator<StoreService>();
 
-  BloodSourceUser get recipient => _storeService.bloodUser!;
+  BloodSourceUser get recipient => _storeService.bsUser!;
 
   final ReactiveValue<GeoPointWithOrientation?> _geoPoint =
       ReactiveValue<GeoPointWithOrientation?>(null);
