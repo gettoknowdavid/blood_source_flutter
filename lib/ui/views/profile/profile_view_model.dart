@@ -21,7 +21,7 @@ class ProfileViewModel extends ReactiveViewModel {
     await longUpdateStuff();
   }
 
-  BloodSourceUser get user => _storeService.bloodUser!;
+  BloodSourceUser get user => _storeService.bsUser!;
 
   Future longUpdateStuff() async {
     // Sets busy to true before starting future and sets it to false after executing
