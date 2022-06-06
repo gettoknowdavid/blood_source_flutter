@@ -2,10 +2,10 @@ import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/request.dart';
 import 'package:blood_source/models/request_user.dart';
+import 'package:blood_source/services/request_service.dart';
 import 'package:blood_source/services/store_service.dart';
 import 'package:blood_source/ui/views/donor/donor_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -14,11 +14,11 @@ import 'package:uuid/uuid.dart';
 class RequestViewModel extends ReactiveViewModel {
   final NavigationService _navService = locator<NavigationService>();
   final StoreService _storeService = locator<StoreService>();
+  final RequestService _requestService = locator<RequestService>();
 
-  BloodSourceUser get user => _storeService.bloodUser!;
+  BloodSourceUser get user => _storeService.bsUser!;
 
-  late BloodGroup bloodGroup = _storeService.bloodUser!.bloodGroup!;
-  TextEditingController reasonController = TextEditingController();
+  late BloodGroup bloodGroup = _storeService.bsUser!.bloodGroup!;
 
   void Function(BloodGroup?)? onBloodGroupChanged(BloodGroup? newValue) {
     bloodGroup = newValue!;
@@ -42,7 +42,7 @@ class RequestViewModel extends ReactiveViewModel {
       requestGranted: false,
     );
 
-    _storeService.setRequest(request);
+    _requestService.setRequest(request);
 
     _navService.navigateToView(
       DonorView(fromRequestView: true, request: request),
