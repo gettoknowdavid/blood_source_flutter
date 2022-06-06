@@ -18,6 +18,7 @@ import '../services/event_service.dart';
 import '../services/location_service.dart';
 import '../services/mail_app_service.dart';
 import '../services/media_service.dart';
+import '../services/request_service.dart';
 import '../services/storage_service.dart';
 import '../services/store_service.dart';
 import '../ui/layouts/app_layout/app_layout_view_model.dart';
@@ -62,6 +63,7 @@ Future setupLocator(
   locator.registerLazySingleton(() => LocationService());
   locator.registerLazySingleton(() => FirebaseAuthenticationService());
   locator.registerLazySingleton(() => DonorService());
+  locator.registerLazySingleton(() => RequestService());
   locator.registerLazySingleton(() => MediaService());
   locator.registerLazySingleton(() => SplashViewModel());
   locator.registerLazySingleton(() => MainScaffoldViewModel());
