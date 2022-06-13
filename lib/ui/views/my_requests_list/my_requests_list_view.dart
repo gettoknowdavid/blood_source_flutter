@@ -5,7 +5,6 @@ import 'package:blood_source/ui/shared/widgets/empty_widget.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:blood_source/ui/shared/widgets/offline_widget.dart';
 import 'package:blood_source/utils/date_formatter.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:stacked/stacked.dart';
@@ -22,9 +21,11 @@ class MyRequestsListView extends StatelessWidget {
       viewModelBuilder: () => MyRequestsListViewModel(),
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
-        if (model.isBusy || !model.dataReady || model.isConnected == null) {
+        if (model.isBusy || model.isConnected == null) {
           return const LoadingIndicator();
         }
+
+        List<Request> requests = model.data!.myRequests!;
 
         return Scaffold(
           appBar: AppBar(
@@ -34,57 +35,31 @@ class MyRequestsListView extends StatelessWidget {
           ),
           body: !model.isConnected!
               ? OfflineWidget(onTap: model.checkConnectivity, addPadding: true)
-              : Container(
-                  child: model.data!.docs.isEmpty
-                      ? const EmptyWidget(
-                          message:
-                              'It seems you haven\'t made any requests yet.',
-                        )
-                      : SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              20.verticalSpace,
-                              ListView.builder(
-                                primary: false,
-                                shrinkWrap: true,
-                                itemCount: model.data!.docs.length,
-                                itemBuilder: (context, i) {
-                                  List<QueryDocumentSnapshot<Request>>
-                                      requests = model.data!.docs;
-                                  final request = requests[i].data();
-
-                                  return _MyRequestsListItem(
-                                    request: request,
-                                    onDelete: () {
-                                      requests.removeAt(i);
-                                      model.notifyListeners();
-                                      model.deleteRequest(request.uid);
-                                    },
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                ),
+              : requests.isEmpty
+                  ? const EmptyWidget(message: 'You have not request yet.')
+                  : RefreshIndicator(
+                      onRefresh: model.initialise,
+                      child: ListView.builder(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: requests.length,
+                        itemBuilder: (context, i) {
+                          return _MyRequestsItem(request: requests[i]);
+                        },
+                      ),
+                    ),
         );
       },
     );
   }
 }
 
-class _MyRequestsListItem extends StatelessWidget {
-  const _MyRequestsListItem({
-    Key? key,
-    required this.request,
-    required this.onDelete,
-  }) : super(key: key);
+class _MyRequestsItem extends ViewModelWidget<MyRequestsListViewModel> {
+  const _MyRequestsItem({Key? key, required this.request}) : super(key: key);
 
   final Request request;
-  final void Function()? onDelete;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, MyRequestsListViewModel viewModel) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8.r),
       child: ListTile(
@@ -100,7 +75,7 @@ class _MyRequestsListItem extends StatelessWidget {
           ),
         ),
         trailing: IconButton(
-          onPressed: onDelete,
+          onPressed: () => viewModel.delete(request),
           icon: const Icon(
             PhosphorIcons.trash,
             color: Colors.red,
