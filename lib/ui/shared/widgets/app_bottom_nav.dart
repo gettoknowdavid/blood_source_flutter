@@ -26,7 +26,7 @@ class AppBottomNav extends ViewModelWidget<AppLayoutViewModel> {
                   clipBehavior: Clip.none,
                   children: [
                     Icon(item.icon, size: 28.sp),
-                    navItems.indexOf(item) == 3
+                    navItems.indexOf(item) == 3 && viewModel.eventsCount != 0
                         ? Positioned(
                             right: -8.w,
                             top: -8.h,
@@ -38,12 +38,14 @@ class AppBottomNav extends ViewModelWidget<AppLayoutViewModel> {
                                 color: AppColors.primary,
                                 shape: BoxShape.circle,
                               ),
-                              child: Text(
-                                viewModel.eventsCount.toString(),
-                                style: TextStyle(
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
+                              child: Center(
+                                child: Text(
+                                  viewModel.eventsCount.toString(),
+                                  style: TextStyle(
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
