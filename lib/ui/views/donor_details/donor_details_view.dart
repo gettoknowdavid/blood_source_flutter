@@ -20,7 +20,7 @@ class DonorDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DonorDetailsViewModel>.reactive(
       viewModelBuilder: () => DonorDetailsViewModel(),
-      onModelReady: (model) async => await model.init(donor),
+      onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
         if (model.isBusy || model.isConnected == null) {
           return const LoadingIndicator();
@@ -80,8 +80,8 @@ class DonorDetailsView extends StatelessWidget {
                     ),
                   ),
                 ),
-                minHeight: 0.17.sh,
-                maxHeight: 0.57.sh,
+                minHeight: 120.h,
+                maxHeight: 0.52.sh,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
                 panelBuilder: (c) => DonorMapPanel(controller: c, donor: donor),
               ),
