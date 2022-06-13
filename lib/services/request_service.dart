@@ -65,23 +65,15 @@ class RequestService with ReactiveServiceMixin {
     return RequestResult(requests: _list);
   }
 
-  Stream<QuerySnapshot<Request>> getMyRequests() {
-    final uid = _authService.currentUser!.uid;
-    return _requestRef
-        .where('user.uid', isEqualTo: uid)
-        .snapshots()
+  Future<RequestResult> getMyRequests() async {
+    final _uid = _authService.currentUser!.uid;
+    final _list = await _requestRef
+        .where('user.uid', isEqualTo: _uid)
+        .get()
+        .then((snap) => snap.docs.map((e) => e.data()).toList())
         .timeout(const Duration(seconds: 10));
+    return RequestResult(requests: _list);
   }
-
-  // Future<RequestResult> getMyRequests() async {
-  //   final _uid = _authService.currentUser!.uid;
-  //   final _list = await _requestRef
-  //       .where('user.uid', isEqualTo: _uid)
-  //       .get()
-  //       .then((snap) => snap.docs.map((e) => e.data()).toList())
-  //       .timeout(const Duration(seconds: 10));
-  //   return RequestResult(requests: _list);
-  // }
 
   Future<RequestResult> getCompatibleRequests() async {
     try {
