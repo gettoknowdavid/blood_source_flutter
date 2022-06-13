@@ -19,7 +19,7 @@ class RequestListView extends StatelessWidget {
       viewModelBuilder: () => RequestListViewModel(),
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
-        if (!model.dataReady || model.isBusy || model.isConnected == null) {
+        if (model.isBusy || model.isConnected == null) {
           return const LoadingIndicator();
         }
 
@@ -29,21 +29,22 @@ class RequestListView extends StatelessWidget {
             leading: const AppBackButton(),
             elevation: 0,
             actions: [
-              !model.isConnected!
-                  ? const SizedBox()
-                  : AppTextButton(
-                      onTap: model.onCompatibilityChanged,
-                      text: model.compatible ? 'Show All' : 'Show Compatible',
-                      fontSize: 16.sp,
-                      color: Colors.white,
-                      padding: EdgeInsets.only(right: 18.r),
-                    )
+              if (!model.isConnected!)
+                const SizedBox()
+              else
+                AppTextButton(
+                  onTap: model.onCompatibilityChanged,
+                  text: model.compatible ? 'Show All' : 'Show Compatible',
+                  fontSize: 16.sp,
+                  color: Colors.white,
+                  padding: EdgeInsets.only(right: 18.r),
+                )
             ],
           ),
           body: !model.isConnected!
               ? OfflineWidget(onTap: model.checkConnectivity, addPadding: true)
               : Container(
-                  child: model.data!.docs.isEmpty
+                  child: model.data!.requests!.isEmpty
                       ? const EmptyWidget(
                           message: 'There are currently no requests.')
                       : SingleChildScrollView(
@@ -53,11 +54,11 @@ class RequestListView extends StatelessWidget {
                               ListView.builder(
                                 primary: false,
                                 shrinkWrap: true,
-                                itemCount: model.data!.docs.length,
+                                itemCount: model.data!.requests!.length,
                                 itemBuilder: (context, i) {
-                                  final data = model.data!.docs[i].data()!;
+                                  final request = model.data!.requests![i];
 
-                                  return RequestListItem(request: data);
+                                  return RequestListItem(request: request);
                                 },
                               ),
                             ],
