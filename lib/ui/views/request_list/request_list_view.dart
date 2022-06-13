@@ -19,9 +19,16 @@ class RequestListView extends StatelessWidget {
       viewModelBuilder: () => RequestListViewModel(),
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
-        if (model.isBusy || model.isConnected == null) {
+        if (model.isBusy ||
+            model.isConnected == null ||
+            model.fetchingCompatible ||
+            model.fetchingRequests) {
           return const LoadingIndicator();
         }
+
+        final requests = model.compatible
+            ? model.fetchedCompatibleRequests.compatibleRequests
+            : model.fetchedRequests.requests;
 
         return Scaffold(
           appBar: AppBar(
@@ -44,9 +51,8 @@ class RequestListView extends StatelessWidget {
           body: !model.isConnected!
               ? OfflineWidget(onTap: model.checkConnectivity, addPadding: true)
               : Container(
-                  child: model.data!.requests!.isEmpty
-                      ? const EmptyWidget(
-                          message: 'There are currently no requests.')
+                  child: requests!.isEmpty
+                      ? const EmptyWidget(message: 'There are no requests.')
                       : SingleChildScrollView(
                           child: Column(
                             children: [
@@ -54,11 +60,9 @@ class RequestListView extends StatelessWidget {
                               ListView.builder(
                                 primary: false,
                                 shrinkWrap: true,
-                                itemCount: model.data!.requests!.length,
+                                itemCount: requests.length,
                                 itemBuilder: (context, i) {
-                                  final request = model.data!.requests![i];
-
-                                  return RequestListItem(request: request);
+                                  return RequestListItem(request: requests[i]);
                                 },
                               ),
                             ],
