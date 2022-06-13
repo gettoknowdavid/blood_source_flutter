@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:async';
 
 import 'package:blood_source/app/app.locator.dart';
@@ -7,12 +9,14 @@ import 'package:blood_source/models/request.dart';
 import 'package:blood_source/services/donor_service.dart';
 import 'package:blood_source/services/request_service.dart';
 import 'package:blood_source/ui/shared/setup_snack_bar_ui.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class DonorViewModel extends StreamViewModel<QuerySnapshot<BloodSourceUser?>> {
+const String _AllFuture = '_all_donor_future_';
+const String _CompatibleFuture = '_compatible_donor_future_';
+
+class DonorViewModel extends MultipleFutureViewModel {
   DonorViewModel() {
     subscription = InternetConnectionChecker().onStatusChange.listen((status) {
       switch (status) {
@@ -41,6 +45,12 @@ class DonorViewModel extends StreamViewModel<QuerySnapshot<BloodSourceUser?>> {
   Request? get request => _requestService.request;
 
   bool compatible = true;
+
+  DonorResult get fetchedDonors => dataMap?[_AllFuture];
+  DonorResult get fetchedCompatibleDonors => dataMap?[_CompatibleFuture];
+
+  bool get fetchingDonors => busy(_AllFuture);
+  bool get fetchingCompatible => busy(_CompatibleFuture);
 
   void goToDonorDetails(BloodSourceUser donor) {
     _navService.navigateTo(
@@ -86,10 +96,10 @@ class DonorViewModel extends StreamViewModel<QuerySnapshot<BloodSourceUser?>> {
   void onChangeCompatible() {
     compatible = !compatible;
     notifyListeners();
-    notifySourceChanged();
   }
 
   Future addRequest(Request request) async {
+    setBusy(true);
     await _requestService.addRequest(request);
     _dialogService
         .showDialog(
@@ -100,13 +110,18 @@ class DonorViewModel extends StreamViewModel<QuerySnapshot<BloodSourceUser?>> {
   }
 
   @override
-  Stream<QuerySnapshot<BloodSourceUser?>> get stream => compatible
-      ? _donorService.getCompatibleDonors(request!)
-      : _donorService.getDonors();
-
-      @override
   void dispose() {
     subscription.cancel();
     super.dispose();
   }
+
+  Future<DonorResult> getCompatibleDonors() async {
+    return await _donorService.getCompatibleDonors(request!);
+  }
+
+  @override
+  Map<String, Future Function()> get futuresMap => {
+        _AllFuture: _donorService.getDonors,
+        _CompatibleFuture: getCompatibleDonors,
+      };
 }
