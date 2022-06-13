@@ -22,6 +22,7 @@ import '../services/request_service.dart';
 import '../services/storage_service.dart';
 import '../services/store_service.dart';
 import '../ui/layouts/app_layout/app_layout_view_model.dart';
+import '../ui/views/about/about_view_model.dart';
 import '../ui/views/check_email/check_email_view_model.dart';
 import '../ui/views/dashboard/dashboard_view_model.dart';
 import '../ui/views/donate/donate_view_model.dart';
@@ -31,9 +32,8 @@ import '../ui/views/donor_form/donor_form_view_model.dart';
 import '../ui/views/edit_profile/edit_profile_view_model.dart';
 import '../ui/views/events/events_view_model.dart';
 import '../ui/views/forgot_password/forgot_password_view_model.dart';
-import '../ui/views/main_scaffold/main_scaffold_view_model.dart';
 import '../ui/views/my_requests_list/my_requests_list_view_model.dart';
-import '../ui/views/notifications/notifications_view_model.dart';
+import '../ui/views/on_boarding/on_boarding_view_model.dart';
 import '../ui/views/profile/profile_view_model.dart';
 import '../ui/views/request/request_view_model.dart';
 import '../ui/views/request_details/request_details_view_model.dart';
@@ -55,6 +55,7 @@ Future setupLocator(
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => BottomSheetService());
   locator.registerLazySingleton(() => DialogService());
+  locator.registerLazySingleton(() => SnackbarService());
   locator.registerLazySingleton(() => MailAppService());
   locator.registerLazySingleton(() => AuthService());
   locator.registerLazySingleton(() => StoreService());
@@ -65,7 +66,6 @@ Future setupLocator(
   locator.registerLazySingleton(() => RequestService());
   locator.registerLazySingleton(() => MediaService());
   locator.registerLazySingleton(() => SplashViewModel());
-  locator.registerLazySingleton(() => MainScaffoldViewModel());
   locator.registerLazySingleton(() => SignInViewModel());
   locator.registerLazySingleton(() => ForgotPasswordViewModel());
   locator.registerLazySingleton(() => CheckEmailViewModel());
@@ -75,7 +75,6 @@ Future setupLocator(
   locator.registerLazySingleton(() => DashboardViewModel());
   locator.registerLazySingleton(() => AppLayoutViewModel());
   locator.registerLazySingleton(() => DonateViewModel());
-  locator.registerLazySingleton(() => NotificationsViewModel());
   locator.registerLazySingleton(() => ProfileViewModel());
   locator.registerLazySingleton(() => DonorViewModel());
   locator.registerLazySingleton(() => RequestViewModel());
@@ -85,6 +84,8 @@ Future setupLocator(
   locator.registerLazySingleton(() => RequestDetailsViewModel());
   locator.registerLazySingleton(() => DonorDetailsViewModel());
   locator.registerLazySingleton(() => EventsViewModel());
+  locator.registerLazySingleton(() => OnBoardingViewModel());
+  locator.registerLazySingleton(() => AboutViewModel());
   final storageService = await StorageService.getInstance();
   locator.registerSingleton<StorageService>(storageService);
 }
