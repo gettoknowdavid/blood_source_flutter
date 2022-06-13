@@ -16,17 +16,26 @@ class DashboardView extends StatelessWidget {
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
         return Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            actions: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.r, horizontal: 18.r),
+                child: Text(
+                  'Hi ${model.firstName}!',
+                  style: const TextStyle(color: AppColors.primaryDark),
+                ),
+              ),
+            ],
+          ),
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 50.verticalSpace,
-                Container(
-                  alignment: Alignment.centerRight,
-                  padding: const EdgeInsets.symmetric(horizontal: 16).r,
-                  child: Text('Hi ${model.firstName}!'),
-                ),
                 30.verticalSpace,
                 Text(
                   'GIVE THE GIFT OF LIFE',
