@@ -29,6 +29,7 @@ class DashboardViewModel extends ReactiveViewModel with ReactiveServiceMixin {
   final RequestService _requestService = locator<RequestService>();
   final StoreService _storeService = locator<StoreService>();
   final NavigationService _navService = locator<NavigationService>();
+  final DialogService _dialogService = locator<DialogService>();
 
   final ReactiveValue<List<DashboardButtonModel>> _buttonList =
       ReactiveValue<List<DashboardButtonModel>>(donorButtonList);
@@ -54,7 +55,7 @@ class DashboardViewModel extends ReactiveViewModel with ReactiveServiceMixin {
     return _buttonList.value;
   }
 
-  void goToDonors() async {
+  Future<void> goToDonors() async {
     final Request request = Request(
       uid: const Uuid().v4(),
       bloodGroup: user.bloodGroup!,
@@ -77,6 +78,23 @@ class DashboardViewModel extends ReactiveViewModel with ReactiveServiceMixin {
       Routes.donorView,
       arguments: DonorViewArguments(request: request, fromRequestView: false),
     );
+  }
+
+  handleAction(String route) async {
+    switch (route) {
+      case Routes.donorView:
+        goToDonors();
+        break;
+      case 'none':
+        _dialogService.showDialog(
+          title: 'Coming Soon',
+          description: 'This is feature is coming soon!',
+          barrierDismissible: true,
+        );
+        break;
+      default:
+        _navService.navigateTo(route);
+    }
   }
 
   @override
