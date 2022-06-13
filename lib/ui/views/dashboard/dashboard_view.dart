@@ -16,48 +16,49 @@ class DashboardView extends StatelessWidget {
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
         return Scaffold(
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              40.verticalSpace,
-              Container(
-                alignment: Alignment.centerRight,
-                padding: const EdgeInsets.symmetric(horizontal: 16).r,
-                child: Text('Hi ${model.firstName}!'),
-              ),
-              30.verticalSpace,
-              Text(
-                'GIVE THE GIFT OF LIFE',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                50.verticalSpace,
+                Container(
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.symmetric(horizontal: 16).r,
+                  child: Text('Hi ${model.firstName}!'),
                 ),
-              ),
-              Text(
-                'Donate Blood',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 30.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.swatch.shade700,
-                ),
-              ),
-              4.verticalSpace,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0).r,
-                child: Text(
-                  'Your donation can save a life today.',
+                30.verticalSpace,
+                Text(
+                  'GIVE THE GIFT OF LIFE',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 11.sp, color: Colors.black87),
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-              10.verticalSpace,
-              if (model.isBusy)
-                const Center(child: CircularProgressIndicator())
-              else
-                Expanded(
-                  child: GridView.builder(
+                Text(
+                  'Donate Blood',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 30.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.swatch.shade700,
+                  ),
+                ),
+                4.verticalSpace,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0).r,
+                  child: Text(
+                    'Your donation can save a life today.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 11.sp, color: Colors.black87),
+                  ),
+                ),
+                20.verticalSpace,
+                if (model.isBusy)
+                  const Center(child: CircularProgressIndicator())
+                else
+                  GridView.builder(
                     shrinkWrap: true,
                     primary: false,
                     padding: EdgeInsets.symmetric(
@@ -76,8 +77,8 @@ class DashboardView extends StatelessWidget {
                       );
                     },
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         );
       },
