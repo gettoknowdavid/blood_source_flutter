@@ -53,6 +53,7 @@ class DonorViewModel extends MultipleFutureViewModel {
   bool get fetchingCompatible => busy(_CompatibleFuture);
 
   void goToDonorDetails(BloodSourceUser donor) {
+    _donorService.setDonorForDetails(donor);
     _navService.navigateTo(
       Routes.donorDetailsView,
       arguments: DonorDetailsViewArguments(donor: donor),
