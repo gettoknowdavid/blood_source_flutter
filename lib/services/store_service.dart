@@ -21,7 +21,7 @@ class StoreService with ReactiveServiceMixin {
 
   Future<StoreResult> createBloodSourceUser(BloodSourceUser user) async {
     try {
-      await _usersColRef.doc(user.uid).set(user);
+      _usersColRef.doc(user.uid).set(user).timeout(const Duration(seconds: 12));
       _bsUser.value = user;
       return StoreResult(bSUser: user);
     } on FirebaseException catch (e) {
@@ -31,7 +31,10 @@ class StoreService with ReactiveServiceMixin {
 
   Future<StoreResult> updateBloodSourceUser(BloodSourceUser user) async {
     try {
-      await _usersColRef.doc(user.uid).update(user.toFirestore());
+      await _usersColRef
+          .doc(user.uid)
+          .update(user.toFirestore())
+          .timeout(const Duration(seconds: 12));
       _bsUser.value = user;
       return StoreResult(bSUser: user);
     } on FirebaseException catch (e) {
@@ -41,9 +44,10 @@ class StoreService with ReactiveServiceMixin {
 
   Future<StoreResult?> getUser(String uid) async {
     try {
-      final _userData = await _usersColRef.doc(uid).get();
+      final _userData =
+          await _usersColRef.doc(uid).get().timeout(const Duration(seconds: 8));
       _bsUser.value = _userData.data();
-      return StoreResult(bSUser: _userData.data());
+      return StoreResult(bSUser: _bsUser.value);
     } on FirebaseException catch (e) {
       return StoreResult.error(errorMessage: e.message);
     }
