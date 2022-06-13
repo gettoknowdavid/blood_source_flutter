@@ -33,7 +33,7 @@ class SplashViewModel extends ReactiveViewModel with Initialisable {
     initEdit = preferences.getInt(StorageKeys.initEdit);
     preferences.setInt(StorageKeys.initScreen, 1);
 
-    Future.delayed(const Duration(seconds: 5)).then((_) async {
+    Future.delayed(const Duration(seconds: 6)).then((_) async {
       switch (initScreen) {
         case 0:
           _navService.replaceWith(Routes.onBoardingView);
