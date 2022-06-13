@@ -89,7 +89,7 @@ class RequestService with ReactiveServiceMixin {
         _bsUser.bloodGroup!,
         _requestRef,
       );
-      return RequestResult(compatibleStream: r);
+      return RequestResult(compatibleRequests: _list);
     } on Exception catch (_) {
       return RequestResult.error(
         errorMessage: 'Connection timed out! Check your connection.',
@@ -101,6 +101,7 @@ class RequestService with ReactiveServiceMixin {
 class RequestResult {
   final Request? request;
   final List<Request>? requests;
+  final List<Request>? compatibleRequests;
   final Stream<QuerySnapshot<Request>>? compatibleStream;
   final Stream<QuerySnapshot<Request>>? requestsStream;
   final Stream<QuerySnapshot<Request>>? myRequestsStream;
@@ -110,6 +111,7 @@ class RequestResult {
   RequestResult({
     this.request,
     this.requests,
+    this.compatibleRequests,
     this.compatibleStream,
     this.myRequestsStream,
     this.requestsStream,
@@ -118,6 +120,7 @@ class RequestResult {
   RequestResult.error({this.errorMessage})
       : request = null,
         requests = null,
+        compatibleRequests = null,
         compatibleStream = null,
         myRequestsStream = null,
         requestsStream = null;
