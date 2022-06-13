@@ -56,12 +56,13 @@ class RequestService with ReactiveServiceMixin {
     return await _requestRef.doc(uid).delete();
   }
 
-  Stream<QuerySnapshot<Request?>> getRequests() {
-    final uid = _authService.currentUser!.uid;
-    return _requestRef
-        .where('user.uid', isNotEqualTo: uid)
-        .snapshots()
-        .timeout(const Duration(seconds: 10));
+  Future<RequestResult> getRequests() async {
+    final _uid = _authService.currentUser!.uid;
+    final _list = await _requestRef
+        .where('user.uid', isNotEqualTo: _uid)
+        .get()
+        .then((snap) => snap.docs.map((e) => e.data()).toList());
+    return RequestResult(requests: _list);
   }
 
   Stream<QuerySnapshot<Request>> getMyRequests() {
