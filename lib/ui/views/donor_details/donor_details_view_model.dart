@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
+import 'package:blood_source/services/donor_service.dart';
 import 'package:blood_source/services/store_service.dart';
 import 'package:blood_source/ui/shared/setup_snack_bar_ui.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,7 +13,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class DonorDetailsViewModel extends ReactiveViewModel
-    with ReactiveServiceMixin, OSMMixinObserver {
+    with ReactiveServiceMixin, OSMMixinObserver, Initialisable {
   DonorDetailsViewModel() {
     listenToReactiveValues([_geoPoint]);
 
@@ -34,9 +35,11 @@ class DonorDetailsViewModel extends ReactiveViewModel
 
   final NavigationService _navService = locator<NavigationService>();
   final StoreService _storeService = locator<StoreService>();
+  final DonorService _donorService = locator<DonorService>();
   final SnackbarService _snackbarService = locator<SnackbarService>();
 
   BloodSourceUser get recipient => _storeService.bsUser!;
+  BloodSourceUser get donor => _donorService.donorForDetails!;
 
   final ReactiveValue<GeoPointWithOrientation?> _geoPoint =
       ReactiveValue<GeoPointWithOrientation?>(null);
@@ -86,21 +89,7 @@ class DonorDetailsViewModel extends ReactiveViewModel
     );
   }
 
-  Future<void> init(BloodSourceUser donor) async {
-    setBusy(true);
-    isConnected = await InternetConnectionChecker().hasConnection;
-
-    _geoPoint.value = GeoPointWithOrientation(
-      latitude: donor.location!.latitude,
-      longitude: donor.location!.longitude,
-    );
-    controller = MapController(initMapWithUserPosition: true);
-    controller.addObserver(this);
-    final uid = FirebaseAuth.instance.currentUser!.uid;
-    await _storeService.getUser(uid);
-    setBusy(false);
-    notifyListeners();
-  }
+  Future<void> init() async {}
 
   Future<void> mapInit(bool isReady) async {
     if (isReady && geoPoint != null) {
@@ -116,11 +105,36 @@ class DonorDetailsViewModel extends ReactiveViewModel
   }
 
   @override
-  List<ReactiveServiceMixin> get reactiveServices => [_storeService];
-
-  @override
   void dispose() {
     subscription.cancel();
     super.dispose();
   }
+
+  @override
+  void initialise() async {
+    setBusy(true);
+    isConnected = await InternetConnectionChecker().hasConnection;
+
+    _geoPoint.value = GeoPointWithOrientation(
+      latitude: donor.location!.latitude,
+      longitude: donor.location!.longitude,
+    );
+
+    controller = MapController(
+      initMapWithUserPosition: false,
+      initPosition: GeoPoint(
+        latitude: donor.location!.latitude,
+        longitude: donor.location!.longitude,
+      ),
+    );
+    controller.addObserver(this);
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    await _storeService.getUser(uid);
+    setBusy(false);
+    notifyListeners();
+  }
+
+  @override
+  List<ReactiveServiceMixin> get reactiveServices =>
+      [_storeService, _donorService];
 }
