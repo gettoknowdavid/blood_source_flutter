@@ -2,6 +2,7 @@ import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/models/request.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
+import 'package:blood_source/ui/shared/widgets/offline_widget.dart';
 import 'package:blood_source/ui/shared/widgets/request_details/map_panel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
@@ -21,12 +22,11 @@ class RequestDetailsView extends StatelessWidget {
       viewModelBuilder: () => RequestDetailsViewModel(),
       onModelReady: (model) async => await model.init(request),
       builder: (context, model, Widget? child) {
-        if (model.isBusy) {
+        if (model.isBusy || model.isConnected == null) {
           return const LoadingIndicator();
         }
 
         return Scaffold(
-          backgroundColor: Colors.transparent,
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             elevation: 0,
@@ -40,38 +40,36 @@ class RequestDetailsView extends StatelessWidget {
               ),
             ),
           ),
-          body: Stack(
-            clipBehavior: Clip.none,
-            fit: StackFit.loose,
-            children: [
-              SlidingUpPanel(
-                body: OSMFlutter(
-                  controller: model.controller,
-                  trackMyPosition: false,
-                  initZoom: 17,
-                  minZoomLevel: 8,
-                  maxZoomLevel: 18,
-                  stepZoom: 1.0,
-                  userLocationMarker: UserLocationMaker(
-                    personMarker: MarkerIcon(
-                      icon: Icon(
-                        Icons.location_history_rounded,
-                        color: Colors.red,
-                        size: 48.sp,
+          body: !model.isConnected!
+              ? OfflineWidget(onTap: model.checkConnectivity, addPadding: true)
+              : SlidingUpPanel(
+                  body: OSMFlutter(
+                    controller: model.controller,
+                    trackMyPosition: false,
+                    initZoom: 17,
+                    minZoomLevel: 8,
+                    maxZoomLevel: 18,
+                    stepZoom: 1.0,
+                    userLocationMarker: UserLocationMaker(
+                      personMarker: MarkerIcon(
+                        icon: Icon(
+                          Icons.location_history_rounded,
+                          color: Colors.red,
+                          size: 48.sp,
+                        ),
+                      ),
+                      directionArrowMarker: MarkerIcon(
+                        icon: Icon(Icons.double_arrow, size: 48.sp),
                       ),
                     ),
-                    directionArrowMarker: MarkerIcon(
-                      icon: Icon(Icons.double_arrow, size: 48.sp),
-                    ),
                   ),
+                  minHeight: 0.17.sh,
+                  maxHeight: 0.54.sh,
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(30.r)),
+                  panelBuilder: (c) =>
+                      MapPanel(controller: c, request: request),
                 ),
-                minHeight: 0.17.sh,
-                maxHeight: 0.54.sh,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
-                panelBuilder: (c) => MapPanel(controller: c, request: request),
-              ),
-            ],
-          ),
         );
       },
     );
