@@ -1,11 +1,11 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:blood_source/models/blood_source_user.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class Avatar extends StatelessWidget {
-  const Avatar({Key? key, required this.user}) : super(key: key);
-  final BloodSourceUser? user;
+  const Avatar({Key? key, this.avatar}) : super(key: key);
+  final String? avatar;
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +15,9 @@ class Avatar extends StatelessWidget {
       child: CircleAvatar(
         radius: 0.17 * 1.sw,
         foregroundColor: AppColors.primary,
-        child: user == null
-            ? const Center(child: CircularProgressIndicator())
-            : const Icon(Icons.add_a_photo),
-        foregroundImage: user != null ? NetworkImage(user!.avatar!) : null,
+        child:
+            avatar == null ? const Icon(PhosphorIcons.user) : const SizedBox(),
+        foregroundImage: avatar != null ? NetworkImage(avatar!) : null,
       ),
     );
   }
