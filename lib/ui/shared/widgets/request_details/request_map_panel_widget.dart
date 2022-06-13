@@ -60,29 +60,30 @@ class RequestMapPanel extends ViewModelWidget<RequestDetailsViewModel> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  4.verticalSpace,
+                  2.verticalSpace,
                   Text(
                     'City: ${viewModel.recipient!.city!}',
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontStyle: FontStyle.italic,
                       color: Colors.black54,
+                      height: 1.4.sp,
                     ),
                   ),
-                  4.verticalSpace,
                   Text(
                     'Age: ${viewModel.recipient!.age!}',
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontStyle: FontStyle.italic,
                       color: Colors.black54,
+                      height: 1.4.sp,
                     ),
                   ),
                 ],
               ),
             ],
           ),
-          20.verticalSpace,
+          30.verticalSpace,
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
