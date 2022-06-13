@@ -36,11 +36,10 @@ class _Simple extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 36.h,
-      padding: EdgeInsets.symmetric(vertical: 10.r, horizontal: 20.r),
+      padding: EdgeInsets.symmetric(vertical: 6.r, horizontal: 20.r),
       decoration: BoxDecoration(
         color: AppColors.primary,
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(30.r),
       ),
       child: Text(
         bloodGroup.value.desc,
@@ -94,7 +93,6 @@ class _Complex extends StatelessWidget {
                     left: 48.w,
                     top: 4.h,
                     child: Container(
-                      alignment: Alignment.center,
                       height: 32.h,
                       width: 32.h,
                       decoration: BoxDecoration(
@@ -102,26 +100,30 @@ class _Complex extends StatelessWidget {
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white),
                       ),
-                      child: Text(
-                        bloodGroup.value.name,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500,
+                      child: Center(
+                        child: Text(
+                          bloodGroup.value.name,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ],
               ),
-              10.verticalSpace,
+              5.verticalSpace,
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.r),
                 child: Text(
                   bloodGroup.value.desc,
                   textAlign: TextAlign.center,
-                  style:
-                      TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ],
