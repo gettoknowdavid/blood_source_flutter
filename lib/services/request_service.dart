@@ -72,7 +72,7 @@ class RequestService with ReactiveServiceMixin {
         .get()
         .then((snap) => snap.docs.map((e) => e.data()).toList())
         .timeout(const Duration(seconds: 10));
-    return RequestResult(requests: _list);
+    return RequestResult(myRequests: _list);
   }
 
   Future<RequestResult> getCompatibleRequests() async {
@@ -94,9 +94,7 @@ class RequestResult {
   final Request? request;
   final List<Request>? requests;
   final List<Request>? compatibleRequests;
-  final Stream<QuerySnapshot<Request>>? compatibleStream;
-  final Stream<QuerySnapshot<Request>>? requestsStream;
-  final Stream<QuerySnapshot<Request>>? myRequestsStream;
+  final List<Request>? myRequests;
 
   final String? errorMessage;
 
@@ -104,18 +102,14 @@ class RequestResult {
     this.request,
     this.requests,
     this.compatibleRequests,
-    this.compatibleStream,
-    this.myRequestsStream,
-    this.requestsStream,
+    this.myRequests,
   }) : errorMessage = null;
 
   RequestResult.error({this.errorMessage})
       : request = null,
         requests = null,
         compatibleRequests = null,
-        compatibleStream = null,
-        myRequestsStream = null,
-        requestsStream = null;
+        myRequests = null;
 
   bool get hasError => errorMessage != null && errorMessage!.isNotEmpty;
 
