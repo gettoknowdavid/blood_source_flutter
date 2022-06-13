@@ -45,7 +45,9 @@ class RequestMapPanel extends ViewModelWidget<RequestDetailsViewModel> {
                 child: CircleAvatar(
                   radius: 0.09.sw,
                   foregroundColor: AppColors.primary,
-                  foregroundImage: NetworkImage(request.user.avatar),
+                  foregroundImage: request.user.avatar != null
+                      ? NetworkImage(request.user.avatar!)
+                      : null,
                 ),
               ),
               20.horizontalSpace,
