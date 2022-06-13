@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:html';
 
 import 'package:blood_source/models/user_location.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
