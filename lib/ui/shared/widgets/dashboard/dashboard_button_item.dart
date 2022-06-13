@@ -1,11 +1,8 @@
-import 'package:blood_source/app/app.locator.dart';
-import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/models/dashboard_button_model.dart';
 import 'package:blood_source/ui/views/dashboard/dashboard_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
 
 class DashboardButtonItem extends ViewModelWidget<DashboardViewModel> {
   const DashboardButtonItem({Key? key, required this.model}) : super(key: key);
@@ -14,12 +11,8 @@ class DashboardButtonItem extends ViewModelWidget<DashboardViewModel> {
 
   @override
   Widget build(BuildContext context, DashboardViewModel viewModel) {
-    final NavigationService _navService = locator<NavigationService>();
-
     return GestureDetector(
-      onTap: model.route == Routes.donorView
-          ? () => viewModel.goToDonors()
-          : () => _navService.navigateTo(model.route),
+      onTap: () => viewModel.handleAction(model.route),
       child: Container(
         alignment: Alignment.center,
         height: 0.5 * 1.sh,
@@ -52,7 +45,7 @@ class DashboardButtonItem extends ViewModelWidget<DashboardViewModel> {
               child: Text(
                 model.title,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16.sp),
+                style: TextStyle(fontSize: 14.sp),
               ),
             ),
           ],
