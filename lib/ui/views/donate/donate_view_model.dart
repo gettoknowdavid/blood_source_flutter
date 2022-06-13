@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/models/contact_button_model.dart';
+import 'package:blood_source/ui/shared/setup_snack_bar_ui.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:stacked/stacked.dart';
 import 'package:blood_source/models/blood_source_user.dart';
@@ -12,12 +15,30 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class DonateViewModel extends BaseViewModel {
+  DonateViewModel() {
+   subscription = InternetConnectionChecker().onStatusChange.listen((status) {
+      switch (status) {
+        case InternetConnectionStatus.connected:
+          isConnected = true;
+          notifyListeners();
+          break;
+        case InternetConnectionStatus.disconnected:
+          isConnected = false;
+          notifyListeners();
+          break;
+      }
+    });
+  }
+
+  late StreamSubscription<InternetConnectionStatus> subscription;
+
   final DialogService _dialogService = locator<DialogService>();
   final NavigationService _navService = locator<NavigationService>();
+  final SnackbarService _snackbarService = locator<SnackbarService>();
+
+  bool? isConnected;
 
   List<ContactButtonModel> buttons = contactButtonList;
-
-  Future<void> init() async {}
 
   void gotToDonorProfile(BloodSourceUser donor) {
     _navService.navigateTo(
@@ -80,5 +101,40 @@ class DonateViewModel extends BaseViewModel {
       default:
         null;
     }
+  }
+
+  Future<void> checkConnectivity() async {
+    bool isConn = await InternetConnectionChecker().hasConnection;
+    switch (isConn) {
+      case true:
+        _snackbarService.showCustomSnackBar(
+          message: 'Yay! You\'re connected!',
+          variant: SnackbarType.positive,
+          duration: const Duration(seconds: 3),
+        );
+        notifyListeners();
+        break;
+      case false:
+        _snackbarService.showCustomSnackBar(
+          message: 'We are convinced you\'re disconnected. Try again.',
+          variant: SnackbarType.negative,
+          duration: const Duration(seconds: 3),
+        );
+        notifyListeners();
+        break;
+      default:
+        null;
+    }
+  }
+
+  Future<void> init() async {
+    isConnected = await InternetConnectionChecker().hasConnection;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
   }
 }
