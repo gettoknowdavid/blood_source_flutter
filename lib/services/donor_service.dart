@@ -5,10 +5,25 @@ import 'package:blood_source/services/store_service.dart';
 import 'package:blood_source/utils/compatible_donors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:blood_source/models/blood_source_user.dart';
+import 'package:stacked/stacked.dart';
 
-class DonorService {
+class DonorService with ReactiveServiceMixin {
+  DonorService() {
+    listenToReactiveValues([_donorForDetails]);
+  }
+
   final StoreService _storeService = locator<StoreService>();
+
+  final ReactiveValue<BloodSourceUser?> _donorForDetails =
+      ReactiveValue<BloodSourceUser?>(null);
+  BloodSourceUser? get donorForDetails => _donorForDetails.value;
+
   BloodSourceUser get _bsUser => _storeService.bsUser!;
+
+  void setDonorForDetails(BloodSourceUser d) {
+    _donorForDetails.value = d;
+    notifyListeners();
+  }
 
   final usersRef = FirebaseFirestore.instance
       .collection('users')
