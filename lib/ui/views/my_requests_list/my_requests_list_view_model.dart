@@ -4,12 +4,11 @@ import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/models/request.dart';
 import 'package:blood_source/services/request_service.dart';
 import 'package:blood_source/ui/shared/setup_snack_bar_ui.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class MyRequestsListViewModel extends StreamViewModel<QuerySnapshot<Request>> {
+class MyRequestsListViewModel extends FutureViewModel<RequestResult> {
   MyRequestsListViewModel() {
     subscription = InternetConnectionChecker().onStatusChange.listen((status) {
       switch (status) {
@@ -32,9 +31,14 @@ class MyRequestsListViewModel extends StreamViewModel<QuerySnapshot<Request>> {
 
   bool? isConnected;
 
-  Future<void> deleteRequest(String requestUid) async {
-    await _requestService.deleteRequest(requestUid);
-    notifyListeners();
+  Future<void> delete(Request request) async {
+    if (data != null) {
+      await _requestService.deleteRequest(request.uid);
+
+      final index = data!.myRequests!.indexOf(request);
+      data!.myRequests!.removeAt(index);
+      notifyListeners();
+    }
   }
 
   Future<void> checkConnectivity() async {
@@ -68,11 +72,11 @@ class MyRequestsListViewModel extends StreamViewModel<QuerySnapshot<Request>> {
   List<ReactiveServiceMixin> get reactiveServices => [_requestService];
 
   @override
-  Stream<QuerySnapshot<Request>> get stream => _requestService.getMyRequests();
-
-  @override
   void dispose() {
     subscription.cancel();
     super.dispose();
   }
+
+  @override
+  Future<RequestResult> futureToRun() => _requestService.getMyRequests();
 }
