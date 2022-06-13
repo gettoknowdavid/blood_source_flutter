@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/services/store_service.dart';
+import 'package:blood_source/ui/shared/setup_snack_bar_ui.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:blood_source/models/blood_source_user.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -11,10 +15,26 @@ class DonorDetailsViewModel extends ReactiveViewModel
     with ReactiveServiceMixin, OSMMixinObserver {
   DonorDetailsViewModel() {
     listenToReactiveValues([_geoPoint]);
+
+    subscription = InternetConnectionChecker().onStatusChange.listen((status) {
+      switch (status) {
+        case InternetConnectionStatus.connected:
+          isConnected = true;
+          notifyListeners();
+          break;
+        case InternetConnectionStatus.disconnected:
+          isConnected = false;
+          notifyListeners();
+          break;
+      }
+    });
   }
+
+  late StreamSubscription<InternetConnectionStatus> subscription;
 
   final NavigationService _navService = locator<NavigationService>();
   final StoreService _storeService = locator<StoreService>();
+  final SnackbarService _snackbarService = locator<SnackbarService>();
 
   BloodSourceUser get recipient => _storeService.bsUser!;
 
@@ -25,6 +45,32 @@ class DonorDetailsViewModel extends ReactiveViewModel
   late MapController controller;
 
   bool isMapReady = false;
+
+  bool? isConnected;
+
+  Future<void> checkConnectivity() async {
+    bool isConn = await InternetConnectionChecker().hasConnection;
+    switch (isConn) {
+      case true:
+        _snackbarService.showCustomSnackBar(
+          message: 'Yay! You\'re connected!',
+          variant: SnackbarType.positive,
+          duration: const Duration(seconds: 3),
+        );
+        notifyListeners();
+        break;
+      case false:
+        _snackbarService.showCustomSnackBar(
+          message: 'We are convinced you\'re disconnected. Try again.',
+          variant: SnackbarType.negative,
+          duration: const Duration(seconds: 3),
+        );
+        notifyListeners();
+        break;
+      default:
+        null;
+    }
+  }
 
   void goToDonate(BloodSourceUser donor) {
     _navService.navigateTo(
@@ -42,6 +88,7 @@ class DonorDetailsViewModel extends ReactiveViewModel
 
   Future<void> init(BloodSourceUser donor) async {
     setBusy(true);
+    isConnected = await InternetConnectionChecker().hasConnection;
 
     _geoPoint.value = GeoPointWithOrientation(
       latitude: donor.location!.latitude,
@@ -70,4 +117,10 @@ class DonorDetailsViewModel extends ReactiveViewModel
 
   @override
   List<ReactiveServiceMixin> get reactiveServices => [_storeService];
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
+  }
 }
