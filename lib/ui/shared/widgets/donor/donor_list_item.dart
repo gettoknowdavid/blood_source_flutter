@@ -43,29 +43,30 @@ class DonorListItem extends ViewModelWidget<DonorViewModel> {
                 donor.avatar != null ? NetworkImage(donor.avatar!) : null,
           ),
         ),
-        title: Text(
-          donor.name!,
-          style: TextStyle(fontSize: 15.sp),
-        ),
-        isThreeLine: true,
-        subtitle: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Icon(
-              PhosphorIcons.mapPinBold,
-              color: AppColors.secondary,
-              size: 15.sp,
-            ),
-            2.horizontalSpace,
-            Text(
-              donor.city!,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: Colors.black87,
+        title: donor.name == null
+            ? const Text('User')
+            : Text(donor.name!, style: TextStyle(fontSize: 15.sp)),
+        isThreeLine: donor.city != null ? true : false,
+        subtitle: donor.city == null
+            ? const SizedBox()
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(
+                    PhosphorIcons.mapPinBold,
+                    color: AppColors.secondary,
+                    size: 15.sp,
+                  ),
+                  2.horizontalSpace,
+                  Text(
+                    donor.city!,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
         trailing: Container(
           height: 40.h,
           width: 40.h,
