@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:async';
 
 import 'package:blood_source/app/app.locator.dart';
@@ -9,7 +11,10 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class RequestListViewModel extends FutureViewModel<RequestResult> {
+const String _RequestsFuture = '_requests_future_';
+const String _CompatibleFuture = '_compatible_future_';
+
+class RequestListViewModel extends MultipleFutureViewModel {
   RequestListViewModel() {
     subscription = InternetConnectionChecker().onStatusChange.listen((status) {
       switch (status) {
@@ -34,8 +39,11 @@ class RequestListViewModel extends FutureViewModel<RequestResult> {
   bool? isConnected;
   bool compatible = true;
 
-  final ReactiveValue<bool?> _hasConn = ReactiveValue<bool?>(null);
-  bool get hasConn => _hasConn.value!;
+  RequestResult get fetchedRequests => dataMap?[_RequestsFuture];
+  RequestResult get fetchedCompatibleRequests => dataMap?[_CompatibleFuture];
+
+  bool get fetchingRequests => busy(_RequestsFuture);
+  bool get fetchingCompatible => busy(_CompatibleFuture);
 
   goToDetails(Request req) {
     navService.navigateTo(
@@ -74,20 +82,17 @@ class RequestListViewModel extends FutureViewModel<RequestResult> {
   void onCompatibilityChanged() {
     compatible = !compatible;
     notifyListeners();
-    notifySourceChanged();
   }
 
-  @override
-  List<ReactiveServiceMixin> get reactiveServices => [_requestService];
-
-  // @override
-  // Stream<QuerySnapshot<Request?>> get stream => compatible
-  //     ? _requestService.getCompatibleRequests().compatibleStream!
-  //     : _requestService.getRequests();
-
   Future<RequestResult> getRequestsFromService() async {
-    // if (compatible)
-    return await _requestService.getRequests();
+    switch (compatible) {
+      case true:
+        return await _requestService.getCompatibleRequests();
+      case false:
+        return await _requestService.getRequests();
+      default:
+        return await _requestService.getCompatibleRequests();
+    }
   }
 
   @override
@@ -97,5 +102,13 @@ class RequestListViewModel extends FutureViewModel<RequestResult> {
   }
 
   @override
-  Future<RequestResult> futureToRun() => getRequestsFromService();
+  Future<RequestResult> futureToRun() => compatible
+      ? _requestService.getCompatibleRequests()
+      : _requestService.getRequests();
+
+  @override
+  Map<String, Future Function()> get futuresMap => {
+        _RequestsFuture: _requestService.getRequests,
+        _CompatibleFuture: _requestService.getCompatibleRequests,
+      };
 }
