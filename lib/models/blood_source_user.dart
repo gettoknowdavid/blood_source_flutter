@@ -11,6 +11,8 @@ part 'blood_source_user.g.dart';
 class BloodSourceUser {
   final String? uid;
 
+  final int? initEdit;
+
   final String? name;
 
   final Gender? gender;
@@ -68,6 +70,7 @@ class BloodSourceUser {
 
   const BloodSourceUser({
     required this.uid,
+    this.initEdit,
     this.name,
     this.gender = Gender.none,
     this.age,
@@ -91,6 +94,7 @@ class BloodSourceUser {
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   )   : uid = snapshot.data()?['uid'] as String?,
+        initEdit = snapshot.data()?['initEdit'] as int?,
         name = snapshot.data()?['name'] as String?,
         gender = $enumDecode($GenderTypeEnum, snapshot.data()?["gender"]),
         age = snapshot.data()?["age"] as num?,
@@ -119,6 +123,7 @@ class BloodSourceUser {
   Map<String, dynamic> toFirestore() {
     return {
       "uid": uid,
+      if (initEdit != null) "initEdit": initEdit,
       if (name != null) "name": name,
       if (gender != null) "gender": $GenderTypeEnum[gender],
       if (age != null) "age": age,
