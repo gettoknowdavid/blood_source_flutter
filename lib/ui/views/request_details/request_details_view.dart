@@ -3,7 +3,7 @@ import 'package:blood_source/models/request.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
 import 'package:blood_source/ui/shared/widgets/offline_widget.dart';
-import 'package:blood_source/ui/shared/widgets/request_details/map_panel_widget.dart';
+import 'package:blood_source/ui/shared/widgets/request_details/request_map_panel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
