@@ -84,27 +84,11 @@ class RequestListViewModel extends MultipleFutureViewModel {
     notifyListeners();
   }
 
-  Future<RequestResult> getRequestsFromService() async {
-    switch (compatible) {
-      case true:
-        return await _requestService.getCompatibleRequests();
-      case false:
-        return await _requestService.getRequests();
-      default:
-        return await _requestService.getCompatibleRequests();
-    }
-  }
-
   @override
   void dispose() {
     subscription.cancel();
     super.dispose();
   }
-
-  @override
-  Future<RequestResult> futureToRun() => compatible
-      ? _requestService.getCompatibleRequests()
-      : _requestService.getRequests();
 
   @override
   Map<String, Future Function()> get futuresMap => {
