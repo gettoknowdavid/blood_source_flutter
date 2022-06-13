@@ -16,17 +16,61 @@ class DonorService {
           fromFirestore: BloodSourceUser.fromFirestore,
           toFirestore: (_b, _) => _b.toFirestore());
 
-  Stream<QuerySnapshot<BloodSourceUser?>> getDonors() {
-    return usersRef
-        .where('uid', isNotEqualTo: _bsUser.uid)
-        .where('userType', isEqualTo: UserType.donor.name)
-        .snapshots()
-        .timeout(const Duration(seconds: 8));
+  Future<DonorResult> getDonors() async {
+    try {
+      final _donors = await usersRef
+          .where('uid', isNotEqualTo: _bsUser.uid)
+          .where('userType', isEqualTo: UserType.donor.name)
+          .get()
+          .then((snap) => snap.docs.map((e) => e.data()).toList())
+          .timeout(const Duration(seconds: 8));
+      return DonorResult(donors: _donors);
+    } on FirebaseException {
+      return DonorResult.error(
+        errorMessage: 'There seems to be a problem, try again.',
+      );
+    } on Exception catch (e) {
+      return DonorResult.error(
+        errorMessage: 'Connection timed out. Try again.',
+      );
+    }
   }
 
-  Stream<QuerySnapshot<BloodSourceUser?>> getCompatibleDonors(Request r) {
-    final stream =
-        compatibleDonors(r.bloodGroup).timeout(const Duration(seconds: 8));
-    return stream;
+  Future<DonorResult> getCompatibleDonors(Request r) async {
+    try {
+      final _donors = await compatibleDonors(r.bloodGroup);
+      return DonorResult(compatibleDonors: _donors);
+    } on FirebaseException {
+      return DonorResult.error(
+        errorMessage: 'There seems to be a problem, try again.',
+      );
+    } on Exception catch (e) {
+      return DonorResult.error(
+        errorMessage: 'Connection timed out. Try again.',
+      );
+    }
   }
+}
+
+class DonorResult {
+  final BloodSourceUser? donor;
+  final List<BloodSourceUser>? donors;
+  final List<BloodSourceUser>? compatibleDonors;
+
+  final String? errorMessage;
+
+  DonorResult({
+    this.donor,
+    this.donors,
+    this.compatibleDonors,
+  }) : errorMessage = null;
+
+  DonorResult.error({this.errorMessage})
+      : donor = null,
+        donors = null,
+        compatibleDonors = null;
+
+  bool get hasError => errorMessage != null && errorMessage!.isNotEmpty;
+
+  bool get isDonorsEmpty => donor == null && donors!.isEmpty;
 }
