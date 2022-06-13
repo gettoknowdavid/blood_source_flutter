@@ -38,8 +38,9 @@ class _CreateEventBottomSheet extends StatelessWidget {
       ),
       height: 1.sh,
       width: 1.sw,
-      padding: const EdgeInsets.all(20).r,
+      padding: const EdgeInsets.fromLTRB(0, 20, 0, 0).r,
       child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 30).r,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
