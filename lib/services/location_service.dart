@@ -8,6 +8,10 @@ import 'package:logger/logger.dart';
 import 'package:geocoding/geocoding.dart' as geo;
 
 class LocationService with ReactiveServiceMixin {
+  LocationService() {
+    listenToReactiveValues([_loc, _city]);
+  }
+
   Logger logger = Logger();
   late final Location _location = Location();
 
@@ -16,10 +20,6 @@ class LocationService with ReactiveServiceMixin {
 
   final ReactiveValue<String?> _city = ReactiveValue<String?>(null);
   String? get city => _city.value;
-
-  LocationService() {
-    listenToReactiveValues([_loc, _city]);
-  }
 
   Future<UserLocation?> getLocation() async {
     return _location
