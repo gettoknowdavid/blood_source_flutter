@@ -53,19 +53,24 @@ class RequestListView extends StatelessWidget {
               : Container(
                   child: requests!.isEmpty
                       ? const EmptyWidget(message: 'There are no requests.')
-                      : SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              20.verticalSpace,
-                              ListView.builder(
-                                primary: false,
-                                shrinkWrap: true,
-                                itemCount: requests.length,
-                                itemBuilder: (context, i) {
-                                  return RequestListItem(request: requests[i]);
-                                },
-                              ),
-                            ],
+                      : RefreshIndicator(
+                          onRefresh: model.initialise,
+                          child: SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: Column(
+                              children: [
+                                20.verticalSpace,
+                                ListView.builder(
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  itemCount: requests.length,
+                                  itemBuilder: (context, i) {
+                                    return RequestListItem(
+                                        request: requests[i]);
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                 ),
