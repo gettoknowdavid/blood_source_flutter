@@ -8,7 +8,6 @@ import 'package:blood_source/services/store_service.dart';
 import 'package:blood_source/ui/shared/setup_snack_bar_ui.dart';
 import 'package:blood_source/utils/bottom_sheet_type.dart';
 import 'package:blood_source/utils/date_formatter.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -20,7 +19,7 @@ import 'package:uuid/uuid.dart';
 class EventsViewModel extends FutureViewModel<EventResult>
     with ReactiveServiceMixin {
   EventsViewModel() {
-    listenToReactiveValues([_event, _eventCount, _verified]);
+    listenToReactiveValues([_event, _verified]);
 
     subscription = InternetConnectionChecker().onStatusChange.listen((status) {
       switch (status) {
@@ -45,9 +44,6 @@ class EventsViewModel extends FutureViewModel<EventResult>
 
   final ReactiveValue<Event?> _event = ReactiveValue<Event?>(null);
   Event? get event => _event.value;
-
-  final ReactiveValue<int> _eventCount = ReactiveValue<int>(0);
-  int get eventsCount => _eventService.eventsCount;
 
   final ReactiveValue<bool> _verified = ReactiveValue<bool>(false);
   bool get verified => _verified.value;
@@ -148,7 +144,6 @@ class EventsViewModel extends FutureViewModel<EventResult>
         ),
       ));
       notifyListeners();
-      _eventCount.value = _eventService.getEventsCount();
       clearFields();
     } else {
       _snackbarService.showCustomSnackBar(
@@ -179,7 +174,14 @@ class EventsViewModel extends FutureViewModel<EventResult>
   //   // _event.value = null;
   // }
 
-  Future deleteEvent(Event ev) async => await _eventService.deleteEvent(ev.uid);
+  Future deleteEvent(Event ev) async {
+    if (data != null) {
+      await _eventService.deleteEvent(ev.uid);
+      final index = data!.events!.indexOf(ev);
+      data!.events!.removeAt(index);
+    }
+    notifyListeners();
+  }
 
   Future<void> checkConnectivity() async {
     bool isConn = await InternetConnectionChecker().hasConnection;
@@ -207,8 +209,6 @@ class EventsViewModel extends FutureViewModel<EventResult>
 
   Future<void> init() async {
     isConnected = await InternetConnectionChecker().hasConnection;
-
-    _eventCount.value = _eventService.getEventsCount();
 
     notifyListeners();
   }
