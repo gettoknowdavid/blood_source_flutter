@@ -20,9 +20,11 @@ class EventsView extends StatelessWidget {
       viewModelBuilder: () => EventsViewModel(),
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
-        if (model.isBusy || !model.dataReady || model.isConnected == null) {
+        if (model.isBusy || model.isConnected == null) {
           return const LoadingIndicator();
         }
+
+        List<Event> events = model.data!.events!;
 
         return Scaffold(
           appBar: AppBar(title: const Text('Events')),
@@ -41,34 +43,18 @@ class EventsView extends StatelessWidget {
           body: !model.isConnected!
               ? OfflineWidget(onTap: model.checkConnectivity, addPadding: true)
               : Container(
-                  child: model.data!.docs.isEmpty
+                  child: events.isEmpty
                       ? const EmptyWidget(
-                          message:
-                              'It\'s lonely here. It seems there are no events.',
+                          message: 'It\'s lonely here. There are no events.',
                         )
-                      : SingleChildScrollView(
-                          child: Center(
-                            child: Column(
-                              children: [
-                                20.verticalSpace,
-                                Text(
-                                  'You have ${model.eventsCount} new ${model.eventsCount > 1 ? "events" : "event"}.',
-                                ),
-                                20.verticalSpace,
-                                ListView.builder(
-                                  itemCount: model.data!.docs.length,
-                                  primary: false,
-                                  shrinkWrap: true,
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 18.r),
-                                  itemBuilder: (context, i) {
-                                    final event =
-                                        model.data!.docs[i].data()! as Event;
-                                    return EventItem(event: event);
-                                  },
-                                ),
-                              ],
-                            ),
+                      : RefreshIndicator(
+                          onRefresh: model.initialise,
+                          child: ListView.builder(
+                            itemCount: events.length,
+                            padding: const EdgeInsets.all(18).r,
+                            itemBuilder: (context, i) {
+                              return EventItem(event: events[i]);
+                            },
                           ),
                         ),
                 ),
@@ -85,81 +71,78 @@ class EventItem extends ViewModelWidget<EventsViewModel> {
 
   @override
   Widget build(BuildContext context, EventsViewModel viewModel) {
-    return GestureDetector(
-      // onTap: () => viewModel.editEvent(event),
-      child: Stack(
-        children: [
-          Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(18).r,
-            margin: const EdgeInsets.only(bottom: 18).r,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16.r),
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 16.r,
-                  color: AppColors.swatch.shade100.withOpacity(0.06),
-                  offset: Offset(0.w, 20.h),
-                )
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  event.title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16.sp,
-                  ),
-                ),
-                4.verticalSpace,
-                Text(
-                  viewModel.getCreator(event),
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontStyle: FontStyle.italic,
-                    height: 1.3.sp,
-                  ),
-                ),
-                16.verticalSpace,
-                EventDetailWidget(
-                  icon: PhosphorIcons.note,
-                  subtitle: event.description,
-                ),
-                16.verticalSpace,
-                EventDetailWidget(
-                  icon: PhosphorIcons.mapPin,
-                  subtitle: event.location,
-                ),
-                16.verticalSpace,
-                EventDetailWidget(
-                  icon: PhosphorIcons.calendar,
-                  subtitle: dateFormatter(
-                    event.date.toIso8601String(),
-                  ),
-                ),
-                16.verticalSpace,
-                EventDetailWidget(
-                  icon: PhosphorIcons.clock,
-                  subtitle: event.time,
-                ),
-              ],
-            ),
+    return Stack(
+      children: [
+        Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.all(18).r,
+          margin: const EdgeInsets.only(bottom: 18).r,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16.r),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 16.r,
+                color: AppColors.swatch.shade100.withOpacity(0.06),
+                offset: Offset(0.w, 20.h),
+              )
+            ],
           ),
-          Positioned(
-            right: 0.r,
-            top: 0.r,
-            child: !viewModel.isEventBelongToUser(event)
-                ? const SizedBox()
-                : IconButton(
-                    onPressed: () => viewModel.deleteEvent(event),
-                    icon: const Icon(PhosphorIcons.trash, color: Colors.red),
-                  ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                event.title,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16.sp,
+                ),
+              ),
+              4.verticalSpace,
+              Text(
+                viewModel.getCreator(event),
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontStyle: FontStyle.italic,
+                  height: 1.3.sp,
+                ),
+              ),
+              16.verticalSpace,
+              EventDetailWidget(
+                icon: PhosphorIcons.note,
+                subtitle: event.description,
+              ),
+              16.verticalSpace,
+              EventDetailWidget(
+                icon: PhosphorIcons.mapPin,
+                subtitle: event.location,
+              ),
+              16.verticalSpace,
+              EventDetailWidget(
+                icon: PhosphorIcons.calendar,
+                subtitle: dateFormatter(
+                  event.date.toIso8601String(),
+                ),
+              ),
+              16.verticalSpace,
+              EventDetailWidget(
+                icon: PhosphorIcons.clock,
+                subtitle: event.time,
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Positioned(
+          right: 0.r,
+          top: 0.r,
+          child: !viewModel.isEventBelongToUser(event)
+              ? const SizedBox()
+              : IconButton(
+                  onPressed: () => viewModel.deleteEvent(event),
+                  icon: const Icon(PhosphorIcons.trash, color: Colors.red),
+                ),
+        ),
+      ],
     );
   }
 }
