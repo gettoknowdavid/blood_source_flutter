@@ -4,6 +4,7 @@ import 'package:blood_source/ui/views/donor/donor_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:blood_source/models/blood_group.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:stacked/stacked.dart';
 
 class DonorListItem extends ViewModelWidget<DonorViewModel> {
@@ -15,6 +16,7 @@ class DonorListItem extends ViewModelWidget<DonorViewModel> {
   Widget build(BuildContext context, DonorViewModel viewModel) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10.r),
+      padding: EdgeInsets.symmetric(vertical: 12.r),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.r),
@@ -34,22 +36,27 @@ class DonorListItem extends ViewModelWidget<DonorViewModel> {
           child: CircleAvatar(
             radius: 25.w,
             backgroundColor: AppColors.swatch.shade400,
-            foregroundImage: NetworkImage(donor.avatar!),
+            child: donor.avatar == null
+                ? const Icon(PhosphorIcons.user, color: Colors.white)
+                : const SizedBox(),
+            foregroundImage:
+                donor.avatar != null ? NetworkImage(donor.avatar!) : null,
           ),
         ),
         title: Text(
           donor.name!,
-          style: TextStyle(fontSize: 17.sp),
+          style: TextStyle(fontSize: 15.sp),
         ),
         isThreeLine: true,
         subtitle: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Icon(
-              Icons.location_pin,
+              PhosphorIcons.mapPinBold,
               color: AppColors.secondary,
-              size: 18.sp,
+              size: 15.sp,
             ),
+            2.horizontalSpace,
             Text(
               donor.city!,
               style: TextStyle(
@@ -60,18 +67,18 @@ class DonorListItem extends ViewModelWidget<DonorViewModel> {
           ],
         ),
         trailing: Container(
-          height: 46.h,
-          width: 46.h,
+          height: 40.h,
+          width: 40.h,
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
-            color: AppColors.primary,
+            color: AppColors.swatch.shade600,
           ),
           child: Text(
             donor.bloodGroup!.value.name,
             style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500,
               color: Colors.white,
             ),
           ),
