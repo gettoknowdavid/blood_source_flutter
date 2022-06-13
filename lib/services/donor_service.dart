@@ -20,11 +20,13 @@ class DonorService {
     return usersRef
         .where('uid', isNotEqualTo: _bsUser.uid)
         .where('userType', isEqualTo: UserType.donor.name)
-        .snapshots();
+        .snapshots()
+        .timeout(const Duration(seconds: 8));
   }
 
   Stream<QuerySnapshot<BloodSourceUser?>> getCompatibleDonors(Request r) {
-    final stream = compatibleDonors(r.bloodGroup);
+    final stream =
+        compatibleDonors(r.bloodGroup).timeout(const Duration(seconds: 8));
     return stream;
   }
 }
