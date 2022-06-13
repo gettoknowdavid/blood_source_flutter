@@ -37,7 +37,9 @@ class RequestListItem extends ViewModelWidget<RequestListViewModel> {
         leading: CircleAvatar(
           radius: 25.w,
           backgroundColor: AppColors.swatch.shade400,
-          foregroundImage: NetworkImage(request.user.avatar),
+          foregroundImage: request.user.avatar != null
+              ? NetworkImage(request.user.avatar!)
+              : null,
         ),
         subtitle: Text(
           dateFormatter(request.timeAdded!.toIso8601String()),
