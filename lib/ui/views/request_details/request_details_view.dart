@@ -68,7 +68,7 @@ class RequestDetailsView extends StatelessWidget {
                   borderRadius:
                       BorderRadius.vertical(top: Radius.circular(30.r)),
                   panelBuilder: (c) =>
-                      MapPanel(controller: c, request: request),
+                      RequestMapPanel(controller: c, request: request),
                 ),
         );
       },
