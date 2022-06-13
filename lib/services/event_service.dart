@@ -33,11 +33,23 @@ class EventService with ReactiveServiceMixin {
     return await eventRef.doc(event.uid).update(event.toFirestore());
   }
 
-  Stream<QuerySnapshot<Event?>> getAllEvents() {
-    return eventRef
-        .orderBy('timeAdded', descending: true)
-        .snapshots()
-        .timeout(const Duration(seconds: 8));
+  Future<EventResult> getAllEvents() async {
+    try {
+      final _events = await eventRef
+          .orderBy('timeAdded', descending: true)
+          .get()
+          .then((snap) => snap.docs.map((e) => e.data()).toList())
+          .timeout(const Duration(seconds: 8));
+      return EventResult(events: _events);
+    } on FirebaseException catch (e) {
+      return EventResult.error(
+        errorMessage: 'There seems to be a problem, try again.',
+      );
+    } on Exception catch (e) {
+      return EventResult.error(
+        errorMessage: 'Connection timed out. Try again.',
+      );
+    }
   }
 
   int getEventsCount() {
