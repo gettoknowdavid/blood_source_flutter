@@ -41,7 +41,10 @@ class RequestService with ReactiveServiceMixin {
 
   Future<RequestResult> addRequest(Request req) async {
     try {
-      await _requestRef.doc().set(req);
+      await _requestRef
+          .doc(req.uid)
+          .set(req)
+          .timeout(const Duration(seconds: 10));
       _request.value = req;
       return RequestResult(request: request);
     } on FirebaseException catch (e) {
@@ -49,41 +52,62 @@ class RequestService with ReactiveServiceMixin {
     }
   }
 
+  Future<void> deleteRequest(String uid) async {
+    return await _requestRef.doc(uid).delete();
+  }
+
   Stream<QuerySnapshot<Request?>> getRequests() {
     final uid = _authService.currentUser!.uid;
-    return _requestRef.where('user.uid', isNotEqualTo: uid).snapshots();
+    return _requestRef
+        .where('user.uid', isNotEqualTo: uid)
+        .snapshots()
+        .timeout(const Duration(seconds: 10));
   }
 
-  Future<RequestResult> getMyRequests() async {
+  Stream<QuerySnapshot<Request>> getMyRequests() {
+    final uid = _authService.currentUser!.uid;
+    return _requestRef
+        .where('user.uid', isEqualTo: uid)
+        .snapshots()
+        .timeout(const Duration(seconds: 10));
+  }
+
+  RequestResult getCompatibleRequests() {
     try {
-      final uid = _authService.currentUser!.uid;
-      final list = await _requestRef
-          .where('user.uid', isEqualTo: uid)
-          .get()
-          .then((value) => value.docs.map((e) => e.data()).toList());
-
-      return RequestResult(requests: list);
-    } on FirebaseException catch (e) {
-      return RequestResult.error(errorMessage: e.message);
+      final r = compatibleRecipients(_bsUser.bloodGroup!, _requestRef)
+          .timeout(const Duration(seconds: 12));
+      return RequestResult(compatibleStream: r);
+    } on Exception catch (_) {
+      return RequestResult.error(
+        errorMessage: 'Connection timed out! Check your connection.',
+      );
     }
-  }
-
-  Stream<QuerySnapshot<Request?>> getCompatibleRequests() {
-    return compatibleRecipients(_bsUser.bloodGroup!, _requestRef);
   }
 }
 
 class RequestResult {
   final Request? request;
   final List<Request>? requests;
+  final Stream<QuerySnapshot<Request>>? compatibleStream;
+  final Stream<QuerySnapshot<Request>>? requestsStream;
+  final Stream<QuerySnapshot<Request>>? myRequestsStream;
 
   final String? errorMessage;
 
-  RequestResult({this.request, this.requests}) : errorMessage = null;
+  RequestResult({
+    this.request,
+    this.requests,
+    this.compatibleStream,
+    this.myRequestsStream,
+    this.requestsStream,
+  }) : errorMessage = null;
 
   RequestResult.error({this.errorMessage})
       : request = null,
-        requests = null;
+        requests = null,
+        compatibleStream = null,
+        myRequestsStream = null,
+        requestsStream = null;
 
   bool get hasError => errorMessage != null && errorMessage!.isNotEmpty;
 
