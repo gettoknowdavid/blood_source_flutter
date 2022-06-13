@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
 
-class MapPanel extends ViewModelWidget<RequestDetailsViewModel> {
-  const MapPanel({
+class RequestMapPanel extends ViewModelWidget<RequestDetailsViewModel> {
+  const RequestMapPanel({
     Key? key,
     required this.controller,
     required this.request,
