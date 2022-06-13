@@ -5,12 +5,11 @@ import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/models/request.dart';
 import 'package:blood_source/services/request_service.dart';
 import 'package:blood_source/ui/shared/setup_snack_bar_ui.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class RequestListViewModel extends StreamViewModel<QuerySnapshot<Request?>> {
+class RequestListViewModel extends FutureViewModel<RequestResult> {
   RequestListViewModel() {
     subscription = InternetConnectionChecker().onStatusChange.listen((status) {
       switch (status) {
@@ -81,14 +80,22 @@ class RequestListViewModel extends StreamViewModel<QuerySnapshot<Request?>> {
   @override
   List<ReactiveServiceMixin> get reactiveServices => [_requestService];
 
-  @override
-  Stream<QuerySnapshot<Request?>> get stream => compatible
-      ? _requestService.getCompatibleRequests().compatibleStream!
-      : _requestService.getRequests();
+  // @override
+  // Stream<QuerySnapshot<Request?>> get stream => compatible
+  //     ? _requestService.getCompatibleRequests().compatibleStream!
+  //     : _requestService.getRequests();
+
+  Future<RequestResult> getRequestsFromService() async {
+    // if (compatible)
+    return await _requestService.getRequests();
+  }
 
   @override
   void dispose() {
     subscription.cancel();
     super.dispose();
   }
+
+  @override
+  Future<RequestResult> futureToRun() => getRequestsFromService();
 }
