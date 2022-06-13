@@ -27,7 +27,10 @@ class DonorView extends StatelessWidget {
       viewModelBuilder: () => DonorViewModel(),
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
-        if (!model.dataReady || model.isBusy || model.isConnected == null) {
+        if (model.isBusy ||
+            model.isConnected == null ||
+            model.fetchingCompatible ||
+            model.fetchingDonors) {
           return const LoadingIndicator();
         }
 
@@ -45,6 +48,10 @@ class DonorView extends StatelessWidget {
           );
         }
 
+        final donors = model.compatible
+            ? model.fetchedCompatibleDonors.compatibleDonors
+            : model.fetchedDonors.donors;
+
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
@@ -61,7 +68,7 @@ class DonorView extends StatelessWidget {
               )
             ],
           ),
-          body: model.data!.docs.isEmpty
+          body: donors!.isEmpty
               ? const EmptyWidget(
                   message: 'It\'s lonely here. It seems there are no donors.',
                 )
@@ -75,16 +82,13 @@ class DonorView extends StatelessWidget {
                         type: BGWidgetType.complex,
                       ),
                       20.verticalSpace,
-                      // Text(model.getDonorCountString()),
-                      20.verticalSpace,
                       ListView.builder(
-                        itemCount: model.data!.docs.length,
+                        itemCount: donors.length,
                         primary: false,
                         shrinkWrap: true,
                         padding: EdgeInsets.symmetric(horizontal: 18.r),
                         itemBuilder: (context, i) {
-                          final donor = model.data!.docs[i].data()!;
-                          return DonorListItem(donor: donor);
+                          return DonorListItem(donor: donors[i]);
                         },
                       ),
                     ],
