@@ -73,10 +73,22 @@ class RequestService with ReactiveServiceMixin {
         .timeout(const Duration(seconds: 10));
   }
 
-  RequestResult getCompatibleRequests() {
+  // Future<RequestResult> getMyRequests() async {
+  //   final _uid = _authService.currentUser!.uid;
+  //   final _list = await _requestRef
+  //       .where('user.uid', isEqualTo: _uid)
+  //       .get()
+  //       .then((snap) => snap.docs.map((e) => e.data()).toList())
+  //       .timeout(const Duration(seconds: 10));
+  //   return RequestResult(requests: _list);
+  // }
+
+  Future<RequestResult> getCompatibleRequests() async {
     try {
-      final r = compatibleRecipients(_bsUser.bloodGroup!, _requestRef)
-          .timeout(const Duration(seconds: 12));
+      final _list = await compatibleRecipients(
+        _bsUser.bloodGroup!,
+        _requestRef,
+      );
       return RequestResult(compatibleStream: r);
     } on Exception catch (_) {
       return RequestResult.error(
