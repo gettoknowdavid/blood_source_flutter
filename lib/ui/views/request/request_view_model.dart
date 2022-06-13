@@ -54,11 +54,13 @@ class RequestViewModel extends ReactiveViewModel {
       BloodGroup.values.where((e) => e != BloodGroup.none).toList();
 
   Future<void> searchDonations() async {
+    await _storeService.getUser(FirebaseAuth.instance.currentUser!.uid);
+
     Request request = Request(
       user: RequestUser(
         uid: user.uid!,
         name: user.name!,
-        avatar: user.avatar!,
+        avatar: user.avatar ?? "",
         location: user.location!,
       ),
       uid: const Uuid().v4(),
