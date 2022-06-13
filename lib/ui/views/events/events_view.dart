@@ -35,7 +35,7 @@ class EventsView extends StatelessWidget {
               border: Border.all(color: AppColors.primary),
             ),
             child: IconButton(
-              onPressed: model.openBottomSheet,
+              onPressed: () => model.openBottomSheet(),
               color: Colors.white,
               icon: const Icon(PhosphorIcons.plusBold),
             ),
