@@ -17,8 +17,8 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:uuid/uuid.dart';
 
-class EventsViewModel extends StreamViewModel<QuerySnapshot<Event?>>
-    with ReactiveServiceMixin, Initialisable {
+class EventsViewModel extends FutureViewModel<EventResult>
+    with ReactiveServiceMixin {
   EventsViewModel() {
     listenToReactiveValues([_event, _eventCount, _verified]);
 
@@ -205,16 +205,12 @@ class EventsViewModel extends StreamViewModel<QuerySnapshot<Event?>>
     }
   }
 
-  Future<void> init() async {}
-
-  @override
-  void initialise() async {
+  Future<void> init() async {
     isConnected = await InternetConnectionChecker().hasConnection;
 
     _eventCount.value = _eventService.getEventsCount();
 
     notifyListeners();
-    super.initialise();
   }
 
   @override
@@ -235,5 +231,5 @@ class EventsViewModel extends StreamViewModel<QuerySnapshot<Event?>>
   }
 
   @override
-  Stream<QuerySnapshot<Event?>> get stream => _eventService.getAllEvents();
+  Future<EventResult> futureToRun() => _eventService.getAllEvents();
 }
