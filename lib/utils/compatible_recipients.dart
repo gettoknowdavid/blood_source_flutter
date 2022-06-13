@@ -17,7 +17,8 @@ Future<List<Request>> compatibleRecipients(
             BloodGroup.abPositive.value.desc,
           ])
           .get()
-          .then((snap) => snap.docs.map((e) => e.data()).toList());
+          .then((snap) => snap.docs.map((e) => e.data()).toList())
+          .timeout(const Duration(seconds: 10));
 
     case BloodGroup.oPositive:
       return ref
@@ -29,7 +30,8 @@ Future<List<Request>> compatibleRecipients(
             BloodGroup.abPositive.value.desc,
           ])
           .get()
-          .then((snap) => snap.docs.map((e) => e.data()).toList());
+          .then((snap) => snap.docs.map((e) => e.data()).toList())
+          .timeout(const Duration(seconds: 10));
       ;
 
     case BloodGroup.bPositive:
@@ -40,14 +42,16 @@ Future<List<Request>> compatibleRecipients(
             BloodGroup.abPositive.value.desc,
           ])
           .get()
-          .then((snap) => snap.docs.map((e) => e.data()).toList());
+          .then((snap) => snap.docs.map((e) => e.data()).toList())
+          .timeout(const Duration(seconds: 10));
 
     case BloodGroup.abPositive:
       return ref
           .where('user.uid', isNotEqualTo: uid)
           .where('bloodGroup', isEqualTo: BloodGroup.abPositive.value.desc)
           .get()
-          .then((snap) => snap.docs.map((e) => e.data()).toList());
+          .then((snap) => snap.docs.map((e) => e.data()).toList())
+          .timeout(const Duration(seconds: 10));
 
     case BloodGroup.aNegative:
       return ref
@@ -59,13 +63,15 @@ Future<List<Request>> compatibleRecipients(
             BloodGroup.abNegative.value.desc,
           ])
           .get()
-          .then((snap) => snap.docs.map((e) => e.data()).toList());
+          .then((snap) => snap.docs.map((e) => e.data()).toList())
+          .timeout(const Duration(seconds: 10));
 
     case BloodGroup.oNegative:
       return ref
           .where('user.uid', isNotEqualTo: uid)
           .get()
-          .then((snap) => snap.docs.map((e) => e.data()).toList());
+          .then((snap) => snap.docs.map((e) => e.data()).toList())
+          .timeout(const Duration(seconds: 10));
 
     case BloodGroup.bNegative:
       return ref
@@ -77,7 +83,8 @@ Future<List<Request>> compatibleRecipients(
             BloodGroup.abNegative.value.desc,
           ])
           .get()
-          .then((snap) => snap.docs.map((e) => e.data()).toList());
+          .then((snap) => snap.docs.map((e) => e.data()).toList())
+          .timeout(const Duration(seconds: 10));
 
     case BloodGroup.abNegative:
       return ref
@@ -87,12 +94,14 @@ Future<List<Request>> compatibleRecipients(
             BloodGroup.abNegative.value.desc,
           ])
           .get()
-          .then((snap) => snap.docs.map((e) => e.data()).toList());
+          .then((snap) => snap.docs.map((e) => e.data()).toList())
+          .timeout(const Duration(seconds: 10));
 
     default:
       return ref
           .where('user.uid', isNotEqualTo: uid)
           .get()
-          .then((snap) => snap.docs.map((e) => e.data()).toList());
+          .then((snap) => snap.docs.map((e) => e.data()).toList())
+          .timeout(const Duration(seconds: 10));
   }
 }
