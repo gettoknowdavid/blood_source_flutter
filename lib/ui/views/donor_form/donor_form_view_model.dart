@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/common/app_constants.dart';
@@ -5,19 +7,18 @@ import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:blood_source/models/disease_types.dart';
 import 'package:blood_source/models/gender.dart';
-import 'package:blood_source/models/user-type.dart';
+import 'package:blood_source/models/user_type.dart';
 import 'package:blood_source/services/store_service.dart';
+import 'package:blood_source/ui/shared/setup_snack_bar_ui.dart';
 import 'package:blood_source/utils/dialog_type.dart';
 import 'package:checkbox_grouped/checkbox_grouped.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
-  Future<void> init() async {}
-
   DonorFormViewModel() {
     listenToReactiveValues([
       _bloodGroup,
@@ -27,11 +28,27 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
       _userType,
       _eligible,
     ]);
+
+   subscription = InternetConnectionChecker().onStatusChange.listen((status) {
+      switch (status) {
+        case InternetConnectionStatus.connected:
+          isConnected = true;
+          notifyListeners();
+          break;
+        case InternetConnectionStatus.disconnected:
+          isConnected = false;
+          notifyListeners();
+          break;
+      }
+    });
   }
+
+  late StreamSubscription<InternetConnectionStatus> subscription;
 
   final DialogService _dialogService = locator<DialogService>();
   final NavigationService _navService = locator<NavigationService>();
   final StoreService _storeService = locator<StoreService>();
+  final SnackbarService _snackbarService = locator<SnackbarService>();
 
   final ReactiveValue<BloodGroup> _bloodGroup =
       ReactiveValue<BloodGroup>(BloodGroup.aPositive);
@@ -55,6 +72,8 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
   bool get piercingBool => _piercingBool.value;
   UserType get userType => _userType.value;
   bool get eligible => _eligible.value;
+
+  bool? isConnected;
 
   bool isValidated() {
     if (ageController.text.isNotEmpty || weightController.text.isNotEmpty) {
@@ -208,11 +227,41 @@ class DonorFormViewModel extends BaseViewModel with ReactiveServiceMixin {
     return null;
   }
 
+  Future<void> checkConnectivity() async {
+    bool isConn = await InternetConnectionChecker().hasConnection;
+    switch (isConn) {
+      case true:
+        _snackbarService.showCustomSnackBar(
+          message: 'Yay! You\'re connected!',
+          variant: SnackbarType.positive,
+          duration: const Duration(seconds: 3),
+        );
+        notifyListeners();
+        break;
+      case false:
+        _snackbarService.showCustomSnackBar(
+          message: 'We are convinced you\'re disconnected. Try again.',
+          variant: SnackbarType.negative,
+          duration: const Duration(seconds: 3),
+        );
+        notifyListeners();
+        break;
+      default:
+        null;
+    }
+  }
+
+  Future<void> init() async {
+    isConnected = await InternetConnectionChecker().hasConnection;
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     ageController.dispose();
     weightController.dispose();
     diseaseController.deselectAll();
+    subscription.cancel();
     super.dispose();
   }
 }

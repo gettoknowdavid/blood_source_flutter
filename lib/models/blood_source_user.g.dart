@@ -9,6 +9,7 @@ part of 'blood_source_user.dart';
 BloodSourceUser _$BloodSourceUserFromJson(Map<String, dynamic> json) =>
     BloodSourceUser(
       uid: json['uid'] as String?,
+      initEdit: json['initEdit'] as int?,
       name: json['name'] as String?,
       gender:
           $enumDecodeNullable(_$GenderEnumMap, json['gender']) ?? Gender.none,
@@ -38,6 +39,7 @@ BloodSourceUser _$BloodSourceUserFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$BloodSourceUserToJson(BloodSourceUser instance) =>
     <String, dynamic>{
       'uid': instance.uid,
+      'initEdit': instance.initEdit,
       'name': instance.name,
       'gender': _$GenderEnumMap[instance.gender],
       'age': instance.age,

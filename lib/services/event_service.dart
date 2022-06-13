@@ -17,11 +17,16 @@ class EventService with ReactiveServiceMixin {
           toFirestore: (e, _) => e.toFirestore());
 
   Future<void> createNewEvent(Event event) async {
-    return await eventRef.doc(event.uid).set(event);
+    await eventRef
+        .doc(event.uid)
+        .set(event)
+        .timeout(const Duration(seconds: 10));
+    notifyListeners();
   }
 
   Future<void> deleteEvent(String eventUid) async {
-    return await eventRef.doc(eventUid).delete();
+    await eventRef.doc(eventUid).delete().timeout(const Duration(seconds: 6));
+    notifyListeners();
   }
 
   Future<void> editEvent(Event event) async {
@@ -29,11 +34,16 @@ class EventService with ReactiveServiceMixin {
   }
 
   Stream<QuerySnapshot<Event?>> getAllEvents() {
-    return eventRef.orderBy('timeAdded', descending: true).snapshots();
+    return eventRef
+        .orderBy('timeAdded', descending: true)
+        .snapshots()
+        .timeout(const Duration(seconds: 8));
   }
 
   int getEventsCount() {
-    eventRef.snapshots().listen((event) => _eventsCount.value = event.size);
+    eventRef.snapshots().listen((event) {
+      _eventsCount.value = event.docs.length;
+    });
     return _eventsCount.value;
   }
 }

@@ -1,5 +1,7 @@
+import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/ui/shared/widgets/app_back_button.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
+import 'package:blood_source/ui/shared/widgets/offline_widget.dart';
 import 'package:blood_source/ui/shared/widgets/profile/avatar.dart';
 import 'package:blood_source/ui/shared/widgets/profile/blood_group_widget.dart';
 import 'package:blood_source/ui/shared/widgets/profile/profile_details_list.dart';
@@ -26,8 +28,24 @@ class ProfileView extends StatelessWidget {
       fireOnModelReadyOnce: false,
       createNewModelOnInsert: true,
       builder: (context, model, Widget? child) {
-        if (model.isBusy) {
+        if (model.isBusy || model.isConnected == null) {
           return const LoadingIndicator();
+        }
+
+        if (!model.isConnected!) {
+          return Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              leading: !isFromRoute
+                  ? const SizedBox()
+                  : const AppBackButton(color: AppColors.primary),
+            ),
+            body: OfflineWidget(
+              onTap: model.checkConnectivity,
+              addPadding: true,
+            ),
+          );
         }
 
         final profile = isFromRoute ? user : model.user;
@@ -36,13 +54,11 @@ class ProfileView extends StatelessWidget {
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             elevation: 0,
-            backgroundColor: Colors.transparent,
+            title: const Text('Profile'),
+            backgroundColor: AppColors.primary,
+            centerTitle: true,
             leading: isFromRoute
-                ? Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.all(0).r,
-                    child: const AppBackButton(),
-                  )
+                ? const AppBackButton()
                 : IconButton(
                     icon: const Icon(PhosphorIcons.pencil),
                     onPressed: () => model.goToEditProfile(model.user),
@@ -63,14 +79,14 @@ class ProfileView extends StatelessWidget {
                 painter: ProfileHeaderPainter(),
               ),
               SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(0, 60, 0, 0).r,
+                padding: const EdgeInsets.fromLTRB(0, 100, 0, 0).r,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Avatar(user: profile),
+                    Avatar(avatar: profile!.avatar),
                     20.verticalSpace,
                     Text(
-                      profile!.name!,
+                      profile.name!,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 22.sp,

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:blood_source/models/user_location.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:location/location.dart';
 import 'package:stacked/stacked.dart';
 import 'package:logger/logger.dart';
@@ -19,19 +20,27 @@ class LocationService with ReactiveServiceMixin {
   LocationService() {
     listenToReactiveValues([_loc, _city]);
 
-    _location.requestPermission().then((PermissionStatus granted) {
-      if (granted == PermissionStatus.granted) {
-        _location.onLocationChanged.listen((LocationData? data) async {
-          if (data != null) {
-            _loc.value = UserLocation(data.latitude!, data.longitude!);
-            List<geo.Placemark> placemarks = await geo.placemarkFromCoordinates(
-              _loc.value!.latitude,
-              _loc.value!.longitude,
-            );
-            geo.Placemark place = placemarks[0];
-            _city.value = place.locality;
+    _location.requestPermission().then((PermissionStatus granted) async {
+      switch (granted) {
+        case PermissionStatus.granted:
+          bool isConnected = await InternetConnectionChecker().hasConnection;
+          if (isConnected) {
+            _location.onLocationChanged.listen((LocationData? data) async {
+              if (data != null) {
+                _loc.value = UserLocation(data.latitude!, data.longitude!);
+                List<geo.Placemark> placemarks =
+                    await geo.placemarkFromCoordinates(
+                  _loc.value!.latitude,
+                  _loc.value!.longitude,
+                );
+                geo.Placemark place = placemarks[0];
+                _city.value = place.locality;
+              }
+            });
           }
-        });
+          break;
+        default:
+          null;
       }
     });
   }

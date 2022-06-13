@@ -13,5 +13,5 @@ List<BottomNavItem> navItems = [
   BottomNavItem(title: 'Profile', icon: PhosphorIcons.user),
   BottomNavItem(title: 'Make Request', icon: PhosphorIcons.drop),
   BottomNavItem(title: 'Events', icon: PhosphorIcons.calendar),
-  BottomNavItem(title: 'Settings', icon: PhosphorIcons.gearSix),
+  BottomNavItem(title: 'About', icon: PhosphorIcons.info),
 ];

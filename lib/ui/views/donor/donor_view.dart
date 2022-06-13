@@ -6,6 +6,7 @@ import 'package:blood_source/ui/shared/widgets/app_text_button.dart';
 import 'package:blood_source/ui/shared/widgets/donor/donor_list_item.dart';
 import 'package:blood_source/ui/shared/widgets/empty_widget.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
+import 'package:blood_source/ui/shared/widgets/offline_widget.dart';
 import 'package:blood_source/ui/shared/widgets/profile/blood_group_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -26,8 +27,22 @@ class DonorView extends StatelessWidget {
       viewModelBuilder: () => DonorViewModel(),
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
-        if (!model.dataReady || model.isBusy) {
+        if (!model.dataReady || model.isBusy || model.isConnected == null) {
           return const LoadingIndicator();
+        }
+
+        if (!model.isConnected!) {
+          return Scaffold(
+            appBar: AppBar(
+              leading: const AppBackButton(color: AppColors.primaryDark),
+              backgroundColor: Colors.white,
+              elevation: 0,
+            ),
+            body: OfflineWidget(
+              onTap: model.checkConnectivity,
+              addPadding: true,
+            ),
+          );
         }
 
         return Scaffold(

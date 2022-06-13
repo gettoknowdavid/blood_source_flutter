@@ -2,6 +2,8 @@ import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/models/disease_types.dart';
 import 'package:blood_source/ui/shared/widgets/app_button.dart';
 import 'package:blood_source/ui/shared/widgets/donor_form/donor_form_field.dart';
+import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
+import 'package:blood_source/ui/shared/widgets/offline_widget.dart';
 import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -18,6 +20,19 @@ class DonorFormView extends StatelessWidget {
       viewModelBuilder: () => DonorFormViewModel(),
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
+        if (model.isBusy || model.isConnected == null) {
+          return const LoadingIndicator();
+        }
+
+        if (!model.isConnected!) {
+          return Scaffold(
+            body: OfflineWidget(
+              onTap: model.checkConnectivity,
+              addPadding: true,
+            ),
+          );
+        }
+
         return Scaffold(
           appBar: AppBar(title: const Text('Donor Requirement ')),
           body: SafeArea(

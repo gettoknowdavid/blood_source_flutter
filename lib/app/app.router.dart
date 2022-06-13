@@ -13,6 +13,7 @@ import 'package:stacked/stacked_annotations.dart';
 import '../models/blood_source_user.dart';
 import '../models/request.dart';
 import '../ui/layouts/app_layout/app_layout_view.dart';
+import '../ui/views/about/about_view.dart';
 import '../ui/views/check_email/check_email_view.dart';
 import '../ui/views/dashboard/dashboard_view.dart';
 import '../ui/views/donate/donate_view.dart';
@@ -22,10 +23,8 @@ import '../ui/views/donor_form/donor_form_view.dart';
 import '../ui/views/edit_profile/edit_profile_view.dart';
 import '../ui/views/events/events_view.dart';
 import '../ui/views/forgot_password/forgot_password_view.dart';
-import '../ui/views/home/home_view.dart';
-import '../ui/views/main_scaffold/main_scaffold_view.dart';
 import '../ui/views/my_requests_list/my_requests_list_view.dart';
-import '../ui/views/notifications/notifications_view.dart';
+import '../ui/views/on_boarding/on_boarding_view.dart';
 import '../ui/views/profile/profile_view.dart';
 import '../ui/views/request/request_view.dart';
 import '../ui/views/request_details/request_details_view.dart';
@@ -37,18 +36,15 @@ import '../ui/views/verify_email/verify_email_view.dart';
 
 class Routes {
   static const String splashView = '/';
-  static const String mainScaffoldView = '/main-scaffold-view';
   static const String signInView = '/sign-in-view';
   static const String forgotPasswordView = '/forgot-password-view';
   static const String checkEmailView = '/check-email-view';
   static const String signUpView = '/sign-up-view';
-  static const String homeView = '/home-view';
   static const String donorFormView = '/donor-form-view';
   static const String verifyEmailView = '/verify-email-view';
   static const String dashboardView = '/dashboard-view';
   static const String appLayoutView = '/app-layout-view';
   static const String donateView = '/donate-view';
-  static const String notificationsView = '/notifications-view';
   static const String profileView = '/profile-view';
   static const String donorView = '/donor-view';
   static const String requestView = '/request-view';
@@ -58,20 +54,19 @@ class Routes {
   static const String requestDetailsView = '/request-details-view';
   static const String donorDetailsView = '/donor-details-view';
   static const String eventsView = '/events-view';
+  static const String onBoardingView = '/on-boarding-view';
+  static const String aboutView = '/about-view';
   static const all = <String>{
     splashView,
-    mainScaffoldView,
     signInView,
     forgotPasswordView,
     checkEmailView,
     signUpView,
-    homeView,
     donorFormView,
     verifyEmailView,
     dashboardView,
     appLayoutView,
     donateView,
-    notificationsView,
     profileView,
     donorView,
     requestView,
@@ -81,6 +76,8 @@ class Routes {
     requestDetailsView,
     donorDetailsView,
     eventsView,
+    onBoardingView,
+    aboutView,
   };
 }
 
@@ -89,18 +86,15 @@ class StackedRouter extends RouterBase {
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
     RouteDef(Routes.splashView, page: SplashView),
-    RouteDef(Routes.mainScaffoldView, page: MainScaffoldView),
     RouteDef(Routes.signInView, page: SignInView),
     RouteDef(Routes.forgotPasswordView, page: ForgotPasswordView),
     RouteDef(Routes.checkEmailView, page: CheckEmailView),
     RouteDef(Routes.signUpView, page: SignUpView),
-    RouteDef(Routes.homeView, page: HomeView),
     RouteDef(Routes.donorFormView, page: DonorFormView),
     RouteDef(Routes.verifyEmailView, page: VerifyEmailView),
     RouteDef(Routes.dashboardView, page: DashboardView),
     RouteDef(Routes.appLayoutView, page: AppLayoutView),
     RouteDef(Routes.donateView, page: DonateView),
-    RouteDef(Routes.notificationsView, page: NotificationsView),
     RouteDef(Routes.profileView, page: ProfileView),
     RouteDef(Routes.donorView, page: DonorView),
     RouteDef(Routes.requestView, page: RequestView),
@@ -110,6 +104,8 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.requestDetailsView, page: RequestDetailsView),
     RouteDef(Routes.donorDetailsView, page: DonorDetailsView),
     RouteDef(Routes.eventsView, page: EventsView),
+    RouteDef(Routes.onBoardingView, page: OnBoardingView),
+    RouteDef(Routes.aboutView, page: AboutView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -117,12 +113,6 @@ class StackedRouter extends RouterBase {
     SplashView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const SplashView(),
-        settings: data,
-      );
-    },
-    MainScaffoldView: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => const MainScaffoldView(),
         settings: data,
       );
     },
@@ -147,12 +137,6 @@ class StackedRouter extends RouterBase {
     SignUpView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const SignUpView(),
-        settings: data,
-      );
-    },
-    HomeView: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => const HomeView(),
         settings: data,
       );
     },
@@ -187,12 +171,6 @@ class StackedRouter extends RouterBase {
           key: args.key,
           donor: args.donor,
         ),
-        settings: data,
-      );
-    },
-    NotificationsView: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => const NotificationsView(),
         settings: data,
       );
     },
@@ -274,6 +252,18 @@ class StackedRouter extends RouterBase {
     EventsView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const EventsView(),
+        settings: data,
+      );
+    },
+    OnBoardingView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const OnBoardingView(),
+        settings: data,
+      );
+    },
+    AboutView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const AboutView(),
         settings: data,
       );
     },

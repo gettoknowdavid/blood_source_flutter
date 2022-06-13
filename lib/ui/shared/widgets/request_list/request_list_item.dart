@@ -17,6 +17,7 @@ class RequestListItem extends ViewModelWidget<RequestListViewModel> {
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.symmetric(horizontal: 18.r, vertical: 12.r),
+      padding: EdgeInsets.symmetric(vertical: 12.r),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.r),
@@ -30,7 +31,7 @@ class RequestListItem extends ViewModelWidget<RequestListViewModel> {
         ],
       ),
       child: ListTile(
-        title: Text(request.bloodGroup.value.desc),
+        title: Text(request.user.name),
         onTap: () => viewModel.goToDetails(request),
         isThreeLine: true,
         leading: CircleAvatar(
@@ -40,22 +41,25 @@ class RequestListItem extends ViewModelWidget<RequestListViewModel> {
         ),
         subtitle: Text(
           dateFormatter(request.timeAdded!.toIso8601String()),
-          style: const TextStyle(
+          style: TextStyle(
             fontStyle: FontStyle.italic,
             fontWeight: FontWeight.w500,
+            fontSize: 11.r,
           ),
         ),
         trailing: Container(
-          padding: EdgeInsets.all(7.r),
+          height: 40.h,
+          width: 40.h,
+          alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: request.requestGranted ? Colors.green : Colors.red,
-            borderRadius: BorderRadius.circular(8.r),
+            borderRadius: BorderRadius.circular(10.r),
+            color: AppColors.swatch.shade600,
           ),
           child: Text(
-            request.requestGranted ? 'GRANTED' : 'PENDING',
+            request.bloodGroup.value.name,
             style: TextStyle(
-              fontSize: 10.sp,
-              fontWeight: FontWeight.w600,
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500,
               color: Colors.white,
             ),
           ),

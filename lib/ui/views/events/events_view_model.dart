@@ -1,42 +1,84 @@
+import 'dart:async';
+
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/models/event.dart';
 import 'package:blood_source/models/event_creator.dart';
 import 'package:blood_source/services/event_service.dart';
 import 'package:blood_source/services/store_service.dart';
+import 'package:blood_source/ui/shared/setup_snack_bar_ui.dart';
 import 'package:blood_source/utils/bottom_sheet_type.dart';
 import 'package:blood_source/utils/date_formatter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:uuid/uuid.dart';
 
-class EventsViewModel extends StreamViewModel with ReactiveServiceMixin {
+class EventsViewModel extends StreamViewModel<QuerySnapshot<Event?>>
+    with ReactiveServiceMixin, Initialisable {
   EventsViewModel() {
-    listenToReactiveValues([_event, _eventCount]);
+    listenToReactiveValues([_event, _eventCount, _verified]);
+
+    subscription = InternetConnectionChecker().onStatusChange.listen((status) {
+      switch (status) {
+        case InternetConnectionStatus.connected:
+          isConnected = true;
+          notifyListeners();
+          break;
+        case InternetConnectionStatus.disconnected:
+          isConnected = false;
+          notifyListeners();
+          break;
+      }
+    });
   }
+
+  late StreamSubscription<InternetConnectionStatus> subscription;
 
   final StoreService _storeService = locator<StoreService>();
   final EventService _eventService = locator<EventService>();
   final BottomSheetService _bottomSheetService = locator<BottomSheetService>();
+  final SnackbarService _snackbarService = locator<SnackbarService>();
 
   final ReactiveValue<Event?> _event = ReactiveValue<Event?>(null);
   Event? get event => _event.value;
 
   final ReactiveValue<int> _eventCount = ReactiveValue<int>(0);
-  int get eventCount => _eventCount.value;
+  int get eventsCount => _eventService.eventsCount;
 
-  void openBottomSheet() {
-    _bottomSheetService.showCustomSheet(variant: BottomSheetType.createEvent);
-  }
+  final ReactiveValue<bool> _verified = ReactiveValue<bool>(false);
+  bool get verified => _verified.value;
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController timeController = TextEditingController();
+
+  bool? isConnected;
+
   DateTime? timeAdded;
+
+  void openBottomSheet() {
+    _bottomSheetService.showCustomSheet(variant: BottomSheetType.createEvent);
+  }
+
+  bool formVerified() {
+    if (titleController.text.isNotEmpty &&
+        descriptionController.text.isNotEmpty &&
+        locationController.text.isNotEmpty &&
+        dateController.text.isNotEmpty &&
+        timeController.text.isNotEmpty) {
+      notifyListeners();
+      return true;
+    } else {
+      notifyListeners();
+      return false;
+    }
+  }
 
   void setEventDate(context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -67,65 +109,112 @@ class EventsViewModel extends StreamViewModel with ReactiveServiceMixin {
     }
   }
 
-  String getCreator(Event event) {
+  bool isEventBelongToUser(Event ev) {
+    final _uid = FirebaseAuth.instance.currentUser!.uid;
+    if (_uid == ev.creator.uid) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  String getCreator(Event ev) {
     final _uid = FirebaseAuth.instance.currentUser!.uid;
 
-    if (_uid == event.creator.uid) {
-      return 'You created this event on ${dateFormatter(event.timeAdded.toIso8601String())}.';
+    if (_uid == ev.creator.uid) {
+      return 'You created this event on ${dateFormatter(ev.timeAdded.toIso8601String())}.';
     } else {
-      return '${event.creator.name} created this event on ${dateFormatter(event.timeAdded.toIso8601String())}.';
+      return '${ev.creator.name} created this event on ${dateFormatter(ev.timeAdded.toIso8601String())}.';
     }
   }
 
   Future createNewEvent() async {
-    final _uid = FirebaseAuth.instance.currentUser!.uid;
-    final _r = await _storeService.getUser(_uid);
+    if (formVerified()) {
+      final _uid = FirebaseAuth.instance.currentUser!.uid;
+      final _r = await _storeService.getUser(_uid);
 
-    await _eventService.createNewEvent(Event(
-      uid: const Uuid().v4(),
-      title: titleController.text,
-      description: descriptionController.text,
-      location: locationController.text,
-      date: DateTime.parse(dateController.text),
-      time: timeController.text,
-      timeAdded: DateTime.now(),
-      creator: EventCreator(
-        uid: _uid,
-        name: _r!.bSUser!.name!,
-        avatar: _r.bSUser!.avatar!,
-      ),
-    ));
-
-    clearFields();
+      await _eventService.createNewEvent(Event(
+        uid: const Uuid().v4(),
+        title: titleController.text,
+        description: descriptionController.text,
+        location: locationController.text,
+        date: DateTime.parse(dateController.text),
+        time: timeController.text,
+        timeAdded: DateTime.now(),
+        creator: EventCreator(
+          uid: _uid,
+          name: _r!.bSUser!.name!,
+          avatar: _r.bSUser!.avatar!,
+        ),
+      ));
+      notifyListeners();
+      _eventCount.value = _eventService.getEventsCount();
+      clearFields();
+    } else {
+      _snackbarService.showCustomSnackBar(
+        variant: SnackbarType.negative,
+        message: 'All items are required. Please fill them in.',
+      );
+    }
   }
 
-  Future editEvent(Event event) async {
-    _bottomSheetService.showCustomSheet(variant: BottomSheetType.createEvent);
-    _event.value = event;
+  // Future editEvent(Event event) async {
+  //   _bottomSheetService.showCustomSheet(variant: BottomSheetType.createEvent);
+  //   _event.value = event;
 
-    notifyListeners();
+  //   notifyListeners();
 
-    await _eventService.editEvent(Event(
-      uid: event.uid,
-      title: titleController.text,
-      description: descriptionController.text,
-      location: locationController.text,
-      date: DateTime.parse(dateController.text),
-      time: timeController.text,
-      timeAdded: event.timeAdded,
-      creator: event.creator,
-    ));
+  //   await _eventService.editEvent(Event(
+  //     uid: event.uid,
+  //     title: titleController.text,
+  //     description: descriptionController.text,
+  //     location: locationController.text,
+  //     date: DateTime.parse(dateController.text),
+  //     time: timeController.text,
+  //     timeAdded: event.timeAdded,
+  //     creator: event.creator,
+  //   ));
 
-    clearFields();
-    // _event.value = null;
-  }
+  //   clearFields();
+  //   // _event.value = null;
+  // }
 
   Future deleteEvent(Event ev) async => await _eventService.deleteEvent(ev.uid);
 
-  Future<void> init() async {
-    setBusy(true);
+  Future<void> checkConnectivity() async {
+    bool isConn = await InternetConnectionChecker().hasConnection;
+    switch (isConn) {
+      case true:
+        _snackbarService.showCustomSnackBar(
+          message: 'Yay! You\'re connected!',
+          variant: SnackbarType.positive,
+          duration: const Duration(seconds: 3),
+        );
+        notifyListeners();
+        break;
+      case false:
+        _snackbarService.showCustomSnackBar(
+          message: 'We are convinced you\'re disconnected. Try again.',
+          variant: SnackbarType.negative,
+          duration: const Duration(seconds: 3),
+        );
+        notifyListeners();
+        break;
+      default:
+        null;
+    }
+  }
+
+  Future<void> init() async {}
+
+  @override
+  void initialise() async {
+    isConnected = await InternetConnectionChecker().hasConnection;
+
     _eventCount.value = _eventService.getEventsCount();
-    setBusy(false);
+
+    notifyListeners();
+    super.initialise();
   }
 
   @override
@@ -133,11 +222,12 @@ class EventsViewModel extends StreamViewModel with ReactiveServiceMixin {
     titleController.dispose();
     descriptionController.dispose();
     locationController.dispose();
+    subscription.cancel();
     super.dispose();
   }
 
   void clearFields() {
-    timeController.clear();
+    titleController.clear();
     descriptionController.clear();
     locationController.clear();
     dateController.clear();
@@ -145,5 +235,5 @@ class EventsViewModel extends StreamViewModel with ReactiveServiceMixin {
   }
 
   @override
-  Stream get stream => _eventService.getAllEvents();
+  Stream<QuerySnapshot<Event?>> get stream => _eventService.getAllEvents();
 }

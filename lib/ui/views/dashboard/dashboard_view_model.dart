@@ -3,9 +3,10 @@ import 'package:blood_source/app/app.router.dart';
 import 'package:blood_source/models/dashboard_button_model.dart';
 import 'package:blood_source/models/request.dart';
 import 'package:blood_source/models/request_user.dart';
-import 'package:blood_source/models/user-type.dart';
+import 'package:blood_source/models/user_type.dart';
 import 'package:blood_source/models/user_location.dart';
 import 'package:blood_source/services/auth_service.dart';
+import 'package:blood_source/services/request_service.dart';
 import 'package:blood_source/services/store_service.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:stacked/stacked.dart';
@@ -25,10 +26,10 @@ class DashboardViewModel extends ReactiveViewModel with ReactiveServiceMixin {
   }
 
   final AuthService _authService = locator<AuthService>();
+  final RequestService _requestService = locator<RequestService>();
   final StoreService _storeService = locator<StoreService>();
   final NavigationService _navService = locator<NavigationService>();
-
-  // final ReactiveValue<int> _donorCount = ReactiveValue<int>(0);
+  final DialogService _dialogService = locator<DialogService>();
 
   final ReactiveValue<List<DashboardButtonModel>> _buttonList =
       ReactiveValue<List<DashboardButtonModel>>(donorButtonList);
@@ -36,7 +37,7 @@ class DashboardViewModel extends ReactiveViewModel with ReactiveServiceMixin {
 
   String get displayName => _authService.currentUser!.displayName!;
 
-  BloodSourceUser get user => _storeService.bloodUser!;
+  BloodSourceUser get user => _storeService.bsUser!;
 
   String get firstName => displayName.toString().split(" ").first;
 
@@ -46,15 +47,15 @@ class DashboardViewModel extends ReactiveViewModel with ReactiveServiceMixin {
         _buttonList.value = donorButtonList;
         break;
       case UserType.recipient:
-        _buttonList.value = await recipientButtonList;
+        _buttonList.value = recipientButtonList;
         break;
       default:
-        _buttonList.value = await donorButtonList;
+        _buttonList.value = donorButtonList;
     }
     return _buttonList.value;
   }
 
-  void goToDonors() async {
+  Future<void> goToDonors() async {
     final Request request = Request(
       uid: const Uuid().v4(),
       bloodGroup: user.bloodGroup!,
@@ -71,12 +72,29 @@ class DashboardViewModel extends ReactiveViewModel with ReactiveServiceMixin {
       ),
     );
 
-    await _storeService.setRequest(request);
+    await _requestService.setRequest(request);
 
     _navService.navigateTo(
       Routes.donorView,
       arguments: DonorViewArguments(request: request, fromRequestView: false),
     );
+  }
+
+  handleAction(String route) async {
+    switch (route) {
+      case Routes.donorView:
+        goToDonors();
+        break;
+      case 'none':
+        _dialogService.showDialog(
+          title: 'Coming Soon',
+          description: 'This is feature is coming soon!',
+          barrierDismissible: true,
+        );
+        break;
+      default:
+        _navService.navigateTo(route);
+    }
   }
 
   @override

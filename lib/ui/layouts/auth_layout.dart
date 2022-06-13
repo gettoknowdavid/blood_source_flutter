@@ -17,21 +17,18 @@ class AuthLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.06),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: CustomPaint(
-                painter: HeaderPainter(),
-                child: Center(child: child),
-              ),
-            ),
-            showBackButton ? const AppBackButton() : const SizedBox(),
-          ],
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        leading: showBackButton ? const AppBackButton() : const SizedBox(),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
+      body: Container(
+        color: AppColors.primary.withOpacity(0.06),
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
+        child: CustomPaint(
+          painter: HeaderPainter(),
+          child: Center(child: child),
         ),
       ),
     );

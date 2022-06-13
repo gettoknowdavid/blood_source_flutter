@@ -40,10 +40,13 @@ class MapPanel extends ViewModelWidget<RequestDetailsViewModel> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircleAvatar(
-                radius: 0.12.sw,
-                foregroundColor: AppColors.primary,
-                foregroundImage: NetworkImage(request.user.avatar),
+              GestureDetector(
+                onTap: viewModel.goToRecipientProfile,
+                child: CircleAvatar(
+                  radius: 0.09.sw,
+                  foregroundColor: AppColors.primary,
+                  foregroundImage: NetworkImage(request.user.avatar),
+                ),
               ),
               20.horizontalSpace,
               Column(

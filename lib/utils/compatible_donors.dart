@@ -1,5 +1,5 @@
 import 'package:blood_source/models/blood_group.dart';
-import 'package:blood_source/models/user-type.dart';
+import 'package:blood_source/models/user_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:blood_source/models/blood_source_user.dart';

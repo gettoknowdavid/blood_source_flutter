@@ -1,12 +1,16 @@
 import 'package:blood_source/services/auth_service.dart';
+import 'package:blood_source/services/donor_service.dart';
 import 'package:blood_source/services/event_service.dart';
 import 'package:blood_source/services/location_service.dart';
 import 'package:blood_source/services/media_service.dart';
+import 'package:blood_source/services/request_service.dart';
 import 'package:blood_source/services/storage_service.dart';
 import 'package:blood_source/services/mail_app_service.dart';
 import 'package:blood_source/services/store_service.dart';
 import 'package:blood_source/ui/layouts/app_layout/app_layout_view.dart';
 import 'package:blood_source/ui/layouts/app_layout/app_layout_view_model.dart';
+import 'package:blood_source/ui/views/about/about_view.dart';
+import 'package:blood_source/ui/views/about/about_view_model.dart';
 import 'package:blood_source/ui/views/check_email/check_email_view.dart';
 import 'package:blood_source/ui/views/check_email/check_email_view_model.dart';
 import 'package:blood_source/ui/views/dashboard/dashboard_view.dart';
@@ -25,14 +29,10 @@ import 'package:blood_source/ui/views/events/events_view.dart';
 import 'package:blood_source/ui/views/events/events_view_model.dart';
 import 'package:blood_source/ui/views/forgot_password/forgot_password_view.dart';
 import 'package:blood_source/ui/views/forgot_password/forgot_password_view_model.dart';
-import 'package:blood_source/ui/views/home/home_view.dart';
-import 'package:blood_source/ui/views/home/home_view_model.dart';
-import 'package:blood_source/ui/views/main_scaffold/main_scaffold_view.dart';
-import 'package:blood_source/ui/views/main_scaffold/main_scaffold_view_model.dart';
 import 'package:blood_source/ui/views/my_requests_list/my_requests_list_view.dart';
 import 'package:blood_source/ui/views/my_requests_list/my_requests_list_view_model.dart';
-import 'package:blood_source/ui/views/notifications/notifications_view.dart';
-import 'package:blood_source/ui/views/notifications/notifications_view_model.dart';
+import 'package:blood_source/ui/views/on_boarding/on_boarding_view.dart';
+import 'package:blood_source/ui/views/on_boarding/on_boarding_view_model.dart';
 import 'package:blood_source/ui/views/profile/profile_view.dart';
 import 'package:blood_source/ui/views/profile/profile_view_model.dart';
 import 'package:blood_source/ui/views/request/request_view.dart';
@@ -56,18 +56,15 @@ import 'package:stacked_services/stacked_services.dart';
 @StackedApp(
   routes: [
     MaterialRoute(page: SplashView, initial: true),
-    MaterialRoute(page: MainScaffoldView),
     MaterialRoute(page: SignInView),
     MaterialRoute(page: ForgotPasswordView),
     MaterialRoute(page: CheckEmailView),
     MaterialRoute(page: SignUpView),
-    MaterialRoute(page: HomeView),
     MaterialRoute(page: DonorFormView),
     MaterialRoute(page: VerifyEmailView),
     MaterialRoute(page: DashboardView),
     MaterialRoute(page: AppLayoutView),
     MaterialRoute(page: DonateView),
-    MaterialRoute(page: NotificationsView),
     MaterialRoute(page: ProfileView),
     MaterialRoute(page: DonorView),
     MaterialRoute(page: RequestView),
@@ -77,31 +74,33 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: RequestDetailsView),
     MaterialRoute(page: DonorDetailsView),
     MaterialRoute(page: EventsView),
+    MaterialRoute(page: OnBoardingView),
+    MaterialRoute(page: AboutView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
     LazySingleton(classType: BottomSheetService),
     LazySingleton(classType: DialogService),
+    LazySingleton(classType: SnackbarService),
     LazySingleton(classType: MailAppService),
     LazySingleton(classType: AuthService),
     LazySingleton(classType: StoreService),
     LazySingleton(classType: EventService),
     LazySingleton(classType: LocationService),
     LazySingleton(classType: FirebaseAuthenticationService),
+    LazySingleton(classType: DonorService),
+    LazySingleton(classType: RequestService),
     LazySingleton(classType: MediaService),
     LazySingleton(classType: SplashViewModel),
-    LazySingleton(classType: MainScaffoldViewModel),
     LazySingleton(classType: SignInViewModel),
     LazySingleton(classType: ForgotPasswordViewModel),
     LazySingleton(classType: CheckEmailViewModel),
     LazySingleton(classType: SignUpViewModel),
-    LazySingleton(classType: HomeViewModel),
     LazySingleton(classType: DonorFormViewModel),
     LazySingleton(classType: VerifyEmailViewModel),
     LazySingleton(classType: DashboardViewModel),
     LazySingleton(classType: AppLayoutViewModel),
     LazySingleton(classType: DonateViewModel),
-    LazySingleton(classType: NotificationsViewModel),
     LazySingleton(classType: ProfileViewModel),
     LazySingleton(classType: DonorViewModel),
     LazySingleton(classType: RequestViewModel),
@@ -111,6 +110,8 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: RequestDetailsViewModel),
     LazySingleton(classType: DonorDetailsViewModel),
     LazySingleton(classType: EventsViewModel),
+    LazySingleton(classType: OnBoardingViewModel),
+    LazySingleton(classType: AboutViewModel),
     Presolve(
       asType: StorageService,
       classType: StorageService,

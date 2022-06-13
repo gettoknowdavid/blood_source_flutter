@@ -39,10 +39,13 @@ class DonorMapPanel extends ViewModelWidget<DonorDetailsViewModel> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircleAvatar(
-                radius: 0.12.sw,
-                foregroundColor: AppColors.primary,
-                foregroundImage: NetworkImage(donor.avatar!),
+              GestureDetector(
+                onTap: () => viewModel.goToDonorProfile(donor),
+                child: CircleAvatar(
+                  radius: 0.09.sw,
+                  foregroundColor: AppColors.primary,
+                  foregroundImage: NetworkImage(donor.avatar!),
+                ),
               ),
               20.horizontalSpace,
               Column(
@@ -52,14 +55,14 @@ class DonorMapPanel extends ViewModelWidget<DonorDetailsViewModel> {
                   Text(
                     donor.name!,
                     style: TextStyle(
-                      fontSize: 18.sp,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   Text(
                     'City: ${donor.city!}',
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: 12.sp,
                       fontStyle: FontStyle.italic,
                       color: Colors.black54,
                     ),
@@ -67,22 +70,24 @@ class DonorMapPanel extends ViewModelWidget<DonorDetailsViewModel> {
                   Text(
                     'Age: ${donor.age!}',
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: 12.sp,
                       fontStyle: FontStyle.italic,
                       color: Colors.black54,
                     ),
-                  ),
-                  AppTextButton(
-                    onTap: () => viewModel.goToDonorProfile(donor),
-                    text: 'View Profile',
-                    color: AppColors.primary,
-                    padding: EdgeInsets.zero,
                   ),
                 ],
               ),
             ],
           ),
-          20.verticalSpace,
+          AppTextButton(
+            onTap: () => viewModel.goToDonorProfile(donor),
+            text: 'View Profile',
+            color: AppColors.primary,
+            padding: EdgeInsets.only(left: 4.r),
+            alignment: Alignment.centerLeft,
+            fontSize: 12.sp,
+          ),
+          8.verticalSpace,
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -100,7 +105,7 @@ class DonorMapPanel extends ViewModelWidget<DonorDetailsViewModel> {
               ),
             ],
           ),
-          30.verticalSpace,
+          32.verticalSpace,
           AppButton(
             onTap: () => viewModel.goToDonate(donor),
             text: 'Contact Donor',

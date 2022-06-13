@@ -2,63 +2,72 @@ import 'dart:async';
 
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/app/app.router.dart';
-import 'package:blood_source/models/user-type.dart';
+import 'package:blood_source/common/storage_keys.dart';
+import 'package:blood_source/models/user_type.dart';
+import 'package:blood_source/services/auth_service.dart';
 import 'package:blood_source/services/store_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:blood_source/models/blood_source_user.dart';
 
-class SplashViewModel extends StreamViewModel<User?> {
+class SplashViewModel extends ReactiveViewModel with Initialisable {
   Timer? timer;
 
-  StoreService storeService = locator<StoreService>();
-  NavigationService navService = locator<NavigationService>();
+  int? initScreen;
+  int? initEdit;
 
-  bool hasAccess() {
-    bool access = false;
-    FirebaseAuth.instance.authStateChanges().listen((event) {
-      if (event != null) {
-        access = true;
-      } else {
-        access = false;
-      }
-    });
-    return access;
-  }
+  final NavigationService _navService = locator<NavigationService>();
+  final StoreService _storeService = locator<StoreService>();
+  final AuthService _authService = locator<AuthService>();
 
-  bool isVerified() {
-    return FirebaseAuth.instance.currentUser!.emailVerified;
-  }
+  BloodSourceUser? get bsUser => _storeService.bsUser;
+  bool? get isAuth => _authService.isAuth;
 
-  Future checkVerification() async {
-    await FirebaseAuth.instance.currentUser!.reload();
+  Future<void> init() async {}
 
-    if (!isVerified()) {
-      navService.clearStackAndShow(Routes.verifyEmailView);
-    }
+  @override
+  void initialise() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    initScreen = preferences.getInt(StorageKeys.initScreen);
+    initEdit = preferences.getInt(StorageKeys.initEdit);
+    preferences.setInt(StorageKeys.initScreen, 1);
 
-    if (isVerified()) {
-      final uid = FirebaseAuth.instance.currentUser!.uid;
+    Future.delayed(const Duration(seconds: 5)).then((_) async {
+      switch (initScreen) {
+        case 0:
+          _navService.replaceWith(Routes.onBoardingView);
+          break;
+        case null:
+          _navService.replaceWith(Routes.onBoardingView);
+          break;
+        case 1:
+          if (_authService.hasUser) {
+            await _storeService.getUser(_authService.userUid!);
 
-      final result = await storeService.getUser(uid);
-      final _user = result!.bSUser;
+            if (bsUser!.userType == UserType.donor &&
+                !bsUser!.isDonorFormComplete) {
+              _navService.replaceWith(Routes.donorFormView);
+            }
 
-      if (_user!.userType == UserType.donor && !_user.isDonorFormComplete) {
-        navService.clearStackAndShow(Routes.donorFormView);
-        notifyListeners();
-      }
+            if (bsUser!.userType == UserType.recipient &&
+                bsUser!.initEdit != 1) {
+              _navService.replaceWith(
+                Routes.editProfileView,
+                arguments: EditProfileViewArguments(
+                  user: bsUser!,
+                  isFirstEdit: true,
+                ),
+              );
+            }
 
-      navService.clearStackAndShow(Routes.appLayoutView);
-      notifyListeners();
-    }
-  }
-
-  Future<void> init() async {
-    Future.delayed(const Duration(seconds: 5)).then((_) {
-      if (FirebaseAuth.instance.currentUser != null) {
-        navService.clearStackAndShow(Routes.appLayoutView);
-      } else {
-        navService.clearStackAndShow(Routes.signInView);
+            _navService.replaceWith(Routes.appLayoutView);
+          } else {
+            _navService.replaceWith(Routes.signInView);
+          }
+          break;
+        default:
+          _navService.replaceWith(Routes.onBoardingView);
       }
     });
   }
@@ -70,5 +79,6 @@ class SplashViewModel extends StreamViewModel<User?> {
   }
 
   @override
-  Stream<User?> get stream => FirebaseAuth.instance.authStateChanges();
+  List<ReactiveServiceMixin> get reactiveServices =>
+      [_authService, _storeService];
 }

@@ -1,20 +1,31 @@
 import 'package:blood_source/app/app.locator.dart';
 import 'package:blood_source/models/gender.dart';
-import 'package:blood_source/models/user-type.dart';
-import 'package:blood_source/services/storage_service.dart';
+import 'package:blood_source/models/user_type.dart';
 import 'package:blood_source/services/store_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:blood_source/models/blood_source_user.dart';
 import 'package:logger/logger.dart';
+import 'package:stacked/stacked.dart';
 
-class AuthService {
+class AuthService with ReactiveServiceMixin {
+  AuthService() {
+    listenToReactiveValues([_isAuth]);
+  }
+
   final Logger? _log = Logger();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final StoreService _storeService = locator<StoreService>();
-  final StorageService _storageService = locator<StorageService>();
+  // final StorageService _storageService = locator<StorageService>();
+
+  final ReactiveValue<bool?> _isAuth = ReactiveValue<bool?>(null);
+  bool? get isAuth => _isAuth.value;
 
   User? get currentUser {
     return _firebaseAuth.currentUser;
+  }
+
+  String? get userUid {
+    return _firebaseAuth.currentUser!.uid;
   }
 
   Future<String>? get userToken {
@@ -23,12 +34,16 @@ class AuthService {
 
   Future<AuthResult> signIn(String email, String password) async {
     try {
-      final result = await _firebaseAuth.signInWithEmailAndPassword(
+      return await _firebaseAuth
+          .signInWithEmailAndPassword(
         email: email,
         password: password,
-      );
-      final _storeResult = await _populateBloodSourceUser(result.user);
-      return AuthResult(user: result.user, bSUser: _storeResult);
+      )
+          .then((value) async {
+        _isAuth.value = true;
+        final _storeResult = await _populateBloodSourceUser(value.user);
+        return AuthResult(user: value.user, bSUser: _storeResult);
+      }).timeout(const Duration(seconds: 6));
     } on FirebaseAuthException catch (e) {
       _log?.e('A firebase exception has occurred. $e');
       return AuthResult.error(
@@ -52,25 +67,30 @@ class AuthService {
     Gender gender = Gender.none,
   }) async {
     try {
-      final result = await _firebaseAuth.createUserWithEmailAndPassword(
+      return await _firebaseAuth
+          .createUserWithEmailAndPassword(
         email: email,
         password: password,
-      );
+      )
+          .then((result) async {
+        _isAuth.value = true;
 
-      await _firebaseAuth.currentUser!.updateDisplayName(name);
+        await _firebaseAuth.currentUser!.updateDisplayName(name);
 
-      final _user = BloodSourceUser(
-        uid: result.user!.uid,
-        name: name,
-        email: email,
-        userType: userType,
-        isDonorFormComplete: isDonorFormComplete,
-        gender: gender,
-      );
+        final _user = BloodSourceUser(
+          uid: result.user!.uid,
+          name: name,
+          email: email,
+          userType: userType,
+          isDonorFormComplete: isDonorFormComplete,
+          gender: gender,
+          initEdit: 0,
+        );
 
-      final _storeResult = await _storeService.createBloodSourceUser(_user);
+        final _storeResult = await _storeService.createBloodSourceUser(_user);
 
-      return AuthResult(user: result.user, bSUser: _storeResult.bSUser);
+        return AuthResult(user: result.user, bSUser: _storeResult.bSUser);
+      }).timeout(const Duration(seconds: 8));
     } on FirebaseAuthException catch (e) {
       return AuthResult.error(
         errorMessage: getErrorMessage(e),
@@ -88,8 +108,15 @@ class AuthService {
     bool? value;
     _firebaseAuth.authStateChanges().listen((User? user) async {
       await _populateBloodSourceUser(user);
-      if (user != null) value = true;
-      if (user == null) value = false;
+      if (user != null) {
+        value = true;
+        _isAuth.value = value;
+      }
+
+      if (user == null) {
+        value = false;
+        _isAuth.value = value;
+      }
     });
     return value;
   }
@@ -103,7 +130,7 @@ class AuthService {
 
     try {
       await _firebaseAuth.signOut();
-      _storageService.removeFromDisk(currentUser!.uid);
+      _isAuth.value = false;
     } catch (e) {
       _log?.e('Could not sign out. $e');
     }

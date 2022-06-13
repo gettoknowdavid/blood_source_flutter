@@ -3,6 +3,7 @@ import 'package:blood_source/common/image_resources.dart';
 import 'package:blood_source/models/blood_group.dart';
 import 'package:blood_source/ui/shared/widgets/app_button.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
+import 'package:blood_source/ui/shared/widgets/offline_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,8 +19,17 @@ class RequestView extends StatelessWidget {
       viewModelBuilder: () => RequestViewModel(),
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
-        if (model.isBusy) {
+        if (model.isBusy || model.isConnected == null) {
           return const LoadingIndicator();
+        }
+
+        if (!model.isConnected!) {
+          return Scaffold(
+            body: OfflineWidget(
+              onTap: model.checkConnectivity,
+              addPadding: true,
+            ),
+          );
         }
 
         return Scaffold(
@@ -35,115 +45,112 @@ class RequestView extends StatelessWidget {
               ),
             ),
           ),
-          body: SingleChildScrollView(
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(4, 20, 4, 0).r,
-                    height: 0.3.sh,
-                    width: 1.sw,
-                    decoration: BoxDecoration(
-                      color: AppColors.swatch.shade700,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(40.r),
-                      ),
-                    ),
-                    child: Image.asset(ImageResources.bloodDonation),
-                  ),
-                  18.verticalSpace,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18).r,
-                    child: Text(
-                      'Select Blood group',
-                      style: TextStyle(
-                        fontSize: 18.r,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black87,
-                      ),
+          body: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  padding: const EdgeInsets.fromLTRB(4, 20, 4, 0).r,
+                  height: 0.3.sh,
+                  width: 1.sw,
+                  decoration: BoxDecoration(
+                    color: AppColors.swatch.shade700,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(40.r),
                     ),
                   ),
-                  20.verticalSpace,
-                  GridView.builder(
-                    primary: false,
-                    shrinkWrap: true,
-                    padding: EdgeInsets.symmetric(horizontal: 18.r),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      childAspectRatio: 9 / 11,
-                      crossAxisSpacing: 10.w,
-                      mainAxisSpacing: 10.h,
+                  child: Image.asset(ImageResources.bloodDonation),
+                ),
+                18.verticalSpace,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18).r,
+                  child: Text(
+                    'Select Blood group',
+                    style: TextStyle(
+                      fontSize: 18.r,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
                     ),
-                    itemCount: model.bgList.length,
-                    itemBuilder: (BuildContext context, i) {
-                      final isSelected = model.bloodGroup == model.bgList[i];
-                      return GestureDetector(
-                        onTap: () => model.onBloodGroupChanged(model.bgList[i]),
-                        child: Opacity(
-                          opacity: isSelected ? 1 : 0.5,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 10.r),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(14.r),
-                              border: Border.all(
-                                color: isSelected
-                                    ? AppColors.swatch.shade500
-                                    : Colors.black26,
-                                width: 2.w,
-                              ),
+                  ),
+                ),
+                20.verticalSpace,
+                GridView.builder(
+                  primary: false,
+                  shrinkWrap: true,
+                  padding: EdgeInsets.symmetric(horizontal: 18.r),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 10.w,
+                    mainAxisSpacing: 10.w,
+                  ),
+                  itemCount: model.bgList.length,
+                  itemBuilder: (BuildContext context, i) {
+                    final isSelected = model.bloodGroup == model.bgList[i];
+                    return GestureDetector(
+                      onTap: () => model.onBloodGroupChanged(model.bgList[i]),
+                      child: Opacity(
+                        opacity: isSelected ? 1 : 0.5,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 10.r),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(14.r),
+                            border: Border.all(
+                              color: isSelected
+                                  ? AppColors.swatch.shade500
+                                  : Colors.black26,
+                              width: 2.w,
                             ),
-                            child: Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                Align(
+                          ),
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Align(
+                                alignment: Alignment.center,
+                                child: SizedBox(
+                                  height: 70.h,
+                                  child: Image.asset(
+                                    'assets/images/red-blood.png',
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 8.r,
+                                right: 15.w,
+                                child: Container(
+                                  height: 0.065.sw,
+                                  width: 0.065.sw,
                                   alignment: Alignment.center,
-                                  child: SizedBox(
-                                    height: 70.h,
-                                    child: Image.asset(
-                                      'assets/images/red-blood.png',
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xFF464A57),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Text(
+                                    model.bgList[i].value.name,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
                                     ),
                                   ),
                                 ),
-                                Positioned(
-                                  bottom: 0.r,
-                                  right: 5.r,
-                                  child: Container(
-                                    height: 42.h,
-                                    width: 42.h,
-                                    alignment: Alignment.center,
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xFF464A57),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Text(
-                                      model.bgList[i].value.name,
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
+                              )
+                            ],
                           ),
                         ),
-                      );
-                    },
+                      ),
+                    );
+                  },
+                ),
+                30.verticalSpace,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0).r,
+                  child: AppButton(
+                    onTap: model.searchDonations,
+                    text: 'Search',
                   ),
-                  30.verticalSpace,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0).r,
-                    child: AppButton(
-                      onTap: model.searchDonations,
-                      text: 'Search',
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );

@@ -2,6 +2,7 @@ import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/models/event.dart';
 import 'package:blood_source/ui/shared/widgets/empty_widget.dart';
 import 'package:blood_source/ui/shared/widgets/loading_indicator.dart';
+import 'package:blood_source/ui/shared/widgets/offline_widget.dart';
 import 'package:blood_source/utils/date_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -19,7 +20,7 @@ class EventsView extends StatelessWidget {
       viewModelBuilder: () => EventsViewModel(),
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
-        if (model.isBusy || !model.dataReady) {
+        if (model.isBusy || !model.dataReady || model.isConnected == null) {
           return const LoadingIndicator();
         }
 
@@ -37,32 +38,39 @@ class EventsView extends StatelessWidget {
               icon: const Icon(PhosphorIcons.plusBold),
             ),
           ),
-          body: model.data!.docs.isEmpty
-              ? const EmptyWidget(
-                  message: 'It\'s lonely here. It seems there are no events.',
-                )
-              : SingleChildScrollView(
-                  child: Center(
-                    child: Column(
-                      children: [
-                        20.verticalSpace,
-                        Text(
-                          'You have ${model.eventCount} new ${model.eventCount > 1 ? "events" : "event"}.',
+          body: !model.isConnected!
+              ? OfflineWidget(onTap: model.checkConnectivity, addPadding: true)
+              : Container(
+                  child: model.data!.docs.isEmpty
+                      ? const EmptyWidget(
+                          message:
+                              'It\'s lonely here. It seems there are no events.',
+                        )
+                      : SingleChildScrollView(
+                          child: Center(
+                            child: Column(
+                              children: [
+                                20.verticalSpace,
+                                Text(
+                                  'You have ${model.eventsCount} new ${model.eventsCount > 1 ? "events" : "event"}.',
+                                ),
+                                20.verticalSpace,
+                                ListView.builder(
+                                  itemCount: model.data!.docs.length,
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 18.r),
+                                  itemBuilder: (context, i) {
+                                    final event =
+                                        model.data!.docs[i].data()! as Event;
+                                    return EventItem(event: event);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        20.verticalSpace,
-                        ListView.builder(
-                          itemCount: model.data!.docs.length,
-                          primary: false,
-                          shrinkWrap: true,
-                          padding: EdgeInsets.symmetric(horizontal: 18.r),
-                          itemBuilder: (context, i) {
-                            final event = model.data!.docs[i].data()! as Event;
-                            return EventItem(event: event);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
         );
       },
@@ -117,24 +125,24 @@ class EventItem extends ViewModelWidget<EventsViewModel> {
                 ),
                 16.verticalSpace,
                 EventDetailWidget(
-                  title: 'Desc',
+                  icon: PhosphorIcons.note,
                   subtitle: event.description,
                 ),
                 16.verticalSpace,
                 EventDetailWidget(
-                  title: 'Place',
+                  icon: PhosphorIcons.mapPin,
                   subtitle: event.location,
                 ),
-                8.verticalSpace,
+                16.verticalSpace,
                 EventDetailWidget(
-                  title: 'Date',
+                  icon: PhosphorIcons.calendar,
                   subtitle: dateFormatter(
                     event.date.toIso8601String(),
                   ),
                 ),
-                8.verticalSpace,
+                16.verticalSpace,
                 EventDetailWidget(
-                  title: 'Time',
+                  icon: PhosphorIcons.clock,
                   subtitle: event.time,
                 ),
               ],
@@ -143,10 +151,12 @@ class EventItem extends ViewModelWidget<EventsViewModel> {
           Positioned(
             right: 0.r,
             top: 0.r,
-            child: IconButton(
-              onPressed: () => viewModel.deleteEvent(event),
-              icon: const Icon(PhosphorIcons.trash, color: Colors.red),
-            ),
+            child: !viewModel.isEventBelongToUser(event)
+                ? const SizedBox()
+                : IconButton(
+                    onPressed: () => viewModel.deleteEvent(event),
+                    icon: const Icon(PhosphorIcons.trash, color: Colors.red),
+                  ),
           ),
         ],
       ),
@@ -157,11 +167,11 @@ class EventItem extends ViewModelWidget<EventsViewModel> {
 class EventDetailWidget extends StatelessWidget {
   const EventDetailWidget({
     Key? key,
-    required this.title,
+    required this.icon,
     required this.subtitle,
   }) : super(key: key);
 
-  final String title;
+  final IconData icon;
   final String subtitle;
 
   @override
@@ -170,12 +180,10 @@ class EventDetailWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          width: 35.w,
-          child: Text(
-            "$title:",
-            style: TextStyle(fontSize: 12.sp),
-          ),
+        Icon(
+          icon,
+          color: AppColors.secondary,
+          size: 18.sp,
         ),
         10.horizontalSpace,
         Expanded(
@@ -184,7 +192,7 @@ class EventDetailWidget extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               fontStyle: FontStyle.italic,
-              height: 1.3.sp,
+              height: 1.1.sp,
             ),
           ),
         ),
