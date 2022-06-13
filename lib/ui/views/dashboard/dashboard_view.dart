@@ -16,7 +16,6 @@ class DashboardView extends StatelessWidget {
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
         return Scaffold(
-          extendBodyBehindAppBar: true,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
@@ -35,8 +34,6 @@ class DashboardView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                50.verticalSpace,
-                30.verticalSpace,
                 Text(
                   'GIVE THE GIFT OF LIFE',
                   textAlign: TextAlign.center,
