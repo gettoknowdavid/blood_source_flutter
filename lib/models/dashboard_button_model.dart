@@ -34,13 +34,13 @@ final List<DashboardButtonModel> donorButtonList = <DashboardButtonModel>[
     'Hospitals',
     const Icon(PhosphorIcons.firstAid, color: Color(0xFF00CC99)),
     const Color(0xFF00CC99),
-    Routes.donateView,
+    'none',
   ),
   DashboardButtonModel(
     'Others',
     const Icon(PhosphorIcons.gearSix, color: Color(0xFF616161)),
     const Color(0xFF999999),
-    Routes.donateView,
+    'none',
   ),
 ];
 
@@ -61,12 +61,12 @@ final List<DashboardButtonModel> recipientButtonList = <DashboardButtonModel>[
     'Hospitals',
     const Icon(PhosphorIcons.firstAid, color: Color(0xFF00CC99)),
     const Color(0xFF00CC99),
-    Routes.donateView,
+    'none',
   ),
   DashboardButtonModel(
     'Others',
     const Icon(PhosphorIcons.gearSix, color: Color(0xFF616161)),
     const Color(0xFF999999),
-    Routes.donateView,
+    'none',
   ),
 ];
