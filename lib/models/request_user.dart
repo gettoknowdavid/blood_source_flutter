@@ -8,13 +8,13 @@ part 'request_user.g.dart';
 class RequestUser {
   final String uid;
   final String name;
-  final String avatar;
+  final String? avatar;
   final UserLocation location;
 
   const RequestUser({
     required this.uid,
     required this.name,
-    required this.avatar,
+    this.avatar,
     required this.location,
   });
 
@@ -23,7 +23,9 @@ class RequestUser {
     SnapshotOptions? options,
   )   : uid = snapshot.data()?['uid'] as String,
         name = snapshot.data()?['name'] as String,
-        avatar = snapshot.data()?['avatar'] as String,
+        avatar = snapshot.data()?['avatar'] == null
+            ? ""
+            : snapshot.data()?['avatar'] as String,
         location = UserLocation.fromJson(
             snapshot.data()?['requestLocation'] as Map<String, dynamic>);
 
@@ -31,7 +33,7 @@ class RequestUser {
     return {
       "uid": uid,
       "name": name,
-      "avatar": avatar,
+      if (avatar != null) "avatar": avatar,
       "location": location.toFirestore(),
     };
   }
