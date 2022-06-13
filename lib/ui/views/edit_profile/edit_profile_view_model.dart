@@ -226,5 +226,6 @@ class EditProfileViewModel extends ReactiveViewModel with ReactiveServiceMixin {
         _storeService,
         _mediaService,
         _authService,
+        _locService,
       ];
 }
