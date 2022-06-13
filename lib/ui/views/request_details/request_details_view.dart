@@ -63,10 +63,11 @@ class RequestDetailsView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  minHeight: 0.17.sh,
+                  minHeight: 120.h,
                   maxHeight: 0.54.sh,
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(30.r)),
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(30.r),
+                  ),
                   panelBuilder: (c) =>
                       RequestMapPanel(controller: c, request: request),
                 ),
