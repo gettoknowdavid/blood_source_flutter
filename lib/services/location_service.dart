@@ -64,15 +64,4 @@ class LocationService with ReactiveServiceMixin {
 
     return _loc.value!;
   }
-
-  // Future getPlace() async {
-  //   List<geo.Placemark> placemarks = await geo.placemarkFromCoordinates(
-  //     _loc.value!.latitude,
-  //     _loc.value!.longitude,
-  //   );
-  //   geo.Placemark place = placemarks[0];
-  //   geo.Placemark place2 = placemarks[1];
-
-  //   _city.value = place.locality;
-  // }
 }
