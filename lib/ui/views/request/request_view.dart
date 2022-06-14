@@ -34,15 +34,12 @@ class RequestView extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: AppColors.swatch.shade700,
+            backgroundColor: AppColors.swatch.shade800,
             centerTitle: true,
             elevation: 0,
             title: Text(
               'Request Blood',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 22.r,
-              ),
+              style: TextStyle(color: Colors.white, fontSize: 22.r),
             ),
           ),
           body: Center(
@@ -50,16 +47,16 @@ class RequestView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
+                  child: Image.asset(ImageResources.bloodDonation),
                   padding: const EdgeInsets.fromLTRB(4, 20, 4, 0).r,
-                  height: 0.3.sh,
+                  height: 0.35.sh,
                   width: 1.sw,
                   decoration: BoxDecoration(
-                    color: AppColors.swatch.shade700,
+                    color: AppColors.swatch.shade800,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(40.r),
                     ),
                   ),
-                  child: Image.asset(ImageResources.bloodDonation),
                 ),
                 18.verticalSpace,
                 Padding(
@@ -73,7 +70,7 @@ class RequestView extends StatelessWidget {
                     ),
                   ),
                 ),
-                20.verticalSpace,
+                10.verticalSpace,
                 GridView.builder(
                   primary: false,
                   shrinkWrap: true,
@@ -96,10 +93,10 @@ class RequestView extends StatelessWidget {
                             color: AppColors.primary.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(14.r),
                             border: Border.all(
+                              width: 2.w,
                               color: isSelected
                                   ? AppColors.swatch.shade500
                                   : Colors.black26,
-                              width: 2.w,
                             ),
                           ),
                           child: Stack(
