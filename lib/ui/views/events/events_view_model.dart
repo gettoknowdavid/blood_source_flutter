@@ -131,9 +131,10 @@ class EventsViewModel extends FutureViewModel<EventResult>
   }
 
   Future<void> init() async {
+    setBusy(true);
     isConnected = await InternetConnectionChecker().hasConnection;
-
     notifyListeners();
+    setBusy(false);
   }
 
   @override
