@@ -190,7 +190,6 @@ class _CreateEventBottomSheetState extends State<_CreateEventBottomSheet> {
                         creator: EventCreator(
                           uid: _uid,
                           name: _r!.bSUser!.name!,
-                          avatar: _r.bSUser!.avatar!,
                         ),
                       );
 
