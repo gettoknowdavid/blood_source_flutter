@@ -46,6 +46,7 @@ class RequestListViewModel extends MultipleFutureViewModel {
   bool get fetchingCompatible => busy(_CompatibleFuture);
 
   goToDetails(Request req) {
+    _requestService.setRequest(req);
     navService.navigateTo(
       Routes.requestDetailsView,
       arguments: RequestDetailsViewArguments(request: req),
