@@ -1,6 +1,5 @@
 import 'package:blood_source/common/app_colors.dart';
 import 'package:blood_source/ui/shared/widgets/app_button.dart';
-import 'package:blood_source/ui/shared/widgets/app_text_button.dart';
 import 'package:blood_source/ui/shared/widgets/profile/blood_group_widget.dart';
 import 'package:blood_source/ui/views/donor_details/donor_details_view_model.dart';
 import 'package:flutter/material.dart';
