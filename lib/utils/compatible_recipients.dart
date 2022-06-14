@@ -32,7 +32,6 @@ Future<List<Request>> compatibleRecipients(
           .get()
           .then((snap) => snap.docs.map((e) => e.data()).toList())
           .timeout(const Duration(seconds: 10));
-      ;
 
     case BloodGroup.bPositive:
       return ref
