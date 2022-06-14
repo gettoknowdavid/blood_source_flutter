@@ -50,10 +50,8 @@ class EventService with ReactiveServiceMixin {
       getEventsCount();
       return EventResult(events: _events);
     } on FirebaseException catch (e) {
-      return EventResult.error(
-        errorMessage: 'There seems to be a problem, try again.',
-      );
-    } on Exception catch (e) {
+      return EventResult.error(errorMessage: e.message);
+    } on Exception {
       return EventResult.error(
         errorMessage: 'Connection timed out. Try again.',
       );
