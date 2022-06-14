@@ -20,7 +20,7 @@ class EventsView extends StatelessWidget {
       viewModelBuilder: () => EventsViewModel(),
       onModelReady: (model) async => await model.init(),
       builder: (context, model, Widget? child) {
-        if (model.isBusy || model.isConnected == null) {
+        if (model.isBusy || model.isConnected == null || model.data == null) {
           return const LoadingIndicator();
         }
 
