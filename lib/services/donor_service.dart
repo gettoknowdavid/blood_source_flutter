@@ -40,11 +40,9 @@ class DonorService with ReactiveServiceMixin {
           .then((snap) => snap.docs.map((e) => e.data()).toList())
           .timeout(const Duration(seconds: 8));
       return DonorResult(donors: _donors);
-    } on FirebaseException {
-      return DonorResult.error(
-        errorMessage: 'There seems to be a problem, try again.',
-      );
-    } on Exception catch (e) {
+    } on FirebaseException catch (e) {
+      return DonorResult.error(errorMessage: e.message);
+    } on Exception {
       return DonorResult.error(
         errorMessage: 'Connection timed out. Try again.',
       );
@@ -59,7 +57,7 @@ class DonorService with ReactiveServiceMixin {
       return DonorResult.error(
         errorMessage: 'There seems to be a problem, try again.',
       );
-    } on Exception catch (e) {
+    } on Exception {
       return DonorResult.error(
         errorMessage: 'Connection timed out. Try again.',
       );
