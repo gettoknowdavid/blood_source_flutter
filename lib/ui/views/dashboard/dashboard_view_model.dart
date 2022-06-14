@@ -64,7 +64,7 @@ class DashboardViewModel extends ReactiveViewModel with ReactiveServiceMixin {
       user: RequestUser(
         uid: user.uid!,
         name: user.name!,
-        avatar: user.avatar!,
+        avatar: user.avatar,
         location: UserLocation(
           user.location!.latitude,
           user.location!.longitude,
@@ -88,7 +88,7 @@ class DashboardViewModel extends ReactiveViewModel with ReactiveServiceMixin {
       case 'none':
         _dialogService.showDialog(
           title: 'Coming Soon',
-          description: 'This is feature is coming soon!',
+          description: 'This feature is coming soon!',
           barrierDismissible: true,
         );
         break;
